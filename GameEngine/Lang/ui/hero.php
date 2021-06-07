@@ -1,0 +1,45 @@
+<?php
+
+define("HERO_SENDASREINF", "Our message has been sent as support");
+define("HERO_INYOURACCF", "Our account is in your account");
+define("HERO_PRISONER", "HERO is imprisoned");
+define("HERO_NOTINVILL", "Hero is not in the village (two returning from attack, or attack, etc.)");
+define("HERO_ALREADYDEAD", "HERO is dead");
+define("HERO_INREVIVE", "Our song is currently live");
+define("HERO_STATUS", "Hero Status");
+define("HERO_CURINVILL", "HERO is currently in the village");
+define("HERO_DEADLASTVILL", "Your song is dead. It was in this village");
+define("HERO_REVIVEREMTIME", "HERO LIVING TIME");
+define("HERO_WILLHIDE", "Hide your words during a village attack.");
+define("HERO_WILLREMAIN", "Hero always stay with forces.");
+define("HERO_NORESTOREV", "You don't have enough resources to make a hero live.");
+define("HERO_REVIVE", "HERO");
+define("HERO_HEALTH", "Health");
+define("HERO_EXP", "Experience");
+define("HERO_SPEED", "Speed ​​|| Your Hero Speed");
+define("HERO_SPEED2", "Speed");
+define("HERO_HPERH", "Hour Trial");
+define("HERO_HPERH2", "On Hour");
+define("HERO_KILLHERO", "HERO KILLING");
+define("HERO_HEROPRODDESC", "Hero Production || Your Hero Current Production:");
+define("HERO_ALLRES", "All Resources");
+define("HERO_HEROPRODTITLE", "Our Products");
+define("HERO_REVIVEDESC", "If you lose your hero and are not visible in your village, even in adventure, etc. you can kill and revive him.");
+define("HERO_ATTR", "Features");
+define("HERO_SAVECHANGE", "Please save your changes.");
+define("HERO_SAVECHANGE2", "Save Changes");
+define("HERO_CHANGERESPROD", "Change our current products");
+define("HERO_HIDEHERO", "Hide our conversation");
+define("HERO_AVLPOINTS", "Score Available");
+define("HERO_FIGHTSTR", "HERO");
+define("HERO_OFFBONUS", "Offensive Points");
+define("HERO_DEFBONUS", "Defense Score");
+define("HERO_RESS", "Resources");
+define("HERO_NEXTOASISHEROMANSION", "HERO_NEXTOASISHEROMANSION");
+define("HERO_OTHEROASIS", "Other Places");
+define("HERO_TYPE", "Type");
+
+define("HERO_HEROATTRIBUTES", "Features");
+define("HERO_HEROAPPEARANCE", "Appearance");
+define("HERO_HEROADVENTURE", "Adventure");
+define("HERO_HEROAUCTION", "Auction");

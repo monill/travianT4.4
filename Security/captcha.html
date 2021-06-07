@@ -1,0 +1,20 @@
+<!-- The following is example HTML that can be used on your form -->
+
+<p>
+    <img align="left" alt="CAPTCHA Image"
+         id="siimage" src="./securimage_show.php?sid=<?php echo md5(uniqid()) ?>" style="border: 1px solid #000; margin-right: 15px">
+    <object data="./securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.png&amp;audio_file=./securimage_play.php"
+            height="32"
+            type="application/x-shockwave-flash" width="32">
+        <param name="movie"
+               value="./securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.png&amp;audio_file=./securimage_play.php"/>
+    </object>
+    &nbsp;
+    <a href="#" onclick="document.getElementById('siimage').src = './securimage_show.php?sid=' + Math.random(); this.blur(); return false" style="border-style: none;" tabindex="-1"
+       title="Refresh Image"><img
+            align="bottom" alt="Reload Image" border="0" onclick="this.blur()" src="./images/refresh.png"></a><br/>
+    <strong>Enter Code*:</strong><br/>
+    <input maxlength="16" name="ct_captcha" size="12" type="text"/>
+</p>
+  
+  

@@ -1,0 +1,90 @@
+<?php
+
+define('NOTICE1', 'Spy Report');
+define('NOTICE2', 'Not Attack Victory');
+define('NOTICE3', 'Notorious Attacker Victory');
+define('NOTICE4', 'Attacker Fatality Failure');
+define('NOTICE5', 'Not Defender Victory Victory');
+define('NOTICE6', 'Victory Defender Victory');
+define('NOTICE7', 'Defender Defeat Failure');
+define('NOTICE8', "Defender No Loss Defeat");
+define('NOTICE9', "Assistance received");
+define('NOTICE10', "");
+define('NOTICE11', 'Get wood');
+define('NOTICE12', 'Download Bricks');
+define('NOTICE13', "Iron Receipt");
+define('NOTICE14', "Get wheat");
+define('NOTICE15', "");
+define('NOTICE16', "No Defender Victory Victory");
+define('NOTICE17', "Victory Defender Victory");
+define('NOTICE18', "Defender Fatality Failure");
+define('NOTICE19', "Attack Spy Victory");
+define('NOTICE20', "Attack Spy Failure");
+define('NOTICE21', "Spy Defender Victory");
+define('NOTICE22', "Defender Spy Failure");
+define('NOTICE23', "Spy Report");
+define('NOATTACKS', 'No attack');
+define('REPORT_NORMALATTACK', ' %s attack on %s');
+define('REPORT_RAID', ' %s Army %s');
+define('REPORT_SCOUT', ' %s Scouts %s');
+define('REPORT_REINFATTACKED', 'Your support has been compromised. %s');
+define('REPORT_NOWALL', 'Wall <b> does not exist </b>.');
+define('REPORT_WALLDESTROYED', '<b> Wall destroyed </b>.');
+define('REPORT_WALLDAMAGEDED', 'Damaged wall <b> %s </b> to <b> %s </b>.');
+define('REPORT_WALLNODAMAGE', 'The wall was <b> no damage </b>.');
+define('REPORT_NOVILLAGE', 'There are <b> no villages here </b>.');
+define('REPORT_BUILDINGDESTROYED', '<b> %s destroyed </b>.');
+define('REPORT_BUILDINGDAMAGED', '<b> %s </b> Damaged <b>% d </b> to <b>% d </b>.');
+define('REPORT_BUILDINGNODAMAGE', '<b> %s </b> not found.');
+define('REPORT_CHIEFFAILED_REDIDENCEEXIST', 'Here is the <b> Residence </b> or <b> Palace </b>.');
+define('REPORT_CHIEFSUCCESS', '<b> Residents joined you successfully </b>.');
+define('REPORT_CANTCAPTURECAPITAL', '<b> You can\'t capture the capital </b>.');
+define('REPORT_LOWCP', '<b> Your fluency score is low </b>');
+define('REPORT_LOWSLOT', '<b> not enough </b> extension.');
+define('REPORT_LOYALTYLOWERED', 'Reduce loyalty from <b>% d </b> to <b>% d </b>.');
+define('REPORT_ARTIESCLAIMED', 'Your conversation is captured <b>% d </b> in this village.');
+define('REPORT_EMPTYADV', 'Your search has not found anything valuable.');
+define('REPORT_EXPL', ' %s Report %s');
+define('REPORT_HNS', 'Your story does not survive a adventure');
+define('REPORT_PARTICIPANTS', 'REPORTERS');
+define('REPORT_PARTICIPANT', 'REPORTER');
+define("REPORT_FROM_VIL", "From Village");
+define("REPORT_SUCCESSOASISCAPTURED", "Conquest was conquered by us.");
+define('RP_NOTICE', 'Notification');
+
+define('NEXTPAGE', "Next Page");
+define('PREVPAGE', "Previous Page");
+define('FIRSTPAGE', "First Page");
+define('LASTPAGE', "Last Page");
+define("SELECTALL", "Select All");
+define("REPORT_TYPE", "Type");
+define("REPORT_ATTACKER", "REPORTER");
+define("REPORT_WARSIM", "War Simulator");
+define("REPORT_ATK_AGAIN", "Re-attack");
+define("REPORT_TRAPPED", "Trapped");
+define("REPORT_CASUALTIES", "Losses");
+define("REPORT_INFORMATION", "Information");
+define("REPORT_BOUNTY", "Trophies");
+define('TASKMASTER', 'Enemy');
+define("REPORT_FROM_ALLY", "From United");
+define("REPORT_NOREPORT", "No Reports Available");
+define('NEWSTR', 'New');
+define("REPORT_DEFENDER", "Defender");
+define("REPORT_DEFEND", "Defense");
+
+define("HEADER_ALL", "All");
+define("HEADER_TRADE", "Business");
+define("HEADER_REINFORCEMENT", "Support");
+define("HEADER_ATTACKS", "Attacks");
+define("HEADER_MISCELLANEOUS", "Miscellaneous");
+
+define("TODAY", "Today");
+define("YESTERDAY", "Yesterday");
+define("BYESTERDAY", "2 Days Ago");
+
+define("REPORT_SEND_RES", "Submit Resources");
+define("SEND_RES", "%s Submit Resources to %s");
+
+define("REPORT_HEROMANSIONLOWSLOT", "Upgrade your mansion to occupy another building.");
+
+define("SENTREINFTO", ' %s support %s');
