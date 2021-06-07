@@ -1,5 +1,6 @@
 composer.lock
 .rnd
+/assets
 
 # IDEs
 /.idea
