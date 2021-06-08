@@ -11,3 +11,5 @@ composer.lock
 # OS X
 .DS_store
 Thumbs.db
+GameEngine/config.php
+GameEngine/Database/connection.php
