@@ -24,7 +24,7 @@ define("TB_PREFIX", "%PREFIX%");
 // Database type
 // 0 = MYSQL
 // 1 = MYSQLi
-// default: 1
+// default: 0
 define("DB_TYPE", "%CONNECTT%");
 
 ?>
