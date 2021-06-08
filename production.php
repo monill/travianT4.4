@@ -138,7 +138,9 @@ include('templates/html.php');
                                     <div class="background-start">&nbsp;</div>
                                     <div class="background-end">&nbsp;</div>
                                     <div class="content">
-                                        <a id="button5280fc114fc82" href="production.php?t=3" class="tabItem"><?php echo VL_IRON; ?></a>
+                                        <a id="button5280fc114fc82" href="production.php?t=3" class="tabItem">
+											<?php echo VL_IRON; ?>
+										</a>
                                     </div>
                                 </div>
 
