@@ -36,7 +36,7 @@ class Session
     var $silver;
     var $email;
 
-    function Session()
+    public function __construct()
     {
         $this->check_ip();
         global $database;
