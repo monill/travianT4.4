@@ -77,12 +77,12 @@ function replace_meta_chars($string)
 }
 
 reset($_REQUEST);
-while (list($keyx, $valuex) = each($_REQUEST)) {
+while (list($keyx, $valuex) = @each($_REQUEST)) {
     ${$keyx} = replace_meta_chars($valuex);
 }
 
-while (list($keyx, $valuex) = each($_REQUEST)) {
-    if (eregi("([<])|([>])|([*])|([|])|([;])|([`])|([-])|([\])|([{])|([}])|([+])", $valuex)) {
+while (list($keyx, $valuex) = @each($_REQUEST)) {
+    if (@eregi("([<])|([>])|([*])|([|])|([;])|([`])|([-])|([\])|([{])|([}])|([+])", $valuex)) {
         $hack_attempt = 1;
         // echo $valuex;
         // exit;
@@ -304,12 +304,12 @@ function clean($string)
         '@<![\s\S]*?--[ \t\n\r]*>@' // Strip multi-line comments
     );
     $string = preg_replace($search, '', $string);
-    
+
     #Clean inputs for XSS and SQLI
     $string = trim($string);
     $string = htmlspecialchars($string);
     $string = strip_tags($string);
-    
+
     return $string;
 }
 
