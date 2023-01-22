@@ -10,7 +10,6 @@ if (isset($_GET['c']) && $_GET['c'] == 1) {
             <tr>
                 <td><span class="f9 c6">Create SQL Structure:</span></td>
                 <td>
-
                     <button type="submit" value="submit" name="submit" id="btn_ok" class="green ">
                         <div class="button-container addHoverClick">
                             <div class="button-background">

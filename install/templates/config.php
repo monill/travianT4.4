@@ -505,4 +505,3 @@ if (isset($_GET['c']) && $_GET['c'] == 1) {
         </div>
         <input type="hidden" name="subconst" value="1">
 </form>
-</div>

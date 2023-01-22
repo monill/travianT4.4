@@ -7,7 +7,6 @@ $nareadis = NATARS_MAX;
 
 for ($i = 0; $i < $xyas; $i++) {
     $y = (WORLD_MAX - $i);
-
     for ($j = 0; $j < $xyas; $j++) {
         $x = ((WORLD_MAX * -1) + $j);
 
@@ -128,7 +127,6 @@ for ($i = 0; $i < $xyas; $i++) {
         $database->query($q);
     }
 }
-
 
 include("tiles.php");
 

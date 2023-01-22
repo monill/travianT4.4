@@ -31,7 +31,7 @@
 
             <div id="header">
                 <div id="mtop">
-                    <a id="logo" href="<?php echo HOMEPAGE; ?>" target="_blank" title="<?php echo SERVER_NAME; ?>"></a>
+                    <a id="logo" href="#" target="_blank" title="title"></a>
                     <div class="clear"></div>
                 </div>
             </div>
