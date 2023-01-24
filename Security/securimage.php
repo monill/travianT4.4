@@ -915,8 +915,9 @@ class Securimage
      * Convert an html color code to a Securimage_Color
      * @param string $color
      * @param Securimage_Color $default The defalt color to use if $color is invalid
+     * @return Securimage_Color
      */
-    protected function initColor($color, $default)
+    protected function initColor($color, Securimage_Color $default)
     {
         if ($color == null) {
             return new Securimage_Color($default);
