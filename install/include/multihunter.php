@@ -9,7 +9,6 @@ define('_ADMINEXEC_', 1);
 mysql_connect(SQL_SERVER, SQL_USER, SQL_PASS);
 mysql_select_db(SQL_DB);
 
-$StartNatars = true;
 $admin = new adminModel();
 
 /**
@@ -36,11 +35,8 @@ if (isset($_POST['mhpw'])) {
         $database->addTech($wid);
         $database->addABTech($wid);
     }
-}
 
-if ($StartNatars) {
     $username = "Natars";
-    $password = $_POST['mhpw'];
     $email = "natars@travianx.com";
     $desc = "[#natars]";
     $uid = 2;
