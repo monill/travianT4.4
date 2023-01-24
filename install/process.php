@@ -111,10 +111,6 @@ class Process
         header("Location: include/wdata.php");
     }
 
-    public function createAcc()
-    {
-        # code...
-    }
 }
 
 $process = new Process();
