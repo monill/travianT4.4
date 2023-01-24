@@ -4424,9 +4424,10 @@ class nusoap_server extends nusoap_base
      * @param mixed $use optional (encoded|literal) or false
      * @param string $documentation optional Description to include in WSDL
      * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     * @return bool
      * @access   public
      */
-    function register($name, $in = array(), $out = array(), $namespace = false, $soapaction = false, $style = false, $use = false, $documentation = '', $encodingStyle = '')
+    function register($name, array $in = array(), array $out = array(), $namespace = false, $soapaction = false, $style = false, $use = false, $documentation = '', $encodingStyle = '')
     {
         global $HTTP_SERVER_VARS;
 
@@ -6500,25 +6501,25 @@ $xml .= "\n<definitions"; foreach ($this->namespaces as $k => $v) {
                                                                                 $enumeration);
                                                                                 }
 
-                                                                                /**
-                                                                                * register an operation with the server
-                                                                                *
-                                                                                * @param string $name operation (method) name
-                                                                                * @param array $in assoc array of input values: key = param name, value = param type
-                                                                                * @param array $out assoc array of output values: key = param name, value = param type
-                                                                                * @param string $namespace optional The namespace for the operation
-                                                                                * @param string $soapaction optional The soapaction for the operation
-                                                                                * @param string $style (rpc|document) optional The style for the operation Note: when 'document' is specified, parameter and return wrappers are created for you automatically
-                                                                                * @param string $use (encoded|literal) optional The use for the parameters (cannot mix right now)
-                                                                                * @param string $documentation optional The description to include in the WSDL
-                                                                                * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
-                                                                                * @access public
-                                                                                */
-                                                                                function addOperation($name, $in =
-                                                                                false, $out = false, $namespace = false,
-                                                                                $soapaction = false, $style = 'rpc',
-                                                                                $use = 'encoded', $documentation = '',
-                                                                                $encodingStyle = '')
+    /**
+     * register an operation with the server
+     *
+     * @param string $name operation (method) name
+     * @param array $in assoc array of input values: key = param name, value = param type
+     * @param array $out assoc array of output values: key = param name, value = param type
+     * @param string $namespace optional The namespace for the operation
+     * @param string $soapaction optional The soapaction for the operation
+     * @param string $style (rpc|document) optional The style for the operation Note: when 'document' is specified, parameter and return wrappers are created for you automatically
+     * @param string $use (encoded|literal) optional The use for the parameters (cannot mix right now)
+     * @param string $documentation optional The description to include in the WSDL
+     * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     * @return bool
+     * @access public
+     */
+                                                                                function addOperation($name, array $in, array $out, $namespace,
+                                                                                                      $soapaction, $style = 'rpc',
+                                                                                                      $use = 'encoded', $documentation = '',
+                                                                                                      $encodingStyle = '')
                                                                                 {
                                                                                 if ($use == 'encoded' && $encodingStyle == '') {
                                                                                 $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/';
