@@ -626,10 +626,12 @@ class CI_Security
     /** * JS Link Removal * * Callback function for xss_clean() to sanitize links *
      * This limits the PCRE backtracks, making it more performance friendly * and
      * prevents PREG_BACKTRACK_LIMIT_ERROR from being triggered in * PHP 5.2+ on
-     * link-heavy strings * * @param array * @return string
+     * link-heavy strings * *
+     * @param array * @return string
+     * @return string|string[]
      */
 
-    protected function _js_link_removal($match)
+    protected function _js_link_removal(array $)
     {
         $attributes = $this->_filter_attributes(str_replace(array('<', '>'), '', $match[1]));
 
