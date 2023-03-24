@@ -14,10 +14,9 @@ $admin = new adminModel();
 /**
  * Functions
  */
-function generateHash($plainText, $salt = 1)
+function generateHash($plainText)
 {
-    $salt = substr($salt, 0, 9);
-    return $salt . md5($salt . $plainText);
+    return md5($plainText);
 }
 
 if (isset($_POST['mhpw'])) {
