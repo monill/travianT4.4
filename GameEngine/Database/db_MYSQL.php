@@ -672,7 +672,7 @@ class MYSQL_DB
         }
 
         $time = time();
-        $q = "INSERT into " . TB_PREFIX . "vdata (wref, owner, name, capital, pop, cp, celebration, wood, clay, iron, maxstore, crop, maxcrop, lastupdate, created) values 
+        $q = "INSERT into " . TB_PREFIX . "vdata (wref, owner, name, capital, pop, cp, celebration, wood, clay, iron, maxstore, crop, maxcrop, lastupdate, created) values
         ('$wid', '$uid', '$vname', '$capital', 2, 1, 0, 780, 780, 780, " . STORAGE_BASE . ", 780, " . STORAGE_BASE . ", '$time', '$time')";
         return mysql_query($q, $this->connection);
     }
@@ -4021,7 +4021,7 @@ class MYSQL_DB
                 $returnmspeed = 0;
                 break;
         }
-        $q = "INSERT into " . TB_PREFIX . "hero (`uid`, `wref`, `level`, `speed`, `points`, `experience`, `dead`, `health`, `power`, `fsperpoint`, `offBonus`, `defBonus`, `product`, `r0`, `autoregen`, `extraexpgain`, `cpproduction`, `rob`, `extraresist`, `vsnatars`, `accountmspeed`, `allymspeed`, `longwaymspeed`, `returnmspeed`, `lastupdate`, `lastadv`, `hash`) values 
+        $q = "INSERT into " . TB_PREFIX . "hero (`uid`, `wref`, `level`, `speed`, `points`, `experience`, `dead`, `health`, `power`, `fsperpoint`, `offBonus`, `defBonus`, `product`, `r0`, `autoregen`, `extraexpgain`, `cpproduction`, `rob`, `extraresist`, `vsnatars`, `accountmspeed`, `allymspeed`, `longwaymspeed`, `returnmspeed`, `lastupdate`, `lastadv`, `hash`) values
 				('$uid', 0, 0, '$speed', 0, '0', 0, '100', '0', '$fsperpoint', '0', '0', '4', '1', '$autoregen', '$extraexpgain', '$cpproduction', '$rob', '$extraresist', '$vsnatars', '$accountmspeed', '$allymspeed', '$longwaymspeed', '$returnmspeed', '$time', '0', '$hash')";
         return mysql_query($q, $this->connection);
     }
@@ -4210,12 +4210,12 @@ class MYSQL_DB
             return false;
         }
         $pct /= 100;
-        // Get image width and height 
+        // Get image width and height
         $w = imagesx($src_im);
         $h = imagesy($src_im);
-        // Turn alpha blending off 
+        // Turn alpha blending off
         imagealphablending($src_im, false);
-        // Find the most opaque pixel in the image (the one with the smallest alpha value) 
+        // Find the most opaque pixel in the image (the one with the smallest alpha value)
         $minalpha = 127;
         for ($x = 0; $x < $w; $x++)
             for ($y = 0; $y < $h; $y++) {
@@ -4224,27 +4224,27 @@ class MYSQL_DB
                     $minalpha = $alpha;
                 }
             }
-        //loop through image pixels and modify alpha for each 
+        //loop through image pixels and modify alpha for each
         for ($x = 0; $x < $w; $x++) {
             for ($y = 0; $y < $h; $y++) {
-                //get current alpha value (represents the TANSPARENCY!) 
+                //get current alpha value (represents the TANSPARENCY!)
                 $colorxy = imagecolorat($src_im, $x, $y);
                 $alpha = ($colorxy >> 24) & 0xFF;
-                //calculate new alpha 
+                //calculate new alpha
                 if ($minalpha !== 127) {
                     $alpha = 127 + 127 * $pct * ($alpha - 127) / (127 - $minalpha);
                 } else {
                     $alpha += 127 * $pct;
                 }
-                //get the color index with new alpha 
+                //get the color index with new alpha
                 $alphacolorxy = imagecolorallocatealpha($src_im, ($colorxy >> 16) & 0xFF, ($colorxy >> 8) & 0xFF, $colorxy & 0xFF, $alpha);
-                //set pixel with the new color + opacity 
+                //set pixel with the new color + opacity
                 if (!imagesetpixel($src_im, $x, $y, $alphacolorxy)) {
                     return false;
                 }
             }
         }
-        // The image copy 
+        // The image copy
         imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
     }
 
