@@ -737,10 +737,7 @@ class MYSQL_DB
         $q = "SELECT id FROM " . TB_PREFIX . "wdata where oasistype != 0";
         $result = mysql_query($q, $this->connection);
         while ($row = mysql_fetch_array($result)) {
-            $wid = $row['id'];
-
-            $this->addUnits($wid);
-
+            $this->addUnits($row['id']);
         }
     }
 
@@ -843,7 +840,6 @@ class MYSQL_DB
         $q = "SELECT id,categorie,plaats,week,img,points from " . TB_PREFIX . "medal where userid = $uid order by id desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
-
     }
 
     function getProfileMedalAlly($uid)
@@ -851,7 +847,6 @@ class MYSQL_DB
         $q = "SELECT id,categorie,plaats,week,img,points from " . TB_PREFIX . "allimedal where allyid = $uid order by id desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
-
     }
 
     function getVillageID($uid)
@@ -1381,7 +1376,6 @@ class MYSQL_DB
 
     /**
      * Function to insert an alliance new
-     * References:
     */
     function insertAlliNotice($aid, $notice)
     {
@@ -1393,7 +1387,6 @@ class MYSQL_DB
 
     /**
      * Function to delete alliance if empty
-     * References:
     */
     function deleteAlliance($aid)
     {
@@ -1408,7 +1401,6 @@ class MYSQL_DB
 
     /**
      * Function to read all alliance news
-     * References:
     */
     function readAlliNotice($aid)
     {
@@ -1431,7 +1423,6 @@ class MYSQL_DB
 
     /**
      * Function to update alliance permissions
-     * References:
     */
     function deleteAlliPermissions($uid)
     {
@@ -1441,7 +1432,6 @@ class MYSQL_DB
 
     /**
      * Function to update alliance permissions
-     * References:
     */
     function updateAlliPermissions($uid, $aid, $rank, $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8 = 0)
     {
@@ -2140,7 +2130,6 @@ class MYSQL_DB
      * References: VillageRef (vref)
      * Made by: Dzoki
      */
-
     function getResourcesBack($vref, $gtype, $gamt)
     {
         //Xtype (1) = wood, (2) = clay, (3) = iron, (4) = crop
@@ -2167,7 +2156,6 @@ class MYSQL_DB
      * References: VillageRef (vref)
      * Made by: Dzoki
      */
-
     function getMarketField($vref, $field)
     {
         $q = "SELECT $field FROM " . TB_PREFIX . "market where vref = '$vref'";
@@ -2235,7 +2223,6 @@ class MYSQL_DB
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray[$field];
-
     }
 
     /**
@@ -2603,7 +2590,7 @@ class MYSQL_DB
 
     function removeZeroTrain()
     {
-        $q = "DELETE FROM " . TB_PREFIX . "training where `unit`<>0 AND amt <= 0 ";
+        $q = "DELETE FROM " . TB_PREFIX . "training where `unit` <> 0 AND amt <= 0";
         return mysql_query($q, $this->connection);
     }
 
@@ -2623,7 +2610,7 @@ class MYSQL_DB
     {
         if (!$mode) {
             $time = time();
-            $q = "INSERT INTO " . TB_PREFIX . "training values (0,$vid,0,1,6,$time,$each,$time,$endat)";
+            $q = "INSERT INTO " . TB_PREFIX . "training values (0, $vid, 0, 1, 6, $time, $each, $time, $endat)";
         } else {
             $q = "DELETE FROM " . TB_PREFIX . "training where id = $vid";
         }
@@ -2633,7 +2620,7 @@ class MYSQL_DB
     function updateTraining($id, $trained)
     {
         $time = time();
-        $q = "UPDATE " . TB_PREFIX . "training set amt = GREATEST(amt - $trained,0), timestamp = $time where id = $id";
+        $q = "UPDATE " . TB_PREFIX . "training set amt = GREATEST(amt - $trained, 0), timestamp = $time where id = $id";
         return mysql_query($q, $this->connection);
     }
 
@@ -2868,7 +2855,9 @@ class MYSQL_DB
             $q = "SELECT * FROM " . TB_PREFIX . "enforcement WHERE `from` = '$id' AND `vref` IN " . $inos;
             $result = mysql_query($q, $this->connection);
             return $this->mysql_fetch_all($result);
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     function getOasis($vid)
@@ -3060,7 +3049,6 @@ class MYSQL_DB
     {
         if ($commence == 0) $commence = time();
         $q = "UPDATE " . TB_PREFIX . "training set commence = $commence WHERE id=$id";
-
         return mysql_query($q, $this->connection);
     }
 
@@ -3096,7 +3084,6 @@ class MYSQL_DB
     }
 
     //MARKET FIXES
-
     function getWoodAvailable($wref)
     {
         $q = "SELECT wood FROM " . TB_PREFIX . "vdata WHERE wref = $wref LIMIT 1";
@@ -3624,7 +3611,6 @@ class MYSQL_DB
         $q = "DELETE FROM " . TB_PREFIX . "raidlist where id = $id";
         return mysql_query($q, $this->connection);
     }
-
 
     function createFarmList($wref, $owner, $name)
     {
