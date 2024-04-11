@@ -54,7 +54,9 @@ if (isset($_POST['mhpw'])) {
     }
     mysql_query("UPDATE " . TB_PREFIX . "vdata SET pop = '781' WHERE owner = $uid") or die(mysql_error());
     mysql_query("UPDATE " . TB_PREFIX . "units SET u41 = " . (274700 * SPEED) . ", u42 = " . (995231 * SPEED) . ", u43 = 10000, u44 = " . (3048 * SPEED) . ", u45 = " . (964401 * SPEED) . ", u46 = " . (617602 * SPEED) . ", u47 = " . (6034 * SPEED) . ", u48 = " . (3040 * SPEED) . " , u49 = 1, u50 = 9 WHERE vref = " . $wid . "") or die(mysql_error());
+
     $status = 0;
+
     for ($i = 1; $i <= 13; $i++) {
         $nareadis = NATARS_MAX;
         do {
