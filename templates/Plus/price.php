@@ -1,8 +1,6 @@
 <?php
 
-
 $AppConfig = array(
-
     'plus' => array(
         'packages' => array(
             array(
