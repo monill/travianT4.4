@@ -6,21 +6,6 @@ if (file_exists(dirname(__FILE__) . "/constant.php")) {
     die('Cant find constant.php in /install/include/database.php');
 }
 
-class MYSQLi_DB
-{
-    var $connection;
-
-    function MYSQLi_DB()
-    {
-        $this->connection = mysqli_connect(SQL_SERVER, SQL_USER, SQL_PASS, SQL_DB) or die(mysqli_error());
-    }
-
-    function query($query)
-    {
-        return $this->connection->query($query);
-    }
-}
-
 class MYSQL_DB
 {
     var $connection;
@@ -56,8 +41,4 @@ class MYSQL_DB
     }
 }
 
-if (DB_TYPE) {
-    $database = new MYSQLi_DB;
-} else {
-    $database = new MYSQL_DB;
-}
+$database = new MYSQL_DB;
