@@ -216,7 +216,6 @@ if (!isset($_GET['page'])) {
             $rank++;
         }
 
-
         ?>
     </tbody>
 </table>
