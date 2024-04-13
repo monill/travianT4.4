@@ -1,11 +1,12 @@
 <?php
+
 ob_start();
+
 if (file_exists("include/constant.php") && file_exists("include/connection.php")) {
     include("include/database.php");
 }
 
-class Process
-{
+class Process {
 
     public function __construct()
     {
