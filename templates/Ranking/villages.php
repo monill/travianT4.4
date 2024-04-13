@@ -1,4 +1,5 @@
 <?php
+
 $sql = $ranking->procVillagesRanking();
 $query = mysql_num_rows($sql);
 
@@ -42,6 +43,7 @@ if (!isset($_GET['page'])) {
 }
 
 ?>
+
 <h4 class="round"><?php echo PF_TOPVILLAGES; ?></h4>
 <?php if (isset($err)) echo '<h5 style="color:#f00;">' . $err . '</h5>'; ?>
 <table cellpadding="1" cellspacing="1" id="villages" class="row_table_data">
@@ -201,7 +203,6 @@ if (!isset($_GET['page'])) {
 
             $rank++;
         }
-
 
         ?>
     </tbody>
