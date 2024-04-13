@@ -1,7 +1,6 @@
 <?php
 
-function getPop($tid, $level)
-{
+function getPop($tid, $level) {
     $name = "bid" . $tid;
     global $$name;
     $dataarray = $$name;
