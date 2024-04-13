@@ -228,15 +228,6 @@ if (isset($_GET['c']) && $_GET['c'] == 1) {
                 <td>Prefix:</td>
                 <td><input type="text" dir="ltr" class="text" name="prefix" id="prefix" disabled readonly></td>
             </tr>
-            <tr class="hover">
-                <td>Type:</td>
-                <td>
-                    <select name="connectt" dir="ltr" class="text">
-                        <option value="0" selected="selected">MYSQL</option>
-                        <option value="1" disabled="disabled">MYSQLi</option>
-                    </select>
-                </td>
-            </tr>
             <tr class="empty">
                 <td></td>
                 <td></td>
@@ -396,7 +387,7 @@ if (isset($_GET['c']) && $_GET['c'] == 1) {
                 <td><input name="stats" dir="ltr" class="text" type="number" id="stats" value="21600" size="15"></td>
             </tr>
             <tr class="hover">
-                <td>Quests :</td>
+                <td>Quests:</td>
                 <td>
                     <select name="quest" dir="ltr" class="text">
                         <option value="0">Disable</option>
@@ -431,7 +422,7 @@ if (isset($_GET['c']) && $_GET['c'] == 1) {
                 <td><input name="timeout" dir="ltr" class="text" type="number" id="timeout" value="30" size="15"></td>
             </tr>
             <tr class="hover">
-                <td>autodel:</td>
+                <td>Autodel:</td>
                 <td>
                     <select name="autodel" dir="ltr" class="text">
                         <option value="false" selected="selected">Disable</option>
@@ -480,8 +471,7 @@ if (isset($_GET['c']) && $_GET['c'] == 1) {
             <tr class="hover">
                 <td>Start Date :</td>
                 <td>
-                    <font class="none" size="1" face="Trebuchet MS">[ <?php echo date('Y-m-d H:i:s'); ?> (now)]
-                        + </font>
+                    <font class="none" size="1" face="Trebuchet MS">[<?= date('Y-m-d H:i:s'); ?>]</font>
                     <input name="commencediff" style="text-align:center;" class="text" type="text" id="commencediff" value="0" size="20"> seconds.<br />
                 </td>
             </tr>
