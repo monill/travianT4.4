@@ -1,4 +1,5 @@
 <?php
+
 $sql = $ranking->procAllianceDefRanking();
 $query = mysql_num_rows($sql);
 
