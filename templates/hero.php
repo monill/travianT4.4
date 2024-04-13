@@ -43,7 +43,6 @@
                         for ($r = 0; $r < 4; $r++) {
                             $cost[$r] = trickyRounding($tribe_costs[$tribe_id - 1][$r] * (1 + $lvl / 24) * (1 + $lvl), $lvl);
                         }
-
                         return $cost;
                     }
 
