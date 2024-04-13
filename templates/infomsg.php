@@ -21,15 +21,12 @@ if ($session->plus) {
 				</div>
 			</button>
 			<script type=\"text/javascript\">
-				window.addEvent('domready', function()
-				{
-				if($('button5288d485c0f4f'))
-				{
-					$('button5288d485c0f4f').addEvent('click', function ()
-					{
-						window.fireEvent('buttonClicked', [this, {\"type\":\"button\",\"value\":\"extend\",\"name\":\"\",\"id\":\"button5288d485c0f4f\",\"class\":\"gold \",\"title\":\"\",\"confirm\":\"\",\"onclick\":\"\",\"coins\":10,\"wayOfPayment\":{\"featureKey\":\"plus\",\"context\":\"infobox\"}}]);
-					});
-				}
+				window.addEvent('domready', function() {
+                    if($('button5288d485c0f4f')) {
+                        $('button5288d485c0f4f').addEvent('click', function () {
+                            window.fireEvent('buttonClicked', [this, {\"type\":\"button\",\"value\":\"extend\",\"name\":\"\",\"id\":\"button5288d485c0f4f\",\"class\":\"gold \",\"title\":\"\",\"confirm\":\"\",\"onclick\":\"\",\"coins\":10,\"wayOfPayment\":{\"featureKey\":\"plus\",\"context\":\"infobox\"}}]);
+                        });
+                    }
 				});
 			</script>";
         $timer++;
@@ -53,15 +50,12 @@ if ($golds['b1']) {
 				</div>
 			</button>
 			<script type=\"text/javascript\">
-				window.addEvent('domready', function()
-				{
-				if($('button652W890f4f'))
-				{
-					$('button652W890f4f').addEvent('click', function ()
-					{
-						window.fireEvent('buttonClicked', [this, {\"type\":\"button\",\"value\":\"extend\",\"name\":\"\",\"id\":\"button652W890f4f\",\"class\":\"gold \",\"title\":\"\",\"confirm\":\"\",\"onclick\":\"\",\"coins\":" . g_wood . ",\"wayOfPayment\":{\"featureKey\":\"productionboostWood\",\"context\":\"infobox\"}}]);
-					});
-				}
+				window.addEvent('domready', function() {
+                    if($('button652W890f4f')) {
+                        $('button652W890f4f').addEvent('click', function () {
+                            window.fireEvent('buttonClicked', [this, {\"type\":\"button\",\"value\":\"extend\",\"name\":\"\",\"id\":\"button652W890f4f\",\"class\":\"gold \",\"title\":\"\",\"confirm\":\"\",\"onclick\":\"\",\"coins\":" . g_wood . ",\"wayOfPayment\":{\"featureKey\":\"productionboostWood\",\"context\":\"infobox\"}}]);
+                        });
+                    }
 				});
 			</script>";
         $timer++;
@@ -223,7 +217,6 @@ if ($golds['protect'] > $_SERVER['REQUEST_TIME']) {
             <ul>
                 <?php echo $output; ?>
             </ul>
-
         </div>
         <div class="innerBox footer">
             <button type="button" class="toggle" onclick="" title="<?php echo HS_HINFO; ?>">
