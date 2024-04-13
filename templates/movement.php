@@ -114,7 +114,6 @@ if ($true == 1) {
                         <?php
                         /* attack/raid on you! */
 
-
                         if ($waveCount1 > 0) {
                             $action = 'att1';
                             $aclass = 'a1';
@@ -130,7 +129,6 @@ if ($true == 1) {
                             $timer += 1;
                         }
                         /* Units send to reinf. (to another town) */
-
 
                         if ($waveCount2 > 0) {
                             $action = 'def2';
@@ -148,7 +146,6 @@ if ($true == 1) {
 
                         /* Units send to reinf. (to my town) */
 
-
                         if ($waveCount3 > 0) {
                             $action = 'def1';
                             $aclass = 'd1';
@@ -164,7 +161,6 @@ if ($true == 1) {
                         }
 
                         /* on attack, raid to another village*/
-
 
                         if ($waveCount4 > 0) {
                             $action = 'att2';
