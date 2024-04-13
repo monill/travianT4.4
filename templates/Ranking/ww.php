@@ -1,4 +1,5 @@
 <?php
+
 if (WW == TRUE) {
     $result = mysql_query("select " . TB_PREFIX . "users.id, " . TB_PREFIX . "users.username," . TB_PREFIX . "users.alliance, " . TB_PREFIX . "fdata.wwname, " . TB_PREFIX . "fdata.f99, " . TB_PREFIX . "vdata.name, " . TB_PREFIX . "vdata.wref
                         FROM " . TB_PREFIX . "users
