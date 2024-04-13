@@ -3,7 +3,7 @@
 
 <head>
     <noscript>
-        <meta http-equiv="refresh" content="0;url=noscript.html">
+        <meta http-equiv="refresh" content="0; url=noscript.html">
     </noscript>
     <?php $_SESSION['lang'] = 'en'; ?>
     <title><?php echo SERVER_NAME ?></title>
