@@ -68,7 +68,9 @@ if (!isset($_GET['page'])) {
     </div>
     <div class="clear"></div>
 </div>
+
 <h4 class="round">Player statistics</h4>
+
 <?php if (isset($err)) echo '<h5 style="color:#f00;">' . $err . '</h5>'; ?>
 <table cellpadding="1" cellspacing="1" id="player" class="row_table_data">
     <thead>
