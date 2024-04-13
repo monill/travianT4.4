@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <title>Travian Installation</title>
@@ -21,20 +21,9 @@
     </script>
 </head>
 
-<body class="v35 webkit chrome logout">
-
+<body class="v35 logout">
     <div id="background">
-        <img id="staticElements" src="/assets/images/x.gif" alt="">
-
         <div id="bodyWrapper">
-            <img style="filter:chroma();" src="/assets/images/x.gif" id="msfilter" alt="">
-
-            <div id="header">
-                <div id="mtop">
-                    <a id="logo" href="#" target="_blank" title="title"></a>
-                    <div class="clear"></div>
-                </div>
-            </div>
             <div id="center">
                 <div id="sidebarBeforeContent" class="sidebar beforeContent">
                     <div id="sidebarBoxMenu" class="sidebarBox   ">
@@ -93,13 +82,9 @@
                         </div>
                         <div class="clear"></div>
                     </div>
-                    <div class="contentFooter">&nbsp;</div>
                 </div>
-                <div id="side_info"></div>
-                <div class="clear"></div>
             </div>
         </div>
-        <div id="ce"></div>
     </div>
 
 </body>
