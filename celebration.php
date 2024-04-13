@@ -32,4 +32,4 @@ if ($village->resarray['f' . $_GET['id'] . 't'] == 24 and $village->currentcel =
     }
 }
 header("Location: build.php?id=" . $_GET['id']);
-die;
+exit();
