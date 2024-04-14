@@ -1668,7 +1668,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `tribe`, `access`, `gold`, `gender`, `birthday`, `location`, `desc1`, `desc2`, `plus`, `b1`, `b2`, `b3`, `b4`, `sit1`, `sit2`, `alliance`, `sessid`, `act`, `timestamp`, `ap`, `apall`, `dp`, `dpall`, `protect`, `quest`, `fquest`, `gpack`, `cp`, `lastupdate`, `RR`, `Rc`, `ok`) VALUES
 (4, 'Multihunter', '', 'multihunter@travian.sx', 4, 9, 0, 0, '0000-00-00', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 25, 35, '/assets/images/', 1, 0, 0, 0, 0),
 (1, 'Support', '', 'support@travian.sx', 1, 8, 0, 0, '0000-00-00', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 25, 35, '/assets/images/', 1, 0, 0, 0, 0),
-(3, 'Nature', '', 'support@travian.sx', 4, 8, 0, 0, '0000-00-00', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 25, 35, '/assets/images/', 1, 0, 0, 0, 0);
+(3, 'Nature', '', 'nature@travian.sx', 4, 8, 0, 0, '0000-00-00', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 25, 35, '/assets/images/', 1, 0, 0, 0, 0);
 
 
 -- --------------------------------------------------------
@@ -1880,3 +1880,4 @@ CREATE TABLE IF NOT EXISTS `x_world` (
   KEY `y` (`y`),
   KEY `x` (`x`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+
