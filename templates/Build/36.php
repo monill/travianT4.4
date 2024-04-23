@@ -63,9 +63,10 @@
                 You have <b><?php echo $village->unitarray['u199']; ?></b> traps of which
                 <b><?php echo $database->getFilledTrapCount($village->wid); ?></b> are filled.
                 <div class="details">
-                    <div class="tit"><a href="#" onclick="return Travian.Game.iPopup(36,4,'gid')"><img class="unit u199"
-                                                                                                       src="/assets/images/x.gif"
-                                                                                                       alt="<?php echo U199; ?>"></a>
+                    <div class="tit">
+                        <a href="#" onclick="return Travian.Game.iPopup(36,4,'gid')">
+                            <img class="unit u199" src="/assets/images/x.gif" alt="<?php echo U199; ?>">
+                        </a>
                         <a href="#" onclick="return Travian.Game.iPopup(36,4,'gid')"><?php echo U199; ?></a>
                         <span class="furtherInfo">(<?php echo VL_AVAILABLE; ?>: 0)</span>
                     </div>

@@ -1,4 +1,5 @@
 <?php
+
 ob_start();
 if (file_exists(dirname(__FILE__) . '/config.php')) {
     include_once(dirname(__FILE__) . "/config.php");
