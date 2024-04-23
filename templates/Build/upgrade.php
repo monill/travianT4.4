@@ -1,7 +1,7 @@
 <?php
 if ($village->resarray['f' . $id] > 20 && $id != 99) {
     $ids = 'f' . $id;
-    mysql_query("UPDATE " . TB_PREFIX . "fdata SET $ids = 20 WHERE vref=" . $village->wid);
+    mysql_query("UPDATE fdata SET $ids = 20 WHERE vref=" . $village->wid);
 }
 $bindicate = $building->canBuild($id, $village->resarray['f' . $id . 't']);
 if ($bindicate == 1) {
@@ -17,56 +17,50 @@ if ($bindicate == 1) {
         $doublebuild = 1;
     }
     $uprequire = $building->resourceRequired($id, $village->resarray['f' . $id . 't'], ($loopsame > 0 ? 2 : 1) + $doublebuild);
-    ?>
-<div id="contract" class="contractWrapper">
-    <div class="contractText">
-        <?php echo sprintf(BL_UPGRADECOST, ($village->resarray['f' . $id] + ($loopsame > 0 ? 2 : 1) + $doublebuild)); ?>
-        :
-    </div>
-    <div class="contractCosts">
-        <div class="showCosts">
-            <span class="resources r1"><img class="r1" src="/assets/images/x.gif"
-                    title="<?php echo VL_WOOD; ?>"><?php echo $uprequire['wood']; ?></span>
-            <span class="resources r2"><img class="r2" src="/assets/images/x.gif"
-                    title="<?php echo VL_CLAY; ?>"><?php echo $uprequire['clay']; ?></span>
-            <span class="resources r3"><img class="r3" src="/assets/images/x.gif"
-                    title="<?php echo VL_IRON; ?>"><?php echo $uprequire['iron']; ?></span>
-            <span class="resources r4"><img class="r4" src="/assets/images/x.gif"
-                    title="<?php echo VL_CROP; ?>"><?php echo $uprequire['crop']; ?></span>
-            <span class="resources r5"><img class="r5" src="/assets/images/x.gif"
-                    title="<?php echo VL_UPKEEP; ?>"><?php echo $uprequire['pop']; ?></span>
-
-            <div class="clear"></div>
-            <span class="clocks">
-                <img class="clock" src="/assets/images/x.gif" title="<?php echo AT_DURATION; ?>">
-                <?php
-    echo $generator->getTimeFormat($uprequire['time']);
-
-    $wood = round($village->awood);
-    $clay = round($village->aclay);
-    $iron = round($village->airon);
-    $crop = round($village->acrop);
-
-    $totalres = $uprequire['wood'] + $uprequire['clay'] + $uprequire['iron'] + $uprequire['crop'];
-    $availres = $wood + $clay + $iron + $crop;
-    $disable = '';
-    if ($session->userinfo['gold'] >= 3 && $availres >= $totalres) {
-        $style = "npc";
-    } else {
-        $style = "npc_inactive";
-        $disable = "disabled=\"disabled\"";
-    }
-    if ($session->plus) {
-        if ($building->getTypeLevel(17) >= 1) {
-            echo "&nbsp;&nbsp;<button " . $disable . " type=\"button\" value=\"npc\" class=\"icon\" onclick=\"window.location.href = 'build.php?gid=17&t=3&r1=" . $uprequire['wood'] . "&r2=" . $uprequire['clay'] . "&r3=" . $uprequire['iron'] . "&r4=" . $uprequire['crop'] . "'; return false;\"><img src=\"/assets/images/x.gif\" class=\"" . $style . "\" alt=\"NPC\"></button>";
-        }
-
-    }
-    ?></span>
-
-            <div class="clear"></div>
+?>
+    <div id="contract" class="contractWrapper">
+        <div class="contractText">
+            <?php echo sprintf(BL_UPGRADECOST, ($village->resarray['f' . $id] + ($loopsame > 0 ? 2 : 1) + $doublebuild)); ?>
+            :
         </div>
-    </div>
+        <div class="contractCosts">
+            <div class="showCosts">
+                <span class="resources r1"><img class="r1" src="/assets/images/x.gif" title="<?php echo VL_WOOD; ?>"><?php echo $uprequire['wood']; ?></span>
+                <span class="resources r2"><img class="r2" src="/assets/images/x.gif" title="<?php echo VL_CLAY; ?>"><?php echo $uprequire['clay']; ?></span>
+                <span class="resources r3"><img class="r3" src="/assets/images/x.gif" title="<?php echo VL_IRON; ?>"><?php echo $uprequire['iron']; ?></span>
+                <span class="resources r4"><img class="r4" src="/assets/images/x.gif" title="<?php echo VL_CROP; ?>"><?php echo $uprequire['crop']; ?></span>
+                <span class="resources r5"><img class="r5" src="/assets/images/x.gif" title="<?php echo VL_UPKEEP; ?>"><?php echo $uprequire['pop']; ?></span>
+
+                <div class="clear"></div>
+                <span class="clocks">
+                    <img class="clock" src="/assets/images/x.gif" title="<?php echo AT_DURATION; ?>">
+                    <?php
+                    echo $generator->getTimeFormat($uprequire['time']);
+
+                    $wood = round($village->awood);
+                    $clay = round($village->aclay);
+                    $iron = round($village->airon);
+                    $crop = round($village->acrop);
+
+                    $totalres = $uprequire['wood'] + $uprequire['clay'] + $uprequire['iron'] + $uprequire['crop'];
+                    $availres = $wood + $clay + $iron + $crop;
+                    $disable = '';
+                    if ($session->userinfo['gold'] >= 3 && $availres >= $totalres) {
+                        $style = "npc";
+                    } else {
+                        $style = "npc_inactive";
+                        $disable = "disabled=\"disabled\"";
+                    }
+                    if ($session->plus) {
+                        if ($building->getTypeLevel(17) >= 1) {
+                            echo "&nbsp;&nbsp;<button " . $disable . " type=\"button\" value=\"npc\" class=\"icon\" onclick=\"window.location.href = 'build.php?gid=17&t=3&r1=" . $uprequire['wood'] . "&r2=" . $uprequire['clay'] . "&r3=" . $uprequire['iron'] . "&r4=" . $uprequire['crop'] . "'; return false;\"><img src=\"/assets/images/x.gif\" class=\"" . $style . "\" alt=\"NPC\"></button>";
+                        }
+                    }
+                    ?></span>
+
+                <div class="clear"></div>
+            </div>
+        </div>
     <?php
     if ($bindicate == 20) {
         echo "<span class=\"none\">" . BL_WW_LACK . "</span>";
@@ -165,4 +159,4 @@ if ($bindicate == 1) {
     echo "</div>";
 }
 
-?>
+    ?>

@@ -12,7 +12,7 @@ function sendreinfunitsComplete()
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
     $time = time();
-    $q = "SELECT `to`,`from`,`endtime`,`ref`,`t1`,`t2`,`t3`,`t4`,`t5`,`t6`,`t7`,`t8`,`t9`,`t10`,`t11`,`moveid` FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "attacks where " . TB_PREFIX . "movement.proc = '0' and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.sort_type = '3' and " . TB_PREFIX . "attacks.attack_type = '2' and endtime <= $time";
+    $q = "SELECT `to`,`from`,`endtime`,`ref`,`t1`,`t2`,`t3`,`t4`,`t5`,`t6`,`t7`,`t8`,`t9`,`t10`,`t11`,`moveid` FROM movement, attacks where movement.proc = '0' and movement.ref = attacks.id and movement.sort_type = '3' and attacks.attack_type = '2' and endtime <= $time";
     $dataarray = $database->query_return($q);
 
     foreach ($dataarray as $data) {
@@ -106,7 +106,4 @@ function sendreinfunitsComplete()
         //update status
         $database->setMovementProc($data['moveid']);
     }
-
 }
-
-?>

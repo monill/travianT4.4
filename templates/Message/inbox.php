@@ -1,5 +1,6 @@
 <?php
-$prefix = TB_PREFIX . "mdata";
+
+$prefix = "mdata";
 $sql = mysql_query("SELECT `id` FROM $prefix WHERE target = $session->uid AND archived = 0 AND deltarget = 0 ORDER BY time DESC");
 $query = mysql_num_rows($sql);
 

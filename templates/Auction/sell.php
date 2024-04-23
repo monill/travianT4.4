@@ -33,7 +33,7 @@
     } else {
         $gstr = 'female';
     }
-    $prefix = "" . TB_PREFIX . "auction";
+    $prefix = "auction";
 
     $sql = mysql_query("SELECT * FROM $prefix WHERE finish = 0 AND owner = $session->uid ORDER BY time ASC");
     $query = mysql_num_rows($sql);
@@ -101,7 +101,7 @@
 
 
     <?php
-    $prefix = "" . TB_PREFIX . "heroitems";
+    $prefix = "heroitems";
 
     $sql2 = mysql_query("SELECT * FROM $prefix WHERE proc = 0 AND uid = $session->uid");
     $query2 = mysql_num_rows($sql2);
@@ -152,7 +152,7 @@
     </div>
     <div class="clear"></div>
     <?php
-    $prefix = "" . TB_PREFIX . "auction";
+    $prefix = "auction";
 
     $sql = mysql_query("SELECT * FROM $prefix WHERE finish = 1 and owner = $session->uid ORDER BY time ASC");
     $query = mysql_num_rows($sql);
@@ -347,25 +347,19 @@
             textMulti: '<?php echo HR_SELL; ?> &lt;input class=\"text\" id=\"sellAmount\" style=\"width:30px\" type=\"text\" value=\"0\" /&gt; <?php echo UNIT; ?>'
                 .unescapeHtml(),
             initialize: function() {
-                var $this = this; <
-                ?
-                php
-                $prefix = "".TB_PREFIX.
-                "heroitems";
+                var $this = this;
+                <?php
+                $prefix = "heroitems";
 
                 $sql2 = mysql_query("SELECT * FROM $prefix WHERE proc = 0 AND uid = $session->uid");
 
                 while ($row = mysql_fetch_array($sql2)) {
                     $id = $row["id"];
-                    $num = $row["num"]; ?
-                    >
+                    $num = $row["num"]; ?>
                     $('item_<?php echo $id; ?>').addEvent('click', function() {
                         $this.sellItem(<?php echo $id; ?>, <?php echo $num; ?>);
-                    }); <
-                    ?
-                    php
-                } ? >
-
+                    }); <?php
+                } ?>
             },
             noMoreAuctions: function() {
                 ('<?php echo sprintf(HR_MAXSELLDESC, MAXSELL); ?> ').dialog({

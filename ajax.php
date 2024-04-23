@@ -13,7 +13,7 @@ if ($_GET['buyAdventure'] == "yes") {
         $database->addAdventure($database->getVFH($herodetail['uid']), $herodetail['uid'], $endat, $dif);
         $herodetail['lastadv'] += $aday;
         $endat += $aday;
-        mysql_query("UPDATE " . TB_PREFIX . "users SET gold = gold - 1, usedgold=usedgold+1 WHERE `username`='" . $session->username . "'");
+        mysql_query("UPDATE users SET gold = gold - 1, usedgold=usedgold+1 WHERE `username`='" . $session->username . "'");
         header("Location: hero_adventure.php");
         echo "Why you have not redirected!?";
         exit();
@@ -70,11 +70,11 @@ if ($_GET) {
             case 'changeVillageName':
                 $_POST['name'] = addslashes($_POST['name']);
                 if ($_POST['name'] == '') return;
-                $result = mysql_query("SELECT * FROM " . TB_PREFIX . "vdata WHERE `wref` = '" . $_POST['did'] . "'");
+                $result = mysql_query("SELECT * FROM vdata WHERE `wref` = '" . $_POST['did'] . "'");
                 $row = mysql_fetch_array($result);
                 $_POST['name'] = str_replace('[=]', '', $_POST['name']);
                 $_POST['name'] = str_replace('[|]', '', $_POST['name']);
-                $q = "UPDATE " . TB_PREFIX . "vdata SET `name` = '" . $_POST['name'] . "' where `wref` = '" . $_POST['did'] . "'";
+                $q = "UPDATE vdata SET `name` = '" . $_POST['name'] . "' where `wref` = '" . $_POST['did'] . "'";
                 mysql_query($q);
                 echo json_encode(array('response' => array('data' => array('name' => $_POST['name'], 'bname' => $row['name']))));
                 break;
@@ -120,7 +120,7 @@ if ($_GET) {
                 if (isset($_POST['context']) && $_POST['context'] == 'paymentWizard' || $_POST['context'] == 'production' || $_POST['context'] == 'productionBoost') {
                     if (isset($_POST['featureKey']) && $_POST['featureKey'] == 'goldclub') {
                         if ($session->gold >= 100 && $golds['goldclub'] == 0) {
-                            mysql_query("UPDATE " . TB_PREFIX . "users set goldclub = 1, gold = gold - 100 where `username`='" . $session->username . "'");
+                            mysql_query("UPDATE users set goldclub = 1, gold = gold - 100 where `username`='" . $session->username . "'");
                             $success = true;
                         } elseif ($golds['goldclub'] == 1) {
                             $success = true;
@@ -128,74 +128,74 @@ if ($_GET) {
                     } elseif (isset($_POST['featureKey']) && $_POST['featureKey'] == 'plus') {
                         if ($session->gold >= 10) {
                             if ($golds['plus'] <= time()) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set plus = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set plus = '0' where `username`='" . $session->username . "'") or die(mysql_error());
                             }
                             if ($golds['plus'] == 0) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set plus = " . time() . "+" . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set plus = " . time() . "+" . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
                             } else {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set plus = plus + " . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set plus = plus + " . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
                             }
-                            mysql_query("UPDATE " . TB_PREFIX . "users set gold = gold-10, usedgold=usedgold+10 where `username`='" . $session->username . "'") or die(mysql_error());
+                            mysql_query("UPDATE users set gold = gold-10, usedgold=usedgold+10 where `username`='" . $session->username . "'") or die(mysql_error());
                             $success = true;
                         }
                     } elseif (isset($_POST['featureKey']) && $_POST['featureKey'] == 'productionboostWood') {
                         if ($session->gold >= 5) {
                             /*
                             if($golds['b1'] <= time()) {
-                                mysql_query("UPDATE ".TB_PREFIX."users set b1 = '0' where `username`='".$session->username."'") or die(mysql_error());
+                                mysql_query("UPDATE users set b1 = '0' where `username`='".$session->username."'") or die(mysql_error());
                             }
                             */
                             if ($golds['b1'] < time()) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b1 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b1 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             } else {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b1 = b1 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b1 = b1 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             }
-                            mysql_query("UPDATE " . TB_PREFIX . "users set gold = gold-5, usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
+                            mysql_query("UPDATE users set gold = gold-5, usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
                             $success = true;
                         }
                     } elseif (isset($_POST['featureKey']) && $_POST['featureKey'] == 'productionboostClay') {
                         if ($session->gold >= 5) {
                             /*
                             if($golds['b2'] <= time()) {
-                                mysql_query("UPDATE ".TB_PREFIX."users set b2 = '0' where `username`='".$session->username."'") or die(mysql_error());
+                                mysql_query("UPDATE users set b2 = '0' where `username`='".$session->username."'") or die(mysql_error());
                             }
                             */
                             if ($golds['b2'] < time()) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b2 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b2 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             } else {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b2 = b2 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b2 = b2 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             }
-                            mysql_query("UPDATE " . TB_PREFIX . "users set gold = gold-5, usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
+                            mysql_query("UPDATE users set gold = gold-5, usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
                             $success = true;
                         }
                     } elseif (isset($_POST['featureKey']) && $_POST['featureKey'] == 'productionboostIron') {
                         if ($session->gold >= 5) {
                             /*
                             if($golds['b3'] <= time()) {
-                                mysql_query("UPDATE ".TB_PREFIX."users set b3 = '0' where `username`='".$session->username."'") or die(mysql_error());
+                                mysql_query("UPDATE users set b3 = '0' where `username`='".$session->username."'") or die(mysql_error());
                             }
                             */
                             if ($golds['b3'] < time()) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b3 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b3 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             } else {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b3 = b3 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b3 = b3 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             }
-                            mysql_query("UPDATE " . TB_PREFIX . "users set gold = gold-5,usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
+                            mysql_query("UPDATE users set gold = gold-5,usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
                             $success = true;
                         }
                     } elseif (isset($_POST['featureKey']) && $_POST['featureKey'] == 'productionboostCrop') {
                         if ($session->gold >= 5) {
                             /*
                             if($golds['b4'] <= time()) {
-                                mysql_query("UPDATE ".TB_PREFIX."users set b4 = '0' where `username`='".$session->username."'") or die(mysql_error());
+                                mysql_query("UPDATE users set b4 = '0' where `username`='".$session->username."'") or die(mysql_error());
                             }
                             */
                             if ($golds['b4'] < time()) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b4 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b4 = " . time() . "+" . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             } else {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set b4 = b4 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set b4 = b4 + " . PLUS_PRODUCTION . " where `username`='" . $session->username . "'") or die(mysql_error());
                             }
-                            mysql_query("UPDATE " . TB_PREFIX . "users set gold = gold-5,usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
+                            mysql_query("UPDATE users set gold = gold-5,usedgold=usedgold+5 where `username`='" . $session->username . "'") or die(mysql_error());
                             $success = true;
                         }
                     }
@@ -203,14 +203,14 @@ if ($_GET) {
                     if (isset($_POST['featureKey']) && $_POST['featureKey'] == 'Plus') {
                         if ($session->gold >= 10) {
                             if ($golds['plus'] <= time()) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set plus = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set plus = '0' where `username`='" . $session->username . "'") or die(mysql_error());
                             }
                             if ($golds['plus'] == 0) {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set plus = " . time() . "+" . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set plus = " . time() . "+" . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
                             } else {
-                                mysql_query("UPDATE " . TB_PREFIX . "users set plus = plus + " . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
+                                mysql_query("UPDATE users set plus = plus + " . PLUS_TIME . " where `username`='" . $session->username . "'") or die(mysql_error());
                             }
-                            mysql_query("UPDATE " . TB_PREFIX . "users set gold = gold-10, usedgold=usedgold+10 where `username`='" . $session->username . "'") or die(mysql_error());
+                            mysql_query("UPDATE users set gold = gold-10, usedgold=usedgold+10 where `username`='" . $session->username . "'") or die(mysql_error());
                             $success = true;
                         }
                     }
@@ -219,9 +219,9 @@ if ($_GET) {
                         foreach ($building->buildArray as $jobs) {
                             $level = $database->getFieldLevel($jobs['wid'], $jobs['field']);
                             $level = ($level == -1) ? 0 : $level;
-                            if ($jobs['type'] != 25 AND $jobs['type'] != 26 AND $jobs['type'] != 40) {
+                            if ($jobs['type'] != 25 and $jobs['type'] != 26 and $jobs['type'] != 40) {
                                 $resource = $building->resourceRequired($jobs['field'], $jobs['type']);
-                                $q = "UPDATE " . TB_PREFIX . "fdata set f" . $jobs['field'] . " = f" . $jobs['field'] . " + 1, f" . $jobs['field'] . "t = " . $jobs['type'] . " where vref = " . $jobs['wid'];
+                                $q = "UPDATE fdata set f" . $jobs['field'] . " = f" . $jobs['field'] . " + 1, f" . $jobs['field'] . "t = " . $jobs['type'] . " where vref = " . $jobs['wid'];
                                 if ($database->query($q)) {
 
                                     $database->modifyPop($jobs['wid'], $resource['pop'], 0);
@@ -229,12 +229,12 @@ if ($_GET) {
                                     $database->finishDemolition($village->wid);
                                     $database->addCLP($session->uid, 7);
 
-                                    $q = "DELETE FROM " . TB_PREFIX . "bdata where id = " . $jobs['id'];
+                                    $q = "DELETE FROM bdata where id = " . $jobs['id'];
                                     $database->query($q);
                                     if ($jobs['type'] == 18) {
                                         $owner = $database->getVillageField($jobs['wid'], "owner");
                                         $max = $bid18[$level]['attri'];
-                                        $q = "UPDATE " . TB_PREFIX . "alidata set max = $max where leader = $owner";
+                                        $q = "UPDATE alidata set max = $max where leader = $owner";
                                         $database->query($q);
                                     }
                                     if ($jobs['type'] == 10) {
@@ -406,7 +406,7 @@ if ($_GET) {
             case 'overlay':
                 include("templates/Ajax/overlay.php");
                 break;
-            // soheil
+                // soheil
             case 'quest':
                 include("templates/Ajax/quest_core.php");
             case 'finishNowPopup':
@@ -430,11 +430,11 @@ if ($_GET) {
                 $y = $inputs['y'];
                 $color = $inputs['color'];
                 $owner = $inputs['owner'];
-                $text = $inputs ['text'];
+                $text = $inputs['text'];
                 $uid = $session->uid;
-                mysql_query("INSERT INTO " . TB_PREFIX . "map_marks (`id`,`uid`,`x`,`y`,`index`,`text`) VALUES ('','" . $uid . "','" . $x . "','" . $y . "','" . $color . "','" . $text . "')") or die(mysql_error());
+                mysql_query("INSERT INTO map_marks (`id`,`uid`,`x`,`y`,`index`,`text`) VALUES ('','" . $uid . "','" . $x . "','" . $y . "','" . $color . "','" . $text . "')") or die(mysql_error());
                 $row = mysql_insert_id();
-                $q = "UPDATE " . TB_PREFIX . "map_marks SET `dataId`='" . $row . "' WHERE id=" . $row;
+                $q = "UPDATE map_marks SET `dataId`='" . $row . "' WHERE id=" . $row;
                 mysql_query($q) or die(mysql_error());
                 echo '{
 					response: {"error":false,"errorMsg":null,"data":{"text":"' . $text . '","index":' . $color . ',"kid":1,"position":{"x":' . $x . ',"y":' . $y . '},"dataId":' . $row . '}}
@@ -446,14 +446,14 @@ if ($_GET) {
                 $y = $inputs['y'];
                 $color = $inputs['color'];
                 $owner = $inputs['owner'];
-                $text = $inputs ['text'];
+                $text = $inputs['text'];
                 $uid = $session->uid;
-                $query = mysql_fetch_assoc(mysql_query("SELECT `id` FROM " . TB_PREFIX . "wdata WHERE x=" . $x . " AND y=" . $y . " LIMIT 1"));
-                $query2 = mysql_fetch_assoc(mysql_query("SELECT `owner` FROM " . TB_PREFIX . "vdata WHERE wref =" . $query['id'] . " LIMIT 1"));
-                $query3 = mysql_fetch_assoc(mysql_query("SELECT `username` FROM " . TB_PREFIX . "users WHERE id =" . $query2['owner'] . " LIMIT 1"));
-                mysql_query("INSERT INTO " . TB_PREFIX . "map_marks (`id`,`uid`,`x`,`y`,`index`,`type`,`text`,`dataId`) VALUES ('','" . $uid . "','" . $x . "','" . $y . "','" . $color . "','player','" . $query3['username'] . "','" . $query2['owner'] . "')") or die(mysql_error());
+                $query = mysql_fetch_assoc(mysql_query("SELECT `id` FROM wdata WHERE x=" . $x . " AND y=" . $y . " LIMIT 1"));
+                $query2 = mysql_fetch_assoc(mysql_query("SELECT `owner` FROM vdata WHERE wref =" . $query['id'] . " LIMIT 1"));
+                $query3 = mysql_fetch_assoc(mysql_query("SELECT `username` FROM users WHERE id =" . $query2['owner'] . " LIMIT 1"));
+                mysql_query("INSERT INTO map_marks (`id`,`uid`,`x`,`y`,`index`,`type`,`text`,`dataId`) VALUES ('','" . $uid . "','" . $x . "','" . $y . "','" . $color . "','player','" . $query3['username'] . "','" . $query2['owner'] . "')") or die(mysql_error());
                 $row = mysql_insert_id();
-                // $q = "UPDATE ".TB_PREFIX."map_marks SET `dataId`='".$row."' WHERE id=".$row;
+                // $q = "UPDATE map_marks SET `dataId`='".$row."' WHERE id=".$row;
                 // mysql_query($q)or die(mysql_error());
                 echo '{
 					response: {"error":false,"errorMsg":null,"data":{"owner":"player","color":' . $color . ',"text":"' . $query3['username'] . '","position":{"x":' . $x . ',"y":' . $y . '},"markId":' . $query2['owner'] . ',"dataId":' . $row . '}}
@@ -461,7 +461,7 @@ if ($_GET) {
                 break;
             case 'mapFlagOrMultiMark':
                 $data = $_POST['data'];
-                mysql_query("DELETE from " . TB_PREFIX . "map_marks where id=" . $data['dataId'] . "") or die(mysql_error());
+                mysql_query("DELETE from map_marks where id=" . $data['dataId'] . "") or die(mysql_error());
                 $str = '{
 					response: {"error":false,"errorMsg":null,"data":{"result":true}}
 				}';
@@ -470,7 +470,7 @@ if ($_GET) {
             case 'mapFlagUpdate':
                 $data = $_POST['data'];
                 $id = $data['dataId'];
-                $q = "UPDATE " . TB_PREFIX . "map_marks SET `index`='" . $data['index'] . "',`text`='" . $data['text'] . "' WHERE id=" . $id;
+                $q = "UPDATE map_marks SET `index`='" . $data['index'] . "',`text`='" . $data['text'] . "' WHERE id=" . $id;
                 mysql_query($q) or die(mysql_error());
                 $str = '{
 					response: {"error":false,"errorMsg":null,"data":{"result":true}}

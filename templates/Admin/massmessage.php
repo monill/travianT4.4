@@ -33,11 +33,11 @@ if (isset($_GET['send']) && isset($_GET['from'])) {
     $_SESSION['m_message'] = preg_replace("/\[url\=([a-z0-9\_\.\:\/\-]*)\]([a-z0-9\_\.\:\/\-]*)\[\/url\]/i", "<a href='$1'>$2</a>", $_SESSION['m_message']);
     $_SESSION['m_message'] = preg_replace("/\*u([0-9]*)(left|right)\*/i", "<img src='/assets/images/u2/u$1.gif' style='float:$2;' alt='unit$1' />", $_SESSION['m_message']);
 
-    $users_count = mysql_fetch_assoc(mysql_query("SELECT count(*) as count FROM " . TB_PREFIX . "users WHERE id != 0"));
+    $users_count = mysql_fetch_assoc(mysql_query("SELECT count(*) as count FROM users WHERE id != 0"));
     $users_count = $users_count['count'];
-    $result = mysql_query("SELECT `id` FROM " . TB_PREFIX . "users WHERE id > 2");
+    $result = mysql_query("SELECT `id` FROM users WHERE id > 2");
     $max = mysql_num_rows($result);
-    $sql = "INSERT INTO " . TB_PREFIX . "mdata (`target`, `owner`, `topic`, `message`, `viewed`, `archived`, `send`, `time`) VALUES ";
+    $sql = "INSERT INTO mdata (`target`, `owner`, `topic`, `message`, `viewed`, `archived`, `send`, `time`) VALUES ";
     $Ffrom = $_GET['from'] ? $_GET['from'] : 0;
     for ($i = 0; $i <= $max; $i++) {
         $row = mysql_fetch_row($result);

@@ -101,7 +101,7 @@
                     } ?>">
             <div class="background-start">&nbsp;</div>
             <div class="background-end"><?php
-                                        $prefix = TB_PREFIX . "msg_reports";
+                                        $prefix = "msg_reports";
                                         $sql = mysql_query("SELECT `id` FROM $prefix WHERE viewed = 0 ORDER BY time DESC");
                                         $query = mysql_num_rows($sql);
                                         if ($query > 0) {

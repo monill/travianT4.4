@@ -109,9 +109,9 @@
                     ?>
                         <div class="option">
                             <?php
-                            $query1 = mysql_query('SELECT `owner` FROM `' . TB_PREFIX . 'vdata` WHERE `wref` = ' . $d);
+                            $query1 = mysql_query('SELECT `owner` FROM `vdata` WHERE `wref` = ' . $d);
                             $data1 = mysql_fetch_assoc($query1);
-                            $query2 = mysql_query('SELECT `id`,`protect`,`username` FROM `' . TB_PREFIX . 'users` WHERE `id` = ' . $data1['owner'] . ' LIMIT 1');
+                            $query2 = mysql_query('SELECT `id`,`protect`,`username` FROM `users` WHERE `id` = ' . $data1['owner'] . ' LIMIT 1');
                             $data2 = mysql_fetch_assoc($query2);
 
                             if ($database->checkBan($data2['id'])) {
@@ -459,7 +459,7 @@
                         $limit = "ntype!=8 and ntype!=9 and ntype!=10 and ntype!=11 and ntype!=12 and ntype!=13 and ntype!=14";
                     }
 
-                    $result = mysql_query("SELECT * FROM " . TB_PREFIX . "ndata WHERE $limit AND uid = " . $session->uid . " AND toWref = " . $d . " ORDER BY time DESC Limit 5");
+                    $result = mysql_query("SELECT * FROM ndata WHERE $limit AND uid = " . $session->uid . " AND toWref = " . $d . " ORDER BY time DESC Limit 5");
 
                     while ($row = mysql_fetch_assoc($result)) {
                         $dataarray = explode(",", $row['data']);

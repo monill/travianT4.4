@@ -56,7 +56,7 @@ if ($session->is_sitter == 1) {
                                 <input name="ft" value="m5" id="ft" type="hidden">
                                 <?php
                                 if ($database->getUserField($message->reading['owner'], "id", 0) != $session->uid) {
-                                    $q = mysql_query("SELECT `reason` FROM " . TB_PREFIX . "msg_reports WHERE msg_id = " . $_GET['id'] . " AND reported_by = '" . $_SESSION['username'] . "'") or die(mysql_error());
+                                    $q = mysql_query("SELECT `reason` FROM msg_reports WHERE msg_id = " . $_GET['id'] . " AND reported_by = '" . $_SESSION['username'] . "'") or die(mysql_error());
                                     $q = mysql_fetch_assoc($q);
                                     if ($q['reason']) {
                                         echo '<font color=darkorange>' . sprintf(MS_REPORTAS, $q['reason']) . '</font>';

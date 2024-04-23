@@ -3,7 +3,7 @@
 function trainingComplete()
 {
     villageTrain();
-	oasesTrain();
+    oasesTrain();
 }
 
 function villageTrain()
@@ -50,7 +50,7 @@ function villageTrain()
     }
 
     $time = time();
-    $q2 = "SELECT * FROM " . TB_PREFIX . "training WHERE unit = 0 AND endat<=" . $time;
+    $q2 = "SELECT * FROM training WHERE unit = 0 AND endat<=" . $time;
     $dataarray2 = $database->query_return($q2);
     foreach ($dataarray2 as $data3) {
         $getVil = $database->getMInfo($data3['vref']);
@@ -76,7 +76,7 @@ function oasesTrain($wref)
     $htc = round(500 * $tdiff * $tm);
     $htc = min(max($htc, 15), 1100);
     $tm = min(max($htc, 2), 10);
-    $q = 'SELECT * FROM ' . TB_PREFIX . 'odata WHERE owner=3 AND wref=' . $wref;
+    $q = 'SELECT * FROM odata WHERE owner=3 AND wref=' . $wref;
     $oasesList = $database->query_return($q);
     if (!empty($oasesList) && count($oasesList) > 0) {
         foreach ($oasesList as $oases) {
@@ -86,7 +86,7 @@ function oasesTrain($wref)
                 $totc += $units['u' . $i];
             }
             if ($totc < $htc) {
-                $trcount = round(($time - max($oases['lasttrain'], $oases['lastfarmed'])) / max(300, (28800 / (SPEED + INCREASE_SPEED))));// die($trcount);
+                $trcount = round(($time - max($oases['lasttrain'], $oases['lastfarmed'])) / max(300, (28800 / (SPEED + INCREASE_SPEED)))); // die($trcount);
                 if ($trcount > 1) {
                     $i = rand(31, 36);
                     if ($units['u' . ($i)] < 10) {
@@ -113,7 +113,7 @@ function oasesTrain($wref)
                             $units['u' . ($i - 1)] = max(0, $units['u' . ($i - 1)]);
                         }
                     }
-                    $q = 'UPDATE ' . TB_PREFIX . 'units SET ';
+                    $q = 'UPDATE units SET ';
                     for ($i = 31; $i <= 40; $i++) {
                         $q .= ' u' . ($i) . '=' . $units['u' . $i] . ',';
                     }
@@ -125,5 +125,3 @@ function oasesTrain($wref)
         }
     }
 }
-
-?>

@@ -1,5 +1,5 @@
 <?php
-$prefix = TB_PREFIX . "ndata";
+$prefix = "ndata";
 $limit = " (ntype>=4 AND ntype<=7) OR (ntype>17)";
 $sql = mysql_query("SELECT * FROM $prefix WHERE ally = $session->alliance AND $limit ORDER BY time DESC LIMIT 20");
 $query = mysql_num_rows($sql);

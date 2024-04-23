@@ -12,7 +12,7 @@ function sendSettlersComplete()
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
     $time = time();
-    $q = "SELECT `to`,`from`,`moveid`,`endtime` FROM " . TB_PREFIX . "movement where proc = 0 and sort_type = 5 and endtime <= $time LIMIT 50";
+    $q = "SELECT `to`,`from`,`moveid`,`endtime` FROM movement where proc = 0 and sort_type = 5 and endtime <= $time LIMIT 50";
     $dataarray = $database->query_return($q);
     foreach ($dataarray as $data) {
         $toMInfo = $database->getMInfo($data['to']);
@@ -59,5 +59,3 @@ function sendSettlersComplete()
         $database->setMovementProc($data['moveid']);
     }
 }
-
-?>

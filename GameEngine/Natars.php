@@ -3,8 +3,8 @@
 include_once("Database.php");
 include_once("Generator.php");
 include_once("Data/buidata.php");
-define("NATARS_EXPANTION_INT", 43200);//IN SEC
-define("NATARS_POPUP_INT", 18000);//IN SEC
+define("NATARS_EXPANTION_INT", 43200); //IN SEC
+define("NATARS_POPUP_INT", 18000); //IN SEC
 
 class Natars
 {
@@ -20,14 +20,14 @@ class Natars
         $np['lastpopupat'] = max(isset($np['lastpopupat']) ? $np['lastpopupat'] : 0, COMMENCE);
         $np['wwbpreleasedat'] = max(isset($np['wwbpreleasedat']) ? $np['wwbpreleasedat'] : 0, COMMENCE);
         $np['artefactreleasedat'] = max(isset($np['artefactreleasedat']) ? $np['artefactreleasedat'] : 0, COMMENCE);
-        /*		
+        /*
                 $expint = max(1800,NATARS_EXPANTION_INT/SPEED);
                 while(($np['lastexpandat']+$expint)<time()){
                     $np['lastexpandat']+=$expint;
                     $this->expand();
                 }
                 $database->setNatarsProgress('lastexpandat',$np['lastexpandat']);
-                
+
                 $nvs = $database->getNatarsExpansions();
                 $count = count($nvs);
                 $popupint = max(600,NATARS_POPUP_INT/SPEED);
@@ -70,7 +70,7 @@ class Natars
         $text = preg_replace("'%TEKST%'", 'ARTEFACTSRELEASED', $text);
         fwrite($fh, $text);
         fclose($fh);
-        $database->query("UPDATE " . TB_PREFIX . "users SET ok = '1' WHERE 1");
+        $database->query("UPDATE users SET ok = '1' WHERE 1");
         $this->releaseArchitects();
         $this->releaseMilitaryHaste();
         $this->releaseHawksEyesight();
@@ -157,8 +157,8 @@ class Natars
                 $fq .= ", f22t = 27, f22 = 20 ";
             }
         }
-        $database->query("UPDATE " . TB_PREFIX . "units SET " . $uq . " WHERE vref = " . $wref);
-        if ($fq != ' vref = vref') $database->query("UPDATE " . TB_PREFIX . "fdata SET " . $fq . " WHERE vref = " . $wref);
+        $database->query("UPDATE units SET " . $uq . " WHERE vref = " . $wref);
+        if ($fq != ' vref = vref') $database->query("UPDATE fdata SET " . $fq . " WHERE vref = " . $wref);
         $this->recountPop($wref);
     }
 
@@ -463,7 +463,7 @@ class Natars
         $text = preg_replace("'%TEKST%'", 'WWBPRELEASED', $text);
         fwrite($fh, $text);
         fclose($fh);
-        $database->query("UPDATE " . TB_PREFIX . "users SET ok = '1' WHERE 1");
+        $database->query("UPDATE users SET ok = '1' WHERE 1");
         $WWs = $database->getNatarsWWVillages();
         $WWsCount = count($WWs);
         $BPCount = max($WWsCount * 2, 10);
@@ -504,8 +504,24 @@ class Natars
                     //$database->modifyUnit($nc['wref'],"u47",$data['u7'],0); $database->modifyUnit($nc['wref'],"u48",$data['u8'],0);
                     //$database->modifyUnit($nc['wref'],"u49",$data['u9'],0); $database->modifyUnit($nc['wref'],"u50",$data['u10'],0);
                     //$database->modifyUnit($nc['wref'],"hero",$data['u11'],0);
-                    $reference = $database->addAttack($nc['wref'], $data['u1'], $data['u2'], $data['u3'], $data['u4'], $data['u5'],
-                        $data['u6'], $data['u7'], $data['u8'], $data['u9'], $data['u10'], $data['u11'], 3, 0, 0, 0);
+                    $reference = $database->addAttack(
+                        $nc['wref'],
+                        $data['u1'],
+                        $data['u2'],
+                        $data['u3'],
+                        $data['u4'],
+                        $data['u5'],
+                        $data['u6'],
+                        $data['u7'],
+                        $data['u8'],
+                        $data['u9'],
+                        $data['u10'],
+                        $data['u11'],
+                        3,
+                        0,
+                        0,
+                        0
+                    );
                     $time = max(86400 / SPEED, 300);
                     $database->addMovement(3, $nc['wref'], $id, $reference, 0, ($time + time()));
                 }
@@ -573,9 +589,6 @@ class Natars
             $this->recountPop($wref);
         }
     }
-
 }
 
 $natars = new Natars;
-
-?>

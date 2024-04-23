@@ -1,18 +1,18 @@
 ﻿<?php
 include 'paypal/packages.php';
-$MyGold = mysql_query("SELECT `b1`,`b2`,`b3`,`b4`,`plus`,`goldclub` FROM " . TB_PREFIX . "users WHERE `username`='" . $session->username . "'") or die(mysql_error());
+$MyGold = mysql_query("SELECT `b1`,`b2`,`b3`,`b4`,`plus`,`goldclub` FROM users WHERE `username`='" . $session->username . "'") or die(mysql_error());
 $golds = mysql_fetch_array($MyGold);
 if ($golds['b1'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b1 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b1 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 if ($golds['b2'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b2 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b2 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 if ($golds['b3'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b3 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b3 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 if ($golds['b4'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b4 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b4 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 switch ($session->tribe) {
     case 1:
@@ -104,4 +104,3 @@ if ($_POST['activeTab'] == "buyGold") {
 }';
     echo $str;
 }
-?>

@@ -78,22 +78,22 @@ class Session
                 $addr = trim($addr);
                 $host_addr = $this->getIp();
                 // Semplice indirizzo IP
-                if ($host_addr == $addr) die (US_BANIPMSG);
+                if ($host_addr == $addr) die(US_BANIPMSG);
                 // Subnet di classe C
                 else if (preg_match('/(\d+\.\d+\.\d+)\.0\/24/', $addr, $sub)) {
                     $subnet = trim($sub[1]);
                     if (preg_match("/^{$subnet}/", $host_addr))
-                        die (US_BANIPMSG);
+                        die(US_BANIPMSG);
                 } // Subnet di classe B
                 else if (preg_match('/(\d+\.\d+)\.0\.0\/16/', $addr, $sub)) {
                     $subnet = trim($sub[1]);
                     if (preg_match("/^{$subnet}/", $host_addr))
-                        die (US_BANIPMSG);
+                        die(US_BANIPMSG);
                 } // Subnet di classe A
                 else if (preg_match('/(\d+)\.0\.0\.0\/8/', $addr, $sub)) {
                     $subnet = trim($sub[1]);
                     if (preg_match("/^{$subnet}/", $host_addr))
-                        die (US_BANIPMSG);
+                        die(US_BANIPMSG);
                 }
             }
         }
@@ -151,7 +151,7 @@ class Session
     {
         global $database;
         $this->logged_in = FALSE;
-        $q = "SELECT `sessid` FROM " . TB_PREFIX . "users WHERE username = '" . $_SESSION['username'] . "' LIMIT 1";
+        $q = "SELECT `sessid` FROM users WHERE username = '" . $_SESSION['username'] . "' LIMIT 1";
         $result = mysql_query($q);
         $user = mysql_fetch_assoc($result);
         $sessidarray = explode('+', $user['sessid']);
@@ -278,12 +278,12 @@ class Session
         $_SESSION['qst'] = $database->getUserField($_SESSION['username'], "quest", 1);
         $_SESSION['chat_config'] = $database->getUserField($_SESSION['username'], "chat_config", 1);
         if (!isset($_SESSION['wid'])) {
-            $query = mysql_query('SELECT * FROM `' . TB_PREFIX . 'vdata` WHERE `owner` = ' . $database->getUserField($_SESSION['username'], "id", 1) . ' LIMIT 1');
+            $query = mysql_query('SELECT * FROM `vdata` WHERE `owner` = ' . $database->getUserField($_SESSION['username'], "id", 1) . ' LIMIT 1');
             $data = mysql_fetch_assoc($query);
             $_SESSION['wid'] = $data['wref'];
         } else {
             if ($_SESSION['wid'] == '') {
-                $query = mysql_query('SELECT * FROM `' . TB_PREFIX . 'vdata` WHERE `owner` = ' . $database->getUserField($_SESSION['username'], "id", 1) . ' LIMIT 1');
+                $query = mysql_query('SELECT * FROM `vdata` WHERE `owner` = ' . $database->getUserField($_SESSION['username'], "id", 1) . ' LIMIT 1');
                 $data = mysql_fetch_assoc($query);
                 $_SESSION['wid'] = $data['wref'];
             }
@@ -293,9 +293,7 @@ class Session
         $logging->addLoginLog($this->uid, $_SERVER['REMOTE_ADDR']);
         $database->addActiveUser($_SESSION['username'], $this->time);
 
-        $database->addActiveUser($_SESSION['username'], $this->time);
-
-        $q = "SELECT `sessid` FROM " . TB_PREFIX . "users WHERE username = '" . $_SESSION['username'] . "' LIMIT 1";
+        $q = "SELECT `sessid` FROM users WHERE username = '" . $_SESSION['username'] . "' LIMIT 1";
         $result = mysql_query($q);
         $dbarray = mysql_fetch_array($result);
 
@@ -344,13 +342,13 @@ class Session
             $giveGold = FALSE;
         }
         if ($giveGold) {
-            $res = mysql_query("SELECT id FROM " . TB_PREFIX . "users");
+            $res = mysql_query("SELECT id FROM users");
 
             while ($row = mysql_fetch_assoc($res)) {
 
-                mysql_query("UPDATE " . TB_PREFIX . "users SET gold = gold + " . FREEGOLD_VALUE . " , giftgold = giftgold + " . FREEGOLD_VALUE . " WHERE id = " . $row['id'] . " AND access >= 2") or die(mysql_error());
+                mysql_query("UPDATE users SET gold = gold + " . FREEGOLD_VALUE . " , giftgold = giftgold + " . FREEGOLD_VALUE . " WHERE id = " . $row['id'] . " AND access >= 2") or die(mysql_error());
             }
-            mysql_query("UPDATE " . TB_PREFIX . "config SET freegold_lasttime = " . time()) or die(mysql_error());
+            mysql_query("UPDATE config SET freegold_lasttime = " . time()) or die(mysql_error());
         }
     }
 
@@ -383,7 +381,7 @@ $page = $_SERVER['REQUEST_URI'];
 if (isset($_SESSION[$page]['timer']) && time() - $_SESSION[$page]['timer'] < 5) {
     $_SESSION[$page]['last_page'] = $page;
     // Defaults
-    if (!isset($_SESSION[$page]['count']) OR $_SESSION[$page]['last_page'] != $_SERVER['REQUEST_URI']) {
+    if (!isset($_SESSION[$page]['count']) or $_SESSION[$page]['last_page'] != $_SERVER['REQUEST_URI']) {
         $_SESSION[$page]['count'] = 1;
         $_SESSION[$page]['first_hit'] = time();
         $_SESSION[$page]['banned'] = false;
@@ -413,7 +411,8 @@ if (isset($_SESSION[$page]['timer']) && time() - $_SESSION[$page]['timer'] < 5) 
 }
 
 $ids_checkpost = urldecode($_SERVER['QUERY_STRING']);
-if (eregi("[\'|'/'\''<'>'*'~'`']", $ids_checkpost) || strstr($ids_checkpost, 'union') || strstr($ids_checkpost, 'java') || strstr($ids_checkpost, 'script') || strstr($ids_checkpost, 'substring(') || strstr($ids_checkpost, 'ord()')
+if (
+    eregi("[\'|'/'\''<'>'*'~'`']", $ids_checkpost) || strstr($ids_checkpost, 'union') || strstr($ids_checkpost, 'java') || strstr($ids_checkpost, 'script') || strstr($ids_checkpost, 'substring(') || strstr($ids_checkpost, 'ord()')
     || strstr($ids_checkpost, 'http') || strstr($ids_checkpost, 'https') || strstr($ids_checkpost, 'www')
 ) {
     $hack_attempt = 1;
@@ -425,7 +424,7 @@ if (eregi("[\'|'/'\''<'>'*'~'`']", $ids_checkpost) || strstr($ids_checkpost, 'un
 }
 
 if (isset($block_INPUT) && !empty($block_INPUT)) {
-    echo("<script>location='hacking.php'</script>");
+    echo ("<script>location='hacking.php'</script>");
     setcookie('COOKUID', $_COOKIE['COOKUID'] + 1, time() + 600);
     if ($_COOKIE['COOKUID'] >= 5) {
         $reason = 'forcing to hack , input: {' . $block_INPUT . '}, url: {' . $_SERVER['REQUEST_URI'] . '}';
@@ -441,5 +440,3 @@ if (isset($block_INPUT) && !empty($block_INPUT)) {
 
 $form = new Form;
 $message = new Message;
-
-?>

@@ -18,7 +18,7 @@ if (isset($_GET['rank'])) {
 if (isset($_GET['newdid'])) {
     $_GET['newdid'] = filter_var($_GET['newdid'], FILTER_SANITIZE_NUMBER_INT);
     $_GET['newdid'] = filter_var($_GET['newdid'], FILTER_SANITIZE_MAGIC_QUOTES);
-    $t = mysql_query("SELECT `owner` FROM " . TB_PREFIX . "vdata WHERE wref = '" . $_GET['newdid'] . "'");
+    $t = mysql_query("SELECT `owner` FROM vdata WHERE wref = '" . $_GET['newdid'] . "'");
     $row = mysql_fetch_assoc($t);
     if ($row['owner'] == $session->uid) {
         $_SESSION['wid'] = $_GET['newdid'];
@@ -72,7 +72,11 @@ include('templates/html.php');
                             <h1 class="titleInHeader"><?php echo BD_PRODOVERVIEW; ?></h1>
 
                             <div class="contentNavi subNavi ">
-                                <div title="" class="container <?php if ($_GET['t'] == 1) { echo "active"; } else { echo "normal"; } ?>">
+                                <div title="" class="container <?php if ($_GET['t'] == 1) {
+                                                                    echo "active";
+                                                                } else {
+                                                                    echo "normal";
+                                                                } ?>">
                                     <div class="background-start">&nbsp;</div>
                                     <div class="background-end">&nbsp;</div>
                                     <div class="content">
@@ -102,7 +106,11 @@ include('templates/html.php');
                                     }
                                 </script>
 
-                                <div title="" class="container <?php if ($_GET['t'] == 2) { echo "active"; } else { echo "normal"; } ?>">
+                                <div title="" class="container <?php if ($_GET['t'] == 2) {
+                                                                    echo "active";
+                                                                } else {
+                                                                    echo "normal";
+                                                                } ?>">
                                     <div class="background-start">&nbsp;</div>
                                     <div class="background-end">&nbsp;</div>
                                     <div class="content">
@@ -134,13 +142,17 @@ include('templates/html.php');
                                     }
                                 </script>
 
-                                <div title="" class="container <?php if ($_GET['t'] == 3) { echo "active"; } else { echo "normal"; } ?>">
+                                <div title="" class="container <?php if ($_GET['t'] == 3) {
+                                                                    echo "active";
+                                                                } else {
+                                                                    echo "normal";
+                                                                } ?>">
                                     <div class="background-start">&nbsp;</div>
                                     <div class="background-end">&nbsp;</div>
                                     <div class="content">
                                         <a id="button5280fc114fc82" href="production.php?t=3" class="tabItem">
-											<?php echo VL_IRON; ?>
-										</a>
+                                            <?php echo VL_IRON; ?>
+                                        </a>
                                     </div>
                                 </div>
 
@@ -166,7 +178,11 @@ include('templates/html.php');
                                     }
                                 </script>
 
-                                <div title="" class="container <?php if ($_GET['t'] == 4) { echo "active"; } else { echo "normal"; } ?>">
+                                <div title="" class="container <?php if ($_GET['t'] == 4) {
+                                                                    echo "active";
+                                                                } else {
+                                                                    echo "normal";
+                                                                } ?>">
                                     <div class="background-start">&nbsp;</div>
                                     <div class="background-end">&nbsp;</div>
                                     <div class="content">
@@ -196,7 +212,11 @@ include('templates/html.php');
                                     }
                                 </script>
 
-                                <div title="" class="container <?php if ($_GET['t'] == 5) { echo "active"; } else { echo "normal"; } ?>">
+                                <div title="" class="container <?php if ($_GET['t'] == 5) {
+                                                                    echo "active";
+                                                                } else {
+                                                                    echo "normal";
+                                                                } ?>">
                                     <div class="background-start">&nbsp;</div>
                                     <div class="background-end">&nbsp;</div>
                                     <div class="content">
@@ -332,7 +352,11 @@ include('templates/html.php');
                                                             <tr class="inactive">
                                                                 <td>Surface Timber <?php echo $sawmill; ?> :</td>
                                                                 <td class="numberCell">
-                                                                    <?php if (isset($perc)) { echo $perc; } else { echo '0'; } ?>%
+                                                                    <?php if (isset($perc)) {
+                                                                        echo $perc;
+                                                                    } else {
+                                                                        echo '0';
+                                                                    } ?>%
                                                                 </td>
                                                             </tr>
                                                             <tr class="inactive">
@@ -557,7 +581,11 @@ include('templates/html.php');
                                                         <tbody>
                                                             <tr class="inactive">
                                                                 <td> Surface brickwork: <?php echo $sawmill; ?> </td>
-                                                                <td class="numberCell"><?php if (isset($perc)) { echo $perc; } else { echo '0'; } ?>%</td>
+                                                                <td class="numberCell"><?php if (isset($perc)) {
+                                                                                            echo $perc;
+                                                                                        } else {
+                                                                                            echo '0';
+                                                                                        } ?>%</td>
                                                             </tr>
                                                             <tr class="inactive">
                                                                 <td>village (&times;<?php echo $abadi; ?>)</td>
@@ -1040,7 +1068,11 @@ include('templates/html.php');
                                                             </tr>
                                                             <tr class="inactive">
                                                                 <td> Surface Bakery <?php echo $bakery; ?>: </td>
-                                                                <td class="numberCell"><?php if (isset($perc2)) { echo $perc2; } else { echo '0'; } ?>%
+                                                                <td class="numberCell"><?php if (isset($perc2)) {
+                                                                                            echo $perc2;
+                                                                                        } else {
+                                                                                            echo '0';
+                                                                                        } ?>%
                                                                 </td>
                                                             </tr>
                                                             <tr class="inactive">

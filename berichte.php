@@ -14,7 +14,7 @@ if (isset($_GET['newdid'])) {
 include("templates/html.php");
 if ($_SESSION['qst'] == 11) {
     $_SESSION['done'][0] = 1;
-    $q = "SELECT COUNT(id) FROM " . TB_PREFIX . "ndata WHERE ntype = 9 AND viewed=1 AND uid=" . $session->uid;
+    $q = "SELECT COUNT(id) FROM ndata WHERE ntype = 9 AND viewed=1 AND uid=" . $session->uid;
     $result = mysql_query($q);
     $data = mysql_fetch_assoc($result);
     if ($data['COUNT(id)'] > 0) {

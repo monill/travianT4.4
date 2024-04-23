@@ -10,7 +10,7 @@ function TradeRoute()
 {
     global $database;
     $time = $_SERVER['REQUEST_TIME'];
-    $res = mysql_query("SELECT `id`,`from`,`deliveries`,`wood`,`clay,`iron`,`crop`,`wid` FROM " . TB_PREFIX . "route where timestamp < {$time}");
+    $res = mysql_query("SELECT `id`,`from`,`deliveries`,`wood`,`clay,`iron`,`crop`,`wid` FROM route where timestamp < {$time}");
     while ($data = mysql_fetch_assoc($res)) {
         $database->modifyResource($data['from'], $data['wood'], $data['clay'], $data['iron'], $data['crop'], 0);
         $targettribe = $database->getUserField($database->getVillageField($data['from'], "owner"), "tribe", 0);
@@ -21,13 +21,13 @@ function TradeRoute()
 
 function sendResource2($wtrans, $ctrans, $itrans, $crtrans, $from, $to, $tribe, $send)
 {
-// echo "die";die;
+    // echo "die";die;
     global $bid28, $database, $generator;
     $availableWood = $database->getWoodAvailable($from);
     $availableClay = $database->getClayAvailable($from);
     $availableIron = $database->getIronAvailable($from);
     $availableCrop = $database->getCropAvailable($from);
-    if ($availableWood >= $wtrans AND $availableClay >= $ctrans AND $availableIron >= $itrans AND $availableCrop >= $crtrans) {
+    if ($availableWood >= $wtrans and $availableClay >= $ctrans and $availableIron >= $itrans and $availableCrop >= $crtrans) {
         $merchant2 = (getTypeLevel(17, $from) > 0) ? getTypeLevel(17, $from) : 0;
         $used2 = $database->totalMerchantUsed($from);
         $merchantAvail2 = $merchant2 - $used2;
@@ -49,7 +49,7 @@ function sendResource2($wtrans, $ctrans, $itrans, $crtrans, $from, $to, $tribe, 
                     $reference = $database->sendResource($resource[0], $resource[1], $resource[2], $resource[3], $reqMerc, 0);
                     $send = $send - 1;
                     $idi = mysql_insert_id();
-                    mysql_query("UPDATE `" . TB_PREFIX . "send` set send='$send' WHERE id = $idi") or die(mysql_error());
+                    mysql_query("UPDATE `send` set send='$send' WHERE id = $idi") or die(mysql_error());
                     $database->modifyResource($from, $resource[0], $resource[1], $resource[2], $resource[3], 0);
                     $database->addMovement(0, $from, $to, $reference, $resdata, $_SERVER['REQUEST_TIME'] + $timetaken);
                 }
@@ -57,5 +57,3 @@ function sendResource2($wtrans, $ctrans, $itrans, $crtrans, $from, $to, $tribe, 
         }
     }
 }
-
-?>

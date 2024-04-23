@@ -46,7 +46,7 @@ function sendunitsComplete()
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
     $time = time();
-    $q = "SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "attacks where " . TB_PREFIX . "movement.proc = '0' and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.sort_type = '3' and " . TB_PREFIX . "attacks.attack_type != '2' and endtime <= $time ORDER BY endtime ASC LIMIT 100";
+    $q = "SELECT * FROM movement, attacks where movement.proc = '0' and movement.ref = attacks.id and movement.sort_type = '3' and attacks.attack_type != '2' and endtime <= $time ORDER BY endtime ASC LIMIT 100";
     $dataarray = $database->query_return($q);
 
     foreach ($dataarray as $data) {
@@ -165,7 +165,7 @@ function sendunitsComplete()
             $totiron = $database->getVillageField($data['to'], 'iron');
             $totcrop = $database->getVillageField($data['to'], 'crop');
         } else {
-            $conqResult = mysql_query('SELECT * FROM ' . TB_PREFIX . 'odata WHERE wref=' . $data['to'] . ' LIMIT 1');
+            $conqResult = mysql_query('SELECT * FROM odata WHERE wref=' . $data['to'] . ' LIMIT 1');
             $conqRow = mysql_fetch_assoc($conqResult);
             if ($conqRow['conqured'] == 0) {
                 $totwood = $database->getOasisField($data['to'], 'wood');
@@ -173,7 +173,7 @@ function sendunitsComplete()
                 $totiron = $database->getOasisField($data['to'], 'iron');
                 $totcrop = $database->getOasisField($data['to'], 'crop');
             } elseif ($conqRow['conqured'] != 0 && !$database->isVillageOases($conqRow['conqured'])) {
-                $conqResult2 = mysql_query('SELECT * FROM ' . TB_PREFIX . 'vdata WHERE wref=' . $conqRow['conqured'] . ' LIMIT 1');
+                $conqResult2 = mysql_query('SELECT * FROM vdata WHERE wref=' . $conqRow['conqured'] . ' LIMIT 1');
                 $conqRow2 = mysql_fetch_assoc($conqResult2);
                 $totwood = $conqRow2['wood'] / 3;
                 $totclay = $conqRow2['clay'] / 3;
@@ -343,8 +343,7 @@ function sendunitsComplete()
 
 function move_to_cages($units, $cages)
 {
-    $UNITS = count($units) /* - isset($units["hero"]) ? 1 : 0*/
-    ;
+    $UNITS = count($units) /* - isset($units["hero"]) ? 1 : 0*/;
     $total = array_sum($units);
     if ($cages >= $total) {
         $cages = $total;
@@ -529,9 +528,24 @@ function effectBattleLossGain(&$battleresult)
                 }
                 if (($bag['btype'] == 8 and $bag['type'] == 113)) $bandageCount = round($defHeroface['num'] / 2);
                 $database->modifyHeroFace($toVillage['owner'], 'num', $bandageCount);
-                $ref = $database->addAttack($toVillage['wref'], $unitsToHeal['1'], $unitsToHeal['2'], $unitsToHeal['3'], $unitsToHeal['4'],
-                    $unitsToHeal['5'], $unitsToHeal['6'], $unitsToHeal['7'], $unitsToHeal['8'], $unitsToHeal['9'], $unitsToHeal['10'],
-                    0, 3, 0, 0, 0);
+                $ref = $database->addAttack(
+                    $toVillage['wref'],
+                    $unitsToHeal['1'],
+                    $unitsToHeal['2'],
+                    $unitsToHeal['3'],
+                    $unitsToHeal['4'],
+                    $unitsToHeal['5'],
+                    $unitsToHeal['6'],
+                    $unitsToHeal['7'],
+                    $unitsToHeal['8'],
+                    $unitsToHeal['9'],
+                    $unitsToHeal['10'],
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                );
                 $returntime = (86400 / INCREASE_SPEED) + $data['endtime'];
                 $database->addMovement(4, $toVillage['wref'], $toVillage['wref'], $ref, '0,0,0,0,0', $returntime);
             }
@@ -590,9 +604,24 @@ function effectBattleLossGain(&$battleresult)
                         }
                         if (($bag['btype'] == 8 and $bag['type'] == 113)) $bandageCount = round($enfHeroface['num'] / 2);
                         $database->modifyHeroFace($enfVillage['owner'], 'num', $bandageCount);
-                        $ref = $database->addAttack($enfVillage['wref'], $unitsToHeal['1'], $unitsToHeal['2'], $unitsToHeal['3'], $unitsToHeal['4'],
-                            $unitsToHeal['5'], $unitsToHeal['6'], $unitsToHeal['7'], $unitsToHeal['8'], $unitsToHeal['9'], $unitsToHeal['10'],
-                            0, 3, 0, 0, 0);
+                        $ref = $database->addAttack(
+                            $enfVillage['wref'],
+                            $unitsToHeal['1'],
+                            $unitsToHeal['2'],
+                            $unitsToHeal['3'],
+                            $unitsToHeal['4'],
+                            $unitsToHeal['5'],
+                            $unitsToHeal['6'],
+                            $unitsToHeal['7'],
+                            $unitsToHeal['8'],
+                            $unitsToHeal['9'],
+                            $unitsToHeal['10'],
+                            0,
+                            3,
+                            0,
+                            0,
+                            0
+                        );
                         $returntime = (86400 / INCREASE_SPEED) + $data['endtime'];
                         $database->addMovement(4, $enfVillage['wref'], $enfVillage['wref'], $ref, '0,0,0,0,0', $returntime);
                     }
@@ -643,9 +672,24 @@ function effectBattleLossGain(&$battleresult)
                 }
                 if (($bag['btype'] == 8 and $bag['type'] == 113)) $bandageCount = round($attHeroface['num'] / 2);
                 $database->modifyHeroFace($fromVillage['owner'], 'num', $bandageCount);
-                $ref = $database->addAttack($fromVillage['wref'], $unitsToHeal['1'], $unitsToHeal['2'], $unitsToHeal['3'], $unitsToHeal['4'],
-                    $unitsToHeal['5'], $unitsToHeal['6'], $unitsToHeal['7'], $unitsToHeal['8'], $unitsToHeal['9'], $unitsToHeal['10'],
-                    0, 3, 0, 0, 0);
+                $ref = $database->addAttack(
+                    $fromVillage['wref'],
+                    $unitsToHeal['1'],
+                    $unitsToHeal['2'],
+                    $unitsToHeal['3'],
+                    $unitsToHeal['4'],
+                    $unitsToHeal['5'],
+                    $unitsToHeal['6'],
+                    $unitsToHeal['7'],
+                    $unitsToHeal['8'],
+                    $unitsToHeal['9'],
+                    $unitsToHeal['10'],
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                );
                 $returntime = (86400 / INCREASE_SPEED) + $data['endtime'];
                 $database->addMovement(4, $fromVillage['wref'], $fromVillage['wref'], $ref, '0,0,0,0,0', $returntime);
             }
@@ -772,7 +816,7 @@ function effectBattleLossGain(&$battleresult)
                 //var_dump($battleresult['reminders']['defender']['buildings']);
 
                 //die;
-                $q = "UPDATE " . TB_PREFIX . "fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
+                $q = "UPDATE fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
                 mysql_query($q);
 
                 if ($battleresult['reminders']['defender']['buildings']['f' . $ctar['f']] <= 0 && $ctar['f'] > 18 && $ctar['f'] != 99) {
@@ -781,11 +825,11 @@ function effectBattleLossGain(&$battleresult)
                     $ref = $data['to'];
                     $field = 'f' . $ctar['f'] . 't';
                     $value = 0;
-                    $q = "UPDATE " . TB_PREFIX . "fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
+                    $q = "UPDATE fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
                     mysql_query($q);
                 }
                 #//fix
-                $q = "DELETE FROM " . TB_PREFIX . "bdata WHERE field = '" . $ctar['f'] . "' AND wid = " . $ref . "";
+                $q = "DELETE FROM bdata WHERE field = '" . $ctar['f'] . "' AND wid = " . $ref . "";
                 mysql_query($q);
             }
             //die;
@@ -797,20 +841,20 @@ function effectBattleLossGain(&$battleresult)
                 $ref = $data['to'];
                 $field = 'f40';
                 $value = 0;
-                $q = "UPDATE " . TB_PREFIX . "fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
+                $q = "UPDATE fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
                 mysql_query($q);
                 // $database->setVillageLevel($data['to'], 'f40t', 0);
                 $ref = $data['to'];
                 $field = 'f40t';
                 $value = 0;
-                $q = "UPDATE " . TB_PREFIX . "fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
+                $q = "UPDATE fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
                 mysql_query($q);
             } else {
                 // $database->setVillageLevel($data['to'], 'f40', $battleresult['reminders']['defender']['buildings']['f40']);
                 $ref = $data['to'];
                 $field = 'f40';
                 $value = $battleresult['reminders']['defender']['buildings']['f40'];
-                $q = "UPDATE " . TB_PREFIX . "fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
+                $q = "UPDATE fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
                 mysql_query($q);
             }
         }
@@ -861,7 +905,7 @@ function effectBattleLossGain(&$battleresult)
             $database->arteIsMine($art['id'], $data['to'], $battleresult['had']['attacker']['uid']);
         }
         $database->setVillageField($data['to'], 'loyalty', 0);
-        $q = "UPDATE " . TB_PREFIX . "attacks SET `attack_type` = 2 WHERE id = " . $data['ref'];
+        $q = "UPDATE attacks SET `attack_type` = 2 WHERE id = " . $data['ref'];
         $database->query($q);
         $database->modifyAttack($data['ref'], '9', 1);
         $database->addMovement(3, $data['from'], $data['to'], $data['ref'], '0,0,0,0,0', time());
@@ -887,12 +931,12 @@ function effectBattleLossGain(&$battleresult)
 
     $aid = $battleresult['had']['defender']['uid'];
     $amt = $battleresult['casualties']['attacker']['overall']['pop'];
-    $q = "UPDATE " . TB_PREFIX . "users set dp = dp + $amt,dpall = dpall + $amt where id = $aid";
+    $q = "UPDATE users set dp = dp + $amt,dpall = dpall + $amt where id = $aid";
     mysql_query($q);
 
     $aid = $battleresult['had']['attacker']['uid'];
     $amt = $battleresult['casualties']['attacker']['overall']['pop'];
-    $q = "UPDATE " . TB_PREFIX . "users set ap = ap + $amt,apall = apall + $amt where id = $aid";
+    $q = "UPDATE users set ap = ap + $amt,apall = apall + $amt where id = $aid";
     mysql_query($q);
 
     // $database->modifyPointsAlly($battleresult['had']['defender']['alliance'],'dp',$battleresult['casualties']['attacker']['overall']['pop']);
@@ -902,12 +946,12 @@ function effectBattleLossGain(&$battleresult)
 
     $aid = $battleresult['had']['defender']['alliance'];
     $amt = $battleresult['casualties']['attacker']['overall']['pop'];
-    $q = "UPDATE " . TB_PREFIX . "alidata set dp = dp + $amt,Adp = Adp + $amt where id = $aid";
+    $q = "UPDATE alidata set dp = dp + $amt,Adp = Adp + $amt where id = $aid";
     mysql_query($q);
 
     $aid = $battleresult['had']['attacker']['alliance'];
     $amt = $battleresult['casualties']['defender']['overall']['pop'];
-    $q = "UPDATE " . TB_PREFIX . "alidata set ap = ap + $amt,Aap = Aap + $amt where id = $aid";
+    $q = "UPDATE alidata set ap = ap + $amt,Aap = Aap + $amt where id = $aid";
     mysql_query($q);
 
     $steal = $battleresult['reminders']['attacker']['bounty_array'];
@@ -918,12 +962,12 @@ function effectBattleLossGain(&$battleresult)
 
     $aid = $battleresult['had']['defender']['uid'];
     $amt = -$stealOverall;
-    $q = "UPDATE " . TB_PREFIX . "users set RR = RR + $amt where id = $aid";
+    $q = "UPDATE users set RR = RR + $amt where id = $aid";
     mysql_query($q);
 
     $aid = $battleresult['had']['attacker']['uid'];
     $amt = $stealOverall;
-    $q = "UPDATE " . TB_PREFIX . "users set RR = RR + $amt where id = $aid";
+    $q = "UPDATE users set RR = RR + $amt where id = $aid";
     mysql_query($q);
 
     // $database->modifyPointsAlly($battleresult['had']['defender']['alliance'],'RR',-$stealOverall);
@@ -931,12 +975,12 @@ function effectBattleLossGain(&$battleresult)
 
     $aid = $battleresult['had']['defender']['alliance'];
     $amt = -$stealOverall;
-    $q = "UPDATE " . TB_PREFIX . "alidata set RR = RR + $amt where id = $aid";
+    $q = "UPDATE alidata set RR = RR + $amt where id = $aid";
     mysql_query($q);
 
     $aid = $battleresult['had']['attacker']['alliance'];
     $amt = $stealOverall;
-    $q = "UPDATE " . TB_PREFIX . "alidata set RR = RR + $amt where id = $aid";
+    $q = "UPDATE alidata set RR = RR + $amt where id = $aid";
     mysql_query($q);
     recountPop($data['to']);
 }
@@ -1072,8 +1116,8 @@ function sendBattleReports(&$battleresult)
             }
             if ($info_spy != '') $info_spy .= ',';
             break;
-        // case 2:
-        // break;
+            // case 2:
+            // break;
         case 3:
             $attackTypeStr = 'REPORT_NORMALATTACK';
             $steal = $battleresult['reminders']['attacker']['bounty_array'];
@@ -1138,7 +1182,8 @@ function sendBattleReports(&$battleresult)
                         //echo $battleresult['had']['defender']['ctar'][$i]['lvl']."<br> Caus:";
                         //echo $battleresult['casualties']['defender']['ctar'][$i]['lvl']."<br>";
                         $build_pic = isset($battleresult['casualties']['defender']['ctar'][$i]['ft']) ? $battleresult['casualties']['defender']['ctar'][$i]['ft'] : '';
-                        if (isset($battleresult['casualties']['defender']['ctar'][$i]['ft']) && $battleresult['casualties']['defender']['ctar'][$i]['ft'] != 0
+                        if (
+                            isset($battleresult['casualties']['defender']['ctar'][$i]['ft']) && $battleresult['casualties']['defender']['ctar'][$i]['ft'] != 0
                             && $battleresult['casualties']['defender']['ctar'][$i]['ft'] != ''
                             && ($battleresult['casualties']['defender']['ctar'][$i]['lvl'] == $battleresult['had']['defender']['ctar'][$i]['lvl'])
                             && $battleresult['had']['defender']['ctar'][$i]['lvl'] > 0
@@ -1235,13 +1280,27 @@ function sendBattleReports(&$battleresult)
         . $info_str;
 
     // report the Attacker
-    $database->addNotice($fromVillage['owner'], $toVillage['wref'], $battleresult['had']['attacker']['alliance']
-        , $attackerReportType, ($attackTypeStr . '[=]' . addslashes($fromVillage['name']) . '[=]' . addslashes($toVillage['name'])), $reportUnitsStr, $data['endtime']);
+    $database->addNotice(
+        $fromVillage['owner'],
+        $toVillage['wref'],
+        $battleresult['had']['attacker']['alliance'],
+        $attackerReportType,
+        ($attackTypeStr . '[=]' . addslashes($fromVillage['name']) . '[=]' . addslashes($toVillage['name'])),
+        $reportUnitsStr,
+        $data['endtime']
+    );
 
     // report the Defender
     if ($sendDefenderReport) {
-        $database->addNotice($toVillage['owner'], $toVillage['wref'], $battleresult['had']['defender']['alliance']
-            , $defenderReportType, ($attackTypeStr . '[=]' . addslashes($fromVillage['name']) . '[=]' . addslashes($toVillage['name'])), $reportUnitsStr, $data['endtime']);
+        $database->addNotice(
+            $toVillage['owner'],
+            $toVillage['wref'],
+            $battleresult['had']['defender']['alliance'],
+            $defenderReportType,
+            ($attackTypeStr . '[=]' . addslashes($fromVillage['name']) . '[=]' . addslashes($toVillage['name'])),
+            $reportUnitsStr,
+            $data['endtime']
+        );
     }
 
     // report Participant owners
@@ -1294,5 +1353,3 @@ function sendBattleReports(&$battleresult)
         // }
     }
 }
-
-?>

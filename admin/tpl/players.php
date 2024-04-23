@@ -1,7 +1,7 @@
 <?php
 
 $time = time() - (60 * 5);
-$sql = mysql_query("SELECT * FROM " . TB_PREFIX . "users where true ORDER BY id ASC $limit");
+$sql = mysql_query("SELECT * FROM users where true ORDER BY id ASC $limit");
 $query = mysql_num_rows($sql);
 
 if (isset($_GET['page'])) { // Get page number
@@ -136,12 +136,12 @@ $lastPage = ceil($query / $itemsPerPage); // Get last page value
 
     $limit = 'LIMIT ' . ($page - 1) * $itemsPerPage . ',' . $itemsPerPage;
     $time = time() - (60 * 5);
-    $sql2 = mysql_query("SELECT * FROM " . TB_PREFIX . "users where true ORDER BY id ASC $limit");
+    $sql2 = mysql_query("SELECT * FROM users where true ORDER BY id ASC $limit");
 
     if ($query > 0) {
         while ($row = mysql_fetch_array($sql2)) {
             $uid = $row['id'];
-            $sql3 = mysql_query("SELECT * FROM " . TB_PREFIX . "vdata where owner = $uid");
+            $sql3 = mysql_query("SELECT * FROM vdata where owner = $uid");
             $vil = $database->mysql_fetch_all($sql3);
             $totalpop = 0;
 
@@ -189,7 +189,7 @@ $lastPage = ceil($query / $itemsPerPage); // Get last page value
 					<td><img src="/admin/images/silver.gif" class="gold" alt="Silver" title="This player' . $row['silver'] . 'Has silver"/> ' . $row['silver'] . '</td>
 					<td><img src="/admin/images/silver.gif" class="gold" alt="Silver" title="This player\'s silver balance' . $row['sbalance'] . ' Is"/> <font color="' . $scolor . '">' . $row['sbalance'] . '</font></td>
 					<td><a href="?p=Users&uid=' . $uid . '"><img title="Edit Player" border="0" src="/admin/images/edit.gif"></a></td>
-				</tr>  
+				</tr>
 			';
         }
     } else {

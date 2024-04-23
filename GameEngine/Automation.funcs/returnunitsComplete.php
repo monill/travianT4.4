@@ -11,7 +11,7 @@ function returnunitsComplete()
         return;
     }
     $time = $_SERVER['REQUEST_TIME'];
-    $q = "SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "attacks where " . TB_PREFIX . "movement.proc = '0' and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.sort_type = '4' and endtime <= $time LIMIT 100";
+    $q = "SELECT * FROM movement, attacks where movement.proc = '0' and movement.ref = attacks.id and movement.sort_type = '4' and endtime <= $time LIMIT 100";
     $dataarray = $database->query_return($q);
 
     foreach ($dataarray as $data) {
@@ -58,7 +58,7 @@ function returnunitsComplete()
     }
 
     // Recieve the bounty on type 6.
-    $q = "SELECT `to`,`moveid`,`wood`,`clay`,`iron`,`crop` FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "send where " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "send.id and " . TB_PREFIX . "movement.proc = 0 and sort_type = 6 and endtime <= $time LIMIT 100";
+    $q = "SELECT `to`,`moveid`,`wood`,`clay`,`iron`,`crop` FROM movement, send where movement.ref = send.id and movement.proc = 0 and sort_type = 6 and endtime <= $time LIMIT 100";
     $dataarray = $database->query_return($q);
     foreach ($dataarray as $data) {
         $isoasis = $database->isVillageOases($data['to']);
@@ -76,5 +76,3 @@ function returnunitsComplete()
         updateWrefResource($data['to']);
     }
 }
-
-?>

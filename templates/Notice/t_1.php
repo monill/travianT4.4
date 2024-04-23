@@ -3,7 +3,7 @@ $noticeClass = array(
     NOTICE1, NOTICE2, NOTICE3, NOTICE4, NOTICE5, NOTICE6, NOTICE7, NOTICE8, NOTICE9, NOTICE10, NOTICE11, NOTICE12, NOTICE13, NOTICE14, NOTICE15,
     NOTICE16, NOTICE17, NOTICE18, NOTICE19, NOTICE20, NOTICE21, NOTICE22, NOTICE23
 );
-$prefix = "" . TB_PREFIX . "ndata";
+$prefix = "ndata";
 $limit2 = "and (ntype=10 or ntype=11 or ntype=12 or ntype=13)";
 $sql = mysql_query("SELECT * FROM $prefix WHERE uid = " . $session->uid . " and archive=0 " . $limit2 . " ORDER BY time DESC");
 $query = mysql_num_rows($sql);

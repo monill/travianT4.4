@@ -38,7 +38,7 @@ if ($_GET['f'] == 31) {
     include "templates/Alliance/attack-defender.php";
 } else {
 
-    $prefix = TB_PREFIX . "ndata";
+    $prefix = "ndata";
     $limit = " ntype<=7 OR ntype=14 OR ntype>=16";
     $sql = mysql_query("SELECT * FROM $prefix WHERE ally = $session->alliance AND $limit ORDER BY time DESC LIMIT 20");
     $query = mysql_num_rows($sql);

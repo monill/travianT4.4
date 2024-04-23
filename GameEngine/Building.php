@@ -56,7 +56,7 @@ class Building
             } elseif (isset($get['ins']) && $session->userinfo['gold'] >= g_level20) {
                 $session->changeChecker();
                 $FIELD_ID = intval($get['a']);
-                $database->query("DELETE FROM " . TB_PREFIX . "bdata WHERE wid=" . $village->wid . " AND field=" . $FIELD_ID);
+                $database->query("DELETE FROM bdata WHERE wid=" . $village->wid . " AND field=" . $FIELD_ID);
                 $RPA_LEVEL = $village->resarray['f' . $FIELD_ID];
                 $FIELD_BID = $village->resarray['f' . $FIELD_ID . 't'];
                 $maxLvL = sizeof($GLOBALS['bid' . $FIELD_BID]);
@@ -343,7 +343,7 @@ class Building
         global $$name, $village;
         $dataarray = $$name;
         //if($village->resarray['f'.$field] > 20){
-        //mysql_query("UPDATE ".TB_PREFIX."fdata set `f".$field."` = 20 WHERE vref = '".$village->wid."'")or die(mysql_error());
+        //mysql_query("UPDATE fdata set `f".$field."` = 20 WHERE vref = '".$village->wid."'")or die(mysql_error());
         //return 1;
         //}
         if ($id <= 4) {
@@ -915,9 +915,9 @@ class Building
         foreach ($this->buildArray as $jobs) {
             $level = $database->getFieldLevel($jobs['wid'], $jobs['field']);
             $level = ($level == -1) ? 0 : $level;
-            if ($jobs['type'] != 25 AND $jobs['type'] != 26 AND $jobs['type'] != 40) {
+            if ($jobs['type'] != 25 and $jobs['type'] != 26 and $jobs['type'] != 40) {
                 $resource = $this->resourceRequired($jobs['field'], $jobs['type']);
-                $q = "UPDATE " . TB_PREFIX . "fdata set f" . $jobs['field'] . " = f" . $jobs['field'] . " + 1, f" . $jobs['field'] . "t = " . $jobs['type'] . " where vref = " . $jobs['wid'];
+                $q = "UPDATE fdata set f" . $jobs['field'] . " = f" . $jobs['field'] . " + 1, f" . $jobs['field'] . "t = " . $jobs['type'] . " where vref = " . $jobs['wid'];
                 if ($database->query($q)) {
 
                     $database->modifyPop($jobs['wid'], $resource['pop'], 0);
@@ -925,12 +925,12 @@ class Building
                     $database->finishDemolition($village->wid);
                     $database->addCLP($session->uid, 7);
 
-                    $q = "DELETE FROM " . TB_PREFIX . "bdata where id = " . $jobs['id'];
+                    $q = "DELETE FROM bdata where id = " . $jobs['id'];
                     $database->query($q);
                     if ($jobs['type'] == 18) {
                         $owner = $database->getVillageField($jobs['wid'], "owner");
                         $max = $bid18[$level]['attri'];
-                        $q = "UPDATE " . TB_PREFIX . "alidata set max = $max where leader = $owner";
+                        $q = "UPDATE alidata set max = $max where leader = $owner";
                         $database->query($q);
                     }
                     if ($jobs['type'] == 10) {
@@ -1033,8 +1033,4 @@ class Building
 
         return $generator->procMtime($reqtime);
     }
-}
-
-;
-
-?>
+};

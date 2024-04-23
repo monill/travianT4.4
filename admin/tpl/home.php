@@ -151,17 +151,17 @@
     $tribes = array($tribe1, $tribe2, $tribe3);
     //unset($list['tribe']);
     $actives = count($database->getActiveUsersList());
-    $onlines = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "users WHERE " . time() . " - timestamp < 300"));
-    $banned = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "users WHERE access = 0"));
-    $villages = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "vdata"));
-    $alliances = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "alidata"));
-    $adventures = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "adventure"));
-    $auctions = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "auction WHERE finish = 0"));
-    $notices = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "ndata"));
-    $movements = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "movement WHERE proc = 0"));
-    $allvillages = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "wdata WHERE oasistype = 0"));
-    $alloasis = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "wdata WHERE fieldtype = 0"));
-    $occoasis = mysql_num_rows(mysql_query("SELECT * FROM " . TB_PREFIX . "wdata WHERE fieldtype = 0 and occupied!=0"));
+    $onlines = mysql_num_rows(mysql_query("SELECT * FROM users WHERE " . time() . " - timestamp < 300"));
+    $banned = mysql_num_rows(mysql_query("SELECT * FROM users WHERE access = 0"));
+    $villages = mysql_num_rows(mysql_query("SELECT * FROM vdata"));
+    $alliances = mysql_num_rows(mysql_query("SELECT * FROM alidata"));
+    $adventures = mysql_num_rows(mysql_query("SELECT * FROM adventure"));
+    $auctions = mysql_num_rows(mysql_query("SELECT * FROM auction WHERE finish = 0"));
+    $notices = mysql_num_rows(mysql_query("SELECT * FROM ndata"));
+    $movements = mysql_num_rows(mysql_query("SELECT * FROM movement WHERE proc = 0"));
+    $allvillages = mysql_num_rows(mysql_query("SELECT * FROM wdata WHERE oasistype = 0"));
+    $alloasis = mysql_num_rows(mysql_query("SELECT * FROM wdata WHERE fieldtype = 0"));
+    $occoasis = mysql_num_rows(mysql_query("SELECT * FROM wdata WHERE fieldtype = 0 and occupied!=0"));
     ?>
     <table>
         <tr>

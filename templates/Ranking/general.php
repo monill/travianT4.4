@@ -1,12 +1,12 @@
 <?php
 
-$tribe1 = mysql_query("SELECT `id` FROM " . TB_PREFIX . "users WHERE tribe = 1 and id > 4");
-$tribe2 = mysql_query("SELECT `id` FROM " . TB_PREFIX . "users WHERE tribe = 2 and id > 4");
-$tribe3 = mysql_query("SELECT `id` FROM " . TB_PREFIX . "users WHERE tribe = 3 and id > 4");
+$tribe1 = mysql_query("SELECT `id` FROM users WHERE tribe = 1 and id > 4");
+$tribe2 = mysql_query("SELECT `id` FROM users WHERE tribe = 2 and id > 4");
+$tribe3 = mysql_query("SELECT `id` FROM users WHERE tribe = 3 and id > 4");
 $tribes = array(mysql_num_rows($tribe1), mysql_num_rows($tribe2), mysql_num_rows($tribe3));
-$users = mysql_num_rows(mysql_query("SELECT SQL_CACHE * FROM " . TB_PREFIX . "users WHERE id > 4"));
+$users = mysql_num_rows(mysql_query("SELECT SQL_CACHE * FROM users WHERE id > 4"));
 
-$config = mysql_fetch_array($database->query("SELECT * FROM " . TB_PREFIX . "config LIMIT 1"));
+$config = mysql_fetch_array($database->query("SELECT * FROM config LIMIT 1"));
 //$np = $database->getNatarsProgress();
 //$np['lastexpandat'] = max(isset($np['lastexpandat'])?$np['lastexpandat']:0, COMMENCE);
 //$np['lastpopupat'] = max(isset($np['lastpopupat'])?$np['lastpopupat']:0, COMMENCE);
@@ -45,14 +45,14 @@ if ($wwb_time > time()) {
             <th><?php echo PF_ACTIVEPLAYERS; ?></th>
             <td>
                 <?php
-                $active = mysql_num_rows(mysql_query("SELECT id FROM " . TB_PREFIX . "users WHERE id>4 AND " . time() . "-timestamp < " . (3600 * 24)));
+                $active = mysql_num_rows(mysql_query("SELECT id FROM users WHERE id>4 AND " . time() . "-timestamp < " . (3600 * 24)));
                 echo $active; ?></td>
         </tr>
         <tr>
             <th><?php echo PF_ONLINEPLAYERS; ?></th>
             <td>
                 <?php
-                $online = mysql_num_rows(mysql_query("SELECT id FROM " . TB_PREFIX . "users WHERE id>4 AND " . time() . "-timestamp < " . (60 * 5)));
+                $online = mysql_num_rows(mysql_query("SELECT id FROM users WHERE id>4 AND " . time() . "-timestamp < " . (60 * 5)));
                 echo $online;
                 ?>
             </td>

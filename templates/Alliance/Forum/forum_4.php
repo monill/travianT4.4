@@ -3,7 +3,7 @@
 if ($session->access != BANNED) {
     $cat_id = $_GET['fid'];
     $aid = $session->alliance;
-    $q = "SELECT `leader` FROM " . TB_PREFIX . "alidata WHERE id = $aid";
+    $q = "SELECT `leader` FROM alidata WHERE id = $aid";
     $z = mysql_query($q) or die(mysql_error());
     $rows = mysql_fetch_assoc($z);
 

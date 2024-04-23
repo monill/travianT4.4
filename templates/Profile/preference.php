@@ -40,24 +40,24 @@ if ($_POST) {
             // Add new link
             $userid = $session->uid;
 
-            $query = mysql_query('INSERT INTO `' . TB_PREFIX . 'links` (`userid`, `name`, `url`, `pos`) VALUES (' . $userid . ', \'' . $link['linkname'] . '\', \'' . $link['linkziel'] . '\', ' . $link['nr'] . ')');
+            $query = mysql_query('INSERT INTO `links` (`userid`, `name`, `url`, `pos`) VALUES (' . $userid . ', \'' . $link['linkname'] . '\', \'' . $link['linkziel'] . '\', ' . $link['nr'] . ')');
         } elseif (trim($link['nr']) != '' and trim($link['linkname']) != '' and trim($link['linkziel']) != '' and trim($link['id']) != '') {
             // Update link
-            $query = mysql_query('SELECT * FROM `' . TB_PREFIX . 'links` WHERE `id` = ' . $link['id']);
+            $query = mysql_query('SELECT * FROM `links` WHERE `id` = ' . $link['id']);
             $data = mysql_fetch_assoc($query);
 
             // May the user update this entry?
             if ($data['userid'] == $session->uid) {
-                $query2 = mysql_query('UPDATE `' . TB_PREFIX . 'links` SET `name` = \'' . $link['linkname'] . '\', `url` = \'' . $link['linkziel'] . '\', `pos` = ' . $link['nr'] . ' WHERE `id` = ' . $link['id']);
+                $query2 = mysql_query('UPDATE `links` SET `name` = \'' . $link['linkname'] . '\', `url` = \'' . $link['linkziel'] . '\', `pos` = ' . $link['nr'] . ' WHERE `id` = ' . $link['id']);
             }
         } elseif (trim($link['nr']) == '' and trim($link['linkname']) == '' and trim($link['linkziel']) == '' and trim($link['id']) != '') {
             // Delete entry
-            $query = mysql_query('SELECT * FROM `' . TB_PREFIX . 'links` WHERE `id` = ' . $link['id']);
+            $query = mysql_query('SELECT * FROM `links` WHERE `id` = ' . $link['id']);
             $data = mysql_fetch_assoc($query);
 
             // May the user delete this entry?
             if ($data['userid'] == $session->uid) {
-                $query2 = mysql_query('DELETE FROM `' . TB_PREFIX . 'links` WHERE `id` = ' . $link['id']);
+                $query2 = mysql_query('DELETE FROM `links` WHERE `id` = ' . $link['id']);
             }
         }
     }
@@ -67,7 +67,7 @@ if ($_POST) {
 
 
 // Fetch all links
-$query = mysql_query('SELECT * FROM `' . TB_PREFIX . 'links` WHERE `userid` = ' . $session->uid . ' ORDER BY `pos` ASC') or die(mysql_error());
+$query = mysql_query('SELECT * FROM `links` WHERE `userid` = ' . $session->uid . ' ORDER BY `pos` ASC') or die(mysql_error());
 $links = array();
 while ($data = mysql_fetch_assoc($query)) {
     $links[] = $data;

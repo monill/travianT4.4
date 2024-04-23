@@ -95,7 +95,7 @@ switch ($qst) {
         break;
 }
 
-$q = "UPDATE " . TB_PREFIX . "users set `quest`= '" . $qst . "' WHERE id=" . $session->uid;
+$q = "UPDATE users set `quest`= '" . $qst . "' WHERE id=" . $session->uid;
 // echo  $q;
 // die();
 mysql_query($q) or die(mysql_error());

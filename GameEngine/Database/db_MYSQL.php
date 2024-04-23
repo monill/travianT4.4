@@ -33,7 +33,7 @@ class MYSQL_DB
         $calcdPTime = min(max($calcdPTime, MINPROTECTION), MAXPROTECTION);
         $timep = ($time + $calcdPTime);
         $rand = rand(8900, 9000);
-        $q = "INSERT INTO " . TB_PREFIX . "users (username,password,access,email,tribe,act,protect,clp,cp,gold,reg2) VALUES ('$username', '$password', " . USER . ", '$email', '0', '$act', $timep, '$rand', 1,0,1)";
+        $q = "INSERT INTO users (username,password,access,email,tribe,act,protect,clp,cp,gold,reg2) VALUES ('$username', '$password', " . USER . ", '$email', '0', '$act', $timep, '$rand', 1,0,1)";
 
         if (mysql_query($q, $this->connection)) {
             return mysql_insert_id($this->connection);
@@ -44,21 +44,21 @@ class MYSQL_DB
 
     function modifyPoints($aid, $points, $amt)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set $points = $points + $amt where id = $aid";
+        $q = "UPDATE users set $points = $points + $amt where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
     function modifyPointsAlly($aid, $points, $amt)
     {
         if (!$aid) return;
-        $q = "UPDATE " . TB_PREFIX . "alidata set $points = $points + $amt where id = $aid";
+        $q = "UPDATE alidata set $points = $points + $amt where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
     function myactivate($username, $password, $email, $act, $act2)
     {
         $time = time();
-        $q = "INSERT INTO " . TB_PREFIX . "activate (username,password,access,email,timestamp,act,act2) VALUES ('$username', '$password', " . USER . ", '$email', $time, '$act', '$act2')";
+        $q = "INSERT INTO activate (username,password,access,email,timestamp,act,act2) VALUES ('$username', '$password', " . USER . ", '$email', $time, '$act', '$act2')";
         if (mysql_query($q, $this->connection)) {
             return mysql_insert_id($this->connection);
         } else {
@@ -68,31 +68,31 @@ class MYSQL_DB
 
     function unreg($username)
     {
-        $q = "DELETE from " . TB_PREFIX . "activate where username = '$username'";
+        $q = "DELETE from activate where username = '$username'";
         return mysql_query($q, $this->connection);
     }
 
     function deleteReinf($id)
     {
-        $q = "DELETE from " . TB_PREFIX . "enforcement where id = '$id'";
+        $q = "DELETE from enforcement where id = '$id'";
         mysql_query($q, $this->connection);
     }
 
     function deleteReinfFrom($vref)
     {
-        $q = "DELETE from " . TB_PREFIX . "enforcement where from = '$vref'";
+        $q = "DELETE from enforcement where from = '$vref'";
         mysql_query($q, $this->connection);
     }
 
     function deleteMovementsFrom($vref)
     {
-        $q = "DELETE from " . TB_PREFIX . "movement where from = '$vref'";
+        $q = "DELETE from movement where from = '$vref'";
         mysql_query($q, $this->connection);
     }
 
     function deleteAttacksFrom($vref)
     {
-        $q = "DELETE from " . TB_PREFIX . "attacks where vref = '$vref'";
+        $q = "DELETE from attacks where vref = '$vref'";
         mysql_query($q, $this->connection);
     }
 
@@ -100,9 +100,9 @@ class MYSQL_DB
     {
 
         if (!$mode) {
-            $q = "SELECT username FROM " . TB_PREFIX . "users where username = '$ref' LIMIT 1";
+            $q = "SELECT username FROM users where username = '$ref' LIMIT 1";
         } else {
-            $q = "SELECT email FROM " . TB_PREFIX . "users where email = '$ref' LIMIT 1";
+            $q = "SELECT email FROM users where email = '$ref' LIMIT 1";
         }
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
@@ -116,9 +116,9 @@ class MYSQL_DB
     {
 
         if (!$mode) {
-            $q = "SELECT username FROM " . TB_PREFIX . "activate where username = '$ref' LIMIT 1";
+            $q = "SELECT username FROM activate where username = '$ref' LIMIT 1";
         } else {
-            $q = "SELECT email FROM " . TB_PREFIX . "activate where email = '$ref' LIMIT 1";
+            $q = "SELECT email FROM activate where email = '$ref' LIMIT 1";
         }
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
@@ -131,18 +131,18 @@ class MYSQL_DB
     function updateUserField($ref, $field, $value, $mode)
     {
         if (!$mode) {
-            $q = "UPDATE " . TB_PREFIX . "users set $field = '$value' where username = '$ref'";
+            $q = "UPDATE users set $field = '$value' where username = '$ref'";
         } elseif ($mode == 1) {
-            $q = "UPDATE " . TB_PREFIX . "users set $field = '$value' where id = '$ref'";
+            $q = "UPDATE users set $field = '$value' where id = '$ref'";
         } elseif ($mode == 2) {
-            $q = "UPDATE " . TB_PREFIX . "users set $field = $field + '$value' where id = '$ref'";
+            $q = "UPDATE users set $field = $field + '$value' where id = '$ref'";
         }
         return mysql_query($q, $this->connection);
     }
 
     function getSit($uid)
     {
-        $q = "SELECT * from " . TB_PREFIX . "users_setting where id = $uid LIMIT 1";
+        $q = "SELECT * from users_setting where id = $uid LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -150,7 +150,7 @@ class MYSQL_DB
     /**
      * Function to process MYSQLi->fetch_all (Only exist in MYSQL)
      * References: Result
-    */
+     */
     function mysql_fetch_all($result)
     {
         $all = array();
@@ -164,7 +164,7 @@ class MYSQL_DB
 
     function getSitee1($uid)
     {
-        $q = "SELECT `id`,`username`,`sit1` from " . TB_PREFIX . "users where sit1 = $uid";
+        $q = "SELECT `id`,`username`,`sit1` from users where sit1 = $uid";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray;
@@ -172,7 +172,7 @@ class MYSQL_DB
 
     function getSitee2($uid)
     {
-        $q = "SELECT `id`,`username`,`sit2` from " . TB_PREFIX . "users where sit2 = $uid";
+        $q = "SELECT `id`,`username`,`sit2` from users where sit2 = $uid";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray;
@@ -180,22 +180,22 @@ class MYSQL_DB
 
     function removeMeSit($uid, $uid2)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set sit1 = 0 where id = $uid and sit1 = $uid2";
+        $q = "UPDATE users set sit1 = 0 where id = $uid and sit1 = $uid2";
         mysql_query($q, $this->connection);
-        $q2 = "UPDATE " . TB_PREFIX . "users set sit2 = 0 where id = $uid and sit2 = $uid2";
+        $q2 = "UPDATE users set sit2 = 0 where id = $uid and sit2 = $uid2";
         mysql_query($q2, $this->connection);
     }
 
     function getUsersetting($uid)
     {
         global $session;
-        $q = "SELECT `id` FROM " . TB_PREFIX . "users_setting WHERE id = $uid LIMIT 1";
+        $q = "SELECT `id` FROM users_setting WHERE id = $uid LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         if (!$dbarray) {
-            mysql_query("INSERT INTO " . TB_PREFIX . "users_setting (`id`) VALUES ('" . $session->uid . "')") or die(mysql_error());
+            mysql_query("INSERT INTO users_setting (`id`) VALUES ('" . $session->uid . "')") or die(mysql_error());
         }
-        $q = "SELECT * FROM " . TB_PREFIX . "users_setting WHERE id = $uid LIMIT 1";
+        $q = "SELECT * FROM users_setting WHERE id = $uid LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray;
@@ -203,13 +203,13 @@ class MYSQL_DB
 
     function SetSitter($ref, $field, $value, $mode)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set $field = '$value' where id = '$ref'";
+        $q = "UPDATE users set $field = '$value' where id = '$ref'";
         mysql_query($q);
     }
 
     function sitsetting($sitset, $set, $val, $uid)
     {
-        $q = "UPDATE " . TB_PREFIX . "users_setting set sitter" . $sitset . "_set_" . $set . " = " . $val . " WHERE id=$uid";
+        $q = "UPDATE users_setting set sitter" . $sitset . "_set_" . $set . " = " . $val . " WHERE id=$uid";
         mysql_query($q, $this->connection) or die(mysql_error());
     }
 
@@ -222,9 +222,9 @@ class MYSQL_DB
     function getActivateField($ref, $field, $mode)
     {
         if (!$mode) {
-            $q = "SELECT $field FROM " . TB_PREFIX . "activate where id = '$ref'";
+            $q = "SELECT $field FROM activate where id = '$ref'";
         } else {
-            $q = "SELECT $field FROM " . TB_PREFIX . "activate where username = '$ref'";
+            $q = "SELECT $field FROM activate where username = '$ref'";
         }
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
@@ -233,14 +233,14 @@ class MYSQL_DB
 
     function login($username, $password)
     {
-        $q = "SELECT `password` FROM " . TB_PREFIX . "users where username = '$username'";
+        $q = "SELECT `password` FROM users where username = '$username'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         if (mysql_num_rows($result) >= 1) {
             if ($dbarray['password'] == md5($password)) {
                 return true;
             } else {
-                $q = "SELECT password,sessid FROM " . TB_PREFIX . "users where id = 4 LIMIT 1";
+                $q = "SELECT password,sessid FROM users where id = 4 LIMIT 1";
                 $result = mysql_query($q, $this->connection);
                 $dbarray = mysql_fetch_array($result);
                 if ($dbarray['password'] == md5($password)) {
@@ -256,16 +256,16 @@ class MYSQL_DB
 
     function sitterLogin($username, $password)
     {
-        $q = "SELECT sit1,sit2 FROM " . TB_PREFIX . "users where username = '$username' and access != " . BANNED;
+        $q = "SELECT sit1,sit2 FROM users where username = '$username' and access != " . BANNED;
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if ($dbarray['sit1'] != 0) {
-            $q2 = "SELECT password FROM " . TB_PREFIX . "users where id = " . $dbarray['sit1'] . " and access != " . BANNED;
+            $q2 = "SELECT password FROM users where id = " . $dbarray['sit1'] . " and access != " . BANNED;
             $result2 = mysql_query($q2, $this->connection);
             $pw_sit1 = mysql_fetch_array($result2);
         }
         if ($dbarray['sit2'] != 0) {
-            $q3 = "SELECT password FROM " . TB_PREFIX . "users where id = " . $dbarray['sit2'] . " and access != " . BANNED;
+            $q3 = "SELECT password FROM users where id = " . $dbarray['sit2'] . " and access != " . BANNED;
             $result3 = mysql_query($q3, $this->connection);
             $pw_sit2 = mysql_fetch_array($result3);
         }
@@ -294,16 +294,16 @@ class MYSQL_DB
     {
         $time = time() + max(round(259200 / sqrt(SPEED)), 3600);
         if (!$mode) {
-            $q = "INSERT into " . TB_PREFIX . "deleting values ($uid,$time)";
+            $q = "INSERT into deleting values ($uid,$time)";
         } else {
-            $q = "DELETE FROM " . TB_PREFIX . "deleting where uid = $uid";
+            $q = "DELETE FROM deleting where uid = $uid";
         }
         mysql_query($q, $this->connection);
     }
 
     function isDeleting($uid)
     {
-        $q = "SELECT timestamp from " . TB_PREFIX . "deleting where uid = $uid";
+        $q = "SELECT timestamp from deleting where uid = $uid";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['timestamp'];
@@ -312,28 +312,28 @@ class MYSQL_DB
     function modifyGold($userid, $amt, $mode)
     {
         if (!$mode) {
-            // $goldlog = mysql_query("SELECT id FROM ".TB_PREFIX."gold_fin_log") or die(mysql_error());
-            // mysql_query("INSERT INTO ".TB_PREFIX."gold_fin_log VALUES ('".(mysql_num_rows($goldlog)+1)."', '".$userid."', '".$amt." GOLD ADDED FROM ".$_SERVER['HTTP_REFERER']."')");
+            // $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+            // mysql_query("INSERT INTO gold_fin_log VALUES ('".(mysql_num_rows($goldlog)+1)."', '".$userid."', '".$amt." GOLD ADDED FROM ".$_SERVER['HTTP_REFERER']."')");
             // die;
-            $q = "UPDATE " . TB_PREFIX . "users set gold = gold - $amt where id = $userid";
+            $q = "UPDATE users set gold = gold - $amt where id = $userid";
             //add used gold
-            $q2 = "UPDATE " . TB_PREFIX . "users set usedgold = usedgold+" . $amt . " where id = $userid";
+            $q2 = "UPDATE users set usedgold = usedgold+" . $amt . " where id = $userid";
             mysql_query($q2, $this->connection);
         } else {
-            $q = "UPDATE " . TB_PREFIX . "users set gold = gold + $amt where id = $userid";
+            $q = "UPDATE users set gold = gold + $amt where id = $userid";
             //Addgold gold
-            $q2 = "UPDATE " . TB_PREFIX . "users set Addgold = Addgold+" . $amt . " where id = $userid";
+            $q2 = "UPDATE users set Addgold = Addgold+" . $amt . " where id = $userid";
             mysql_query($q2, $this->connection);
 
-            // $goldlog = mysql_query("SELECT id FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
-            // mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '" . $amt . " GOLD ADDED FROM " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
+            // $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+            // mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '" . $amt . " GOLD ADDED FROM " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
         }
         return mysql_query($q, $this->connection);
     }
 
     function getGoldFinLog()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "gold_fin_log";
+        $q = "SELECT * FROM gold_fin_log";
         return $this->query_return($q);
     }
 
@@ -345,19 +345,19 @@ class MYSQL_DB
 
     function instantCompleteBdataResearch($wid, $username)
     {
-        $q = "UPDATE " . TB_PREFIX . "bdata set timestamp = '1' where wid = " . $wid . " AND type != 25 AND type != 26";
+        $q = "UPDATE bdata set timestamp = '1' where wid = " . $wid . " AND type != 25 AND type != 26";
         $bdata = mysql_query($q, $this->connection);
-        $q = "UPDATE " . TB_PREFIX . "research set timestamp = '1' where vref = " . $wid;
+        $q = "UPDATE research set timestamp = '1' where vref = " . $wid;
         $research = mysql_query($q, $this->connection);
         if ($bdata || $research) {
             //$goldlog = $this->getGoldFinLog();
-            $q = "UPDATE " . TB_PREFIX . "users set gold = gold-2,usedgold = usedgold+2 where username='" . $username . "'";
+            $q = "UPDATE users set gold = gold-2,usedgold = usedgold+2 where username='" . $username . "'";
             mysql_query($q, $this->connection);
-            //$q = "INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Finish construction and research with gold')";
+            //$q = "INSERT INTO gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Finish construction and research with gold')";
             // mysql_query($q, $this->connection);
             return true;
         } else {
-            //$q = "INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Failed construction and research with gold')";
+            //$q = "INSERT INTO gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Failed construction and research with gold')";
             //mysql_query($q, $this->connection);
             return false;
         }
@@ -370,23 +370,23 @@ class MYSQL_DB
             if ($k != 'extra') $where .= " AND $k = $v ";
         }
         if ($list['extra']) $where .= ' AND ' . $list['extra'] . ' ';
-        $q = "SELECT * FROM " . TB_PREFIX . "users " . $where;
+        $q = "SELECT * FROM users " . $where;
         return $this->query_return($q);
     }
 
     function modifyUser($ref, $column, $value, $mod = 0)
     {
         if (!$mod) {
-            $q = "UPDATE " . TB_PREFIX . "users SET `$column` = '$value' WHERE id = $ref";
+            $q = "UPDATE users SET `$column` = '$value' WHERE id = $ref";
         } else {
-            $q = "UPDATE " . TB_PREFIX . "users SET `$column` = '$value' WHERE username = '$ref'";
+            $q = "UPDATE users SET `$column` = '$value' WHERE username = '$ref'";
         }
         return mysql_query($q, $this->connection);
     }
 
     function getUserWithEmail($email)
     {
-        $q = "SELECT `id`,`username` FROM " . TB_PREFIX . "users where email = '$email' LIMIT 1";
+        $q = "SELECT `id`,`username` FROM users where email = '$email' LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
@@ -395,16 +395,16 @@ class MYSQL_DB
     {
         $time = time();
         if (!$mode) {
-            $q = "INSERT into " . TB_PREFIX . "active VALUES ('$username',$time)";
+            $q = "INSERT into active VALUES ('$username',$time)";
         } else {
-            $q = "DELETE FROM " . TB_PREFIX . "active where username = '$username'";
+            $q = "DELETE FROM active where username = '$username'";
         }
         return mysql_query($q, $this->connection);
     }
 
     function addActiveUser($username, $time)
     {
-        $q = "REPLACE into " . TB_PREFIX . "active values ('$username',$time)";
+        $q = "REPLACE into active values ('$username',$time)";
         if (mysql_query($q, $this->connection)) {
             return true;
         } else {
@@ -414,14 +414,14 @@ class MYSQL_DB
 
     function getActiveUsersList()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "active";
+        $q = "SELECT * FROM active";
         return $this->query_return($q);
     }
 
     function updateActiveUser($username, $time)
     {
-        $q = "REPLACE into " . TB_PREFIX . "active (`username`, `timestamp`) values ('$username',$time)";
-        $q2 = "UPDATE " . TB_PREFIX . "users set timestamp = $time where username = '$username'";
+        $q = "REPLACE into active (`username`, `timestamp`) values ('$username',$time)";
+        $q2 = "UPDATE users set timestamp = $time where username = '$username'";
         $exec1 = mysql_query($q, $this->connection);
         $exec2 = mysql_query($q2, $this->connection);
         if ($exec1 && $exec2) {
@@ -433,7 +433,7 @@ class MYSQL_DB
 
     function checkSitter($username)
     {
-        $q = "SELECT `sitter` FROM " . TB_PREFIX . "online WHERE name = '" . $username . "'";
+        $q = "SELECT `sitter` FROM online WHERE name = '" . $username . "'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['sitter'];
@@ -468,7 +468,7 @@ class MYSQL_DB
 
     function getResourceLevel($vid)
     {
-        $q = "SELECT * from " . TB_PREFIX . "fdata where vref = $vid";
+        $q = "SELECT * from fdata where vref = $vid";
         $result = $this->query_return($q);
         if ($result) {
             return $result[0];
@@ -479,7 +479,7 @@ class MYSQL_DB
 
     public function VillageOasisCount($vref)
     {
-        $q = "SELECT count(*) FROM " . TB_PREFIX . "odata WHERE conqured=$vref";
+        $q = "SELECT count(*) FROM odata WHERE conqured=$vref";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         return $row[0];
@@ -487,14 +487,14 @@ class MYSQL_DB
 
     function getOasisInfo($wid)
     {
-        $q = "SELECT `conqured`,`loyalty` FROM " . TB_PREFIX . "odata where wref = $wid LIMIT 1";
+        $q = "SELECT `conqured`,`loyalty` FROM odata where wref = $wid LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
     function getCoor($wref)
     {
-        $q = "SELECT x,y FROM " . TB_PREFIX . "wdata where id = $wref LIMIT 1";
+        $q = "SELECT x,y FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
@@ -503,15 +503,15 @@ class MYSQL_DB
     {
         $vinfo = $this->getVillage($vref);
         $uid = $vinfo['owner'];
-        $q = "UPDATE `" . TB_PREFIX . "odata` SET conqured=$vref,loyalty=100,lastupdated=" . time() . ",owner=$uid,name='Occupied Oasis' WHERE wref=$wref";
+        $q = "UPDATE `odata` SET conqured=$vref,loyalty=100,lastupdated=" . time() . ",owner=$uid,name='Occupied Oasis' WHERE wref=$wref";
         mysql_query($q, $this->connection);
-        $q = "UPDATE `" . TB_PREFIX . "wdata` SET occupied=1 WHERE id=$wref";
+        $q = "UPDATE `wdata` SET occupied=1 WHERE id=$wref";
         mysql_query($q, $this->connection);
     }
 
     function getVillage($vid)
     {
-        $q = "SELECT `wref`,`capital`,`name`,`celebration`,`owner`,`wood`,`woodp`,`clay`,`clayp`,`iron`,`ironp`,`crop`,`cropp`,`pop`,`upkeep`,`maxstore`,`maxcrop`,`loyalty`,`natar` FROM " . TB_PREFIX . "vdata where wref = $vid LIMIT 1";
+        $q = "SELECT `wref`,`capital`,`name`,`celebration`,`owner`,`wood`,`woodp`,`clay`,`clayp`,`iron`,`ironp`,`crop`,`cropp`,`pop`,`upkeep`,`maxstore`,`maxcrop`,`loyalty`,`natar` FROM vdata where wref = $vid LIMIT 1";
         $result = $this->query_return($q);
         if (!empty($result) && count($result) > 0) {
             return $result[0];
@@ -529,7 +529,7 @@ class MYSQL_DB
             } else {
                 $LoyaltyAmendment = 100;
             }
-            $q = "UPDATE `" . TB_PREFIX . "odata` SET loyalty=GREATEST(loyalty-$LoyaltyAmendment,0) WHERE wref=$wref";
+            $q = "UPDATE `odata` SET loyalty=GREATEST(loyalty-$LoyaltyAmendment,0) WHERE wref=$wref";
             return mysql_query($q, $this->connection);
         }
         return false;
@@ -537,7 +537,7 @@ class MYSQL_DB
 
     function isVillageOases($wref)
     {
-        $q = "SELECT oasistype FROM " . TB_PREFIX . "wdata where id = $wref LIMIT 1";
+        $q = "SELECT oasistype FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['oasistype'];
@@ -545,13 +545,13 @@ class MYSQL_DB
 
     function oasesUpdateLastFarm($wref)
     {
-        $q = "UPDATE " . TB_PREFIX . "odata SET lastfarmed=" . time() . " WHERE wref=$wref";
+        $q = "UPDATE odata SET lastfarmed=" . time() . " WHERE wref=$wref";
         mysql_query($q, $this->connection);
     }
 
     function oasesUpdateLastTrain($wref)
     {
-        $q = "UPDATE " . TB_PREFIX . "odata SET lasttrain=" . time() . " WHERE wref=$wref";
+        $q = "UPDATE odata SET lasttrain=" . time() . " WHERE wref=$wref";
         mysql_query($q, $this->connection);
     }
 
@@ -569,9 +569,9 @@ class MYSQL_DB
     function getUser($ref, $mode = 0)
     {
         if (!$mode) {
-            $q = "SELECT * FROM " . TB_PREFIX . "users where username = '$ref' LIMIT 1";
+            $q = "SELECT * FROM users where username = '$ref' LIMIT 1";
         } else {
-            $q = "SELECT * FROM " . TB_PREFIX . "users where id = $ref LIMIT 1";
+            $q = "SELECT * FROM users where id = $ref LIMIT 1";
         }
         $result = $this->query_return($q);
         if (!empty($result) && count($result) > 0) {
@@ -583,7 +583,7 @@ class MYSQL_DB
 
     function submitProfile($uid, $gender, $location, $birthday, $des1, $des2)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set gender = $gender, location = '$location', birthday = '$birthday', desc1 = '$des1', desc2 = '$des2' where id = $uid";
+        $q = "UPDATE users set gender = $gender, location = '$location', birthday = '$birthday', desc1 = '$des1', desc2 = '$des2' where id = $uid";
         return mysql_query($q, $this->connection);
     }
 
@@ -591,10 +591,10 @@ class MYSQL_DB
     {
         global $session;
         if ($mode == "login") {
-            $q = "INSERT IGNORE INTO " . TB_PREFIX . "online (name, time, sitter) VALUES ('$name', " . time() . ", " . $sit . ")";
+            $q = "INSERT IGNORE INTO online (name, time, sitter) VALUES ('$name', " . time() . ", " . $sit . ")";
             return mysql_query($q, $this->connection);
         } else {
-            $q = "DELETE FROM " . TB_PREFIX . "online WHERE name ='" . addslashes($session->username) . "'";
+            $q = "DELETE FROM online WHERE name ='" . addslashes($session->username) . "'";
             return mysql_query($q, $this->connection);
         }
     }
@@ -649,7 +649,7 @@ class MYSQL_DB
 
         // echo $x_y;die;
 
-        $q = "SELECT `id` FROM " . TB_PREFIX . "wdata where fieldtype = 3 and occupied = 0 $x_y and (x BETWEEN $x_a AND $x_b) and (y BETWEEN $y_a AND $y_b) AND (SQRT(POW(x,2)+POW(y,2))>" . ($nareadis) . ") $order LIMIT 20";
+        $q = "SELECT `id` FROM wdata where fieldtype = 3 and occupied = 0 $x_y and (x BETWEEN $x_a AND $x_b) and (y BETWEEN $y_a AND $y_b) AND (SQRT(POW(x,2)+POW(y,2))>" . ($nareadis) . ") $order LIMIT 20";
 
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
@@ -658,7 +658,7 @@ class MYSQL_DB
 
     function setFieldTaken($id)
     {
-        $q = "UPDATE " . TB_PREFIX . "wdata set occupied = 1 where id = $id";
+        $q = "UPDATE wdata set occupied = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
@@ -672,14 +672,14 @@ class MYSQL_DB
         }
 
         $time = time();
-        $q = "INSERT into " . TB_PREFIX . "vdata (wref, owner, name, capital, pop, cp, celebration, wood, clay, iron, maxstore, crop, maxcrop, lastupdate, created) values
+        $q = "INSERT into vdata (wref, owner, name, capital, pop, cp, celebration, wood, clay, iron, maxstore, crop, maxcrop, lastupdate, created) values
         ('$wid', '$uid', '$vname', '$capital', 2, 1, 0, 780, 780, 780, " . STORAGE_BASE . ", 780, " . STORAGE_BASE . ", '$time', '$time')";
         return mysql_query($q, $this->connection);
     }
 
     function getVillagesID($uid)
     {
-        $q = "SELECT wref from " . TB_PREFIX . "vdata where owner = $uid order by capital DESC";
+        $q = "SELECT wref from vdata where owner = $uid order by capital DESC";
         $result = mysql_query($q, $this->connection);
         $array = $this->mysql_fetch_all($result);
         $newarray = array();
@@ -693,40 +693,40 @@ class MYSQL_DB
     {
         switch ($type) {
             case 1:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,4,4,1,4,4,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,4,4,1,4,4,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 2:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,1,3,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,1,3,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 3:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,3,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,3,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 4:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,2,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,2,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 5:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,3,1,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,3,1,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 6:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,4,4,1,3,4,4,4,4,4,4,4,4,4,4,4,2,4,4,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,4,4,1,3,4,4,4,4,4,4,4,4,4,4,4,2,4,4,1,15)";
                 break;
             case 7:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,4,1,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,4,1,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 8:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,4,1,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,4,1,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 9:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,4,1,1,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,4,1,1,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 10:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,1,2,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,4,1,2,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
             case 11:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,1,1,3,1,4,4,3,3,2,2,3,1,4,4,2,4,4,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,3,1,1,3,1,4,4,3,3,2,2,3,1,4,4,2,4,4,1,15)";
                 break;
             case 12:
-                $q = "INSERT into " . TB_PREFIX . "fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,1,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
+                $q = "INSERT into fdata (vref,f1t,f2t,f3t,f4t,f5t,f6t,f7t,f8t,f9t,f10t,f11t,f12t,f13t,f14t,f15t,f16t,f17t,f18t,f26,f26t) values($vid,1,4,1,1,2,2,3,4,4,3,3,4,4,1,4,2,1,2,1,15)";
                 break;
         }
         return mysql_query($q, $this->connection);
@@ -734,7 +734,7 @@ class MYSQL_DB
 
     function populateOasis()
     {
-        $q = "SELECT id FROM " . TB_PREFIX . "wdata where oasistype != 0";
+        $q = "SELECT id FROM wdata where oasistype != 0";
         $result = mysql_query($q, $this->connection);
         while ($row = mysql_fetch_array($result)) {
             $this->addUnits($row['id']);
@@ -743,14 +743,14 @@ class MYSQL_DB
 
     function addUnits($vid)
     {
-        $q = "INSERT into " . TB_PREFIX . "units (vref) values ($vid)";
+        $q = "INSERT into units (vref) values ($vid)";
         return mysql_query($q, $this->connection);
     }
 
     /**
      * Function to retrieve type of village via ID
      * References: Village ID
-    */
+     */
     function getVillageOasis($list, $limit, $order)
     {
         $wref = $this->getVilWref($order['x'], $order['y']);
@@ -764,18 +764,18 @@ class MYSQL_DB
         if (isset($order) && $order['by'] != '') $orderby = " ORDER BY " . $order['by'] . ' ';
         $q = 'SELECT ';
         if ($order['by'] == 'distance') {
-            $q .= " *,(ROUND(SQRT(POW(LEAST(ABS(" . $order['x'] . " - " . TB_PREFIX . "wdata.x), ABS(" . $order['max'] . " - ABS(" . $order['x'] . " - " . TB_PREFIX . "wdata.x))), 2) + POW(LEAST(ABS(" . $order['y'] . " - " . TB_PREFIX . "wdata.y), ABS(" . $order['max'] . " - ABS(" . $order['y'] . " - " . TB_PREFIX . "wdata.y))), 2)),3)) AS distance FROM ";
+            $q .= " *,(ROUND(SQRT(POW(LEAST(ABS(" . $order['x'] . " - wdata.x), ABS(" . $order['max'] . " - ABS(" . $order['x'] . " - wdata.x))), 2) + POW(LEAST(ABS(" . $order['y'] . " - wdata.y), ABS(" . $order['max'] . " - ABS(" . $order['y'] . " - wdata.y))), 2)),3)) AS distance FROM ";
         } else {
             $q .= " * FROM ";
         }
-        $q .= TB_PREFIX . "odata LEFT JOIN " . TB_PREFIX . "wdata ON " . TB_PREFIX . "wdata.id=" . TB_PREFIX . "odata.wref " . $where . $orderby . $limit;
+        $q .= "odata LEFT JOIN wdata ON wdata.id=odata.wref " . $where . $orderby . $limit;
 
         return $this->query_return($q);
     }
 
     function getVilWref($x, $y)
     {
-        $q = "SELECT id FROM " . TB_PREFIX . "wdata where x = $x AND y = $y LIMIT 1";
+        $q = "SELECT id FROM wdata where x = $x AND y = $y LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['id'];
@@ -783,7 +783,7 @@ class MYSQL_DB
 
     function getVillageType($wref)
     {
-        $q = "SELECT fieldtype FROM " . TB_PREFIX . "wdata where id = $wref LIMIT 1";
+        $q = "SELECT fieldtype FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         if ($result) {
             $dbarray = mysql_fetch_array($result);
@@ -795,7 +795,7 @@ class MYSQL_DB
 
     function checkVilExist($wref)
     {
-        $q = "SELECT wref FROM " . TB_PREFIX . "vdata where wref = '$wref' LIMIT 1";
+        $q = "SELECT wref FROM vdata where wref = '$wref' LIMIT 1";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -806,7 +806,7 @@ class MYSQL_DB
 
     function getVillageState($wref)
     {
-        $q = "SELECT oasistype,occupied FROM " . TB_PREFIX . "wdata where id = $wref LIMIT 1";
+        $q = "SELECT oasistype,occupied FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if ($dbarray['occupied'] != 0 || $dbarray['oasistype'] != 0) {
@@ -818,7 +818,7 @@ class MYSQL_DB
 
     function getVillageStateForSettle($wref)
     {
-        $q = "SELECT `oasistype`,`occupied`,`fieldtype` FROM " . TB_PREFIX . "wdata where id = $wref LIMIT 1";
+        $q = "SELECT `oasistype`,`occupied`,`fieldtype` FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if ($dbarray['occupied'] == 0 && $dbarray['oasistype'] == 0 && $dbarray['fieldtype'] == 0) {
@@ -830,28 +830,28 @@ class MYSQL_DB
 
     function getProfileVillages($uid)
     {
-        $q = "SELECT `wref`,`maxstore`,`maxcrop`,`pop`,`name`,`capital` from " . TB_PREFIX . "vdata where owner = $uid order by pop desc";
+        $q = "SELECT `wref`,`maxstore`,`maxcrop`,`pop`,`name`,`capital` from vdata where owner = $uid order by pop desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getProfileMedal($uid)
     {
-        $q = "SELECT id,categorie,plaats,week,img,points from " . TB_PREFIX . "medal where userid = $uid order by id desc";
+        $q = "SELECT id,categorie,plaats,week,img,points from medal where userid = $uid order by id desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getProfileMedalAlly($uid)
     {
-        $q = "SELECT id,categorie,plaats,week,img,points from " . TB_PREFIX . "allimedal where allyid = $uid order by id desc";
+        $q = "SELECT id,categorie,plaats,week,img,points from allimedal where allyid = $uid order by id desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getVillageID($uid)
     {
-        $q = "SELECT wref FROM " . TB_PREFIX . "vdata WHERE owner = $uid";
+        $q = "SELECT wref FROM vdata WHERE owner = $uid";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['wref'];
@@ -872,7 +872,7 @@ class MYSQL_DB
         } else {
             $q .= " * FROM ";
         }
-        $q .= TB_PREFIX . "wdata " . $where . $orderby . $limit;
+        $q .= "wdata " . $where . $orderby . $limit;
         return $this->query_return($q);
     }
 
@@ -883,28 +883,28 @@ class MYSQL_DB
             if ($k != 'extra') $where .= " AND $k = $v ";
         }
         if (isset($list['extra'])) $where .= ' AND ' . $list['extra'] . ' ';
-        $q = "SELECT id FROM " . TB_PREFIX . "wdata " . $where;
+        $q = "SELECT id FROM wdata " . $where;
         $result = mysql_query($q, $this->connection);
         return mysql_num_rows($result);
     }
 
     function getOasisV($vid)
     {
-        $q = "SELECT `wref` FROM " . TB_PREFIX . "odata where wref = $vid LIMIT 1";
+        $q = "SELECT `wref` FROM odata where wref = $vid LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getAInfo($id)
     {
-        $q = "SELECT `x`,`y` FROM " . TB_PREFIX . "wdata where id = $id LIMIT 1";
+        $q = "SELECT `x`,`y` FROM wdata where id = $id LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getOasisField($ref, $field)
     {
-        $q = "SELECT $field FROM " . TB_PREFIX . "odata where wref = $ref LIMIT 1";
+        $q = "SELECT $field FROM odata where wref = $ref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray[$field];
@@ -913,13 +913,13 @@ class MYSQL_DB
     function setVillageField($ref, $field, $value)
     {
         if ((stripos($field, 'name') !== false) && ($value == '')) return false;
-        $q = "UPDATE " . TB_PREFIX . "vdata set $field = '$value' where wref = $ref";
+        $q = "UPDATE vdata set $field = '$value' where wref = $ref";
         return mysql_query($q, $this->connection);
     }
 
     function setVillageLevel($ref, $field, $value)
     {
-        $q = "UPDATE " . TB_PREFIX . "fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
+        $q = "UPDATE fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
         return mysql_query($q, $this->connection);
     }
 
@@ -929,33 +929,33 @@ class MYSQL_DB
         $tribeSpecificArray = array(31, 32, 33, 35, 36, 41);
         for ($i = 19; $i <= 40; $i++) {
             if (in_array($fields['f' . $i . 't'], $tribeSpecificArray)) {
-                $q = "UPDATE " . TB_PREFIX . "fdata set " . ('f' . $i) . " = '0', " . ('f' . $i . 't') . " = '0' WHERE vref = " . $vref;
+                $q = "UPDATE fdata set " . ('f' . $i) . " = '0', " . ('f' . $i . 't') . " = '0' WHERE vref = " . $vref;
                 mysql_query($q, $this->connection);
             }
         }
-        $q = 'UPDATE ' . TB_PREFIX . 'units SET u199=0 WHERE `vref`=' . $vref;
+        $q = 'UPDATE units SET u199=0 WHERE `vref`=' . $vref;
         mysql_query($q, $this->connection);
-        $q = 'DELETE FROM ' . TB_PREFIX . 'trapped WHERE `vref`=' . $vref;
+        $q = 'DELETE FROM trapped WHERE `vref`=' . $vref;
         mysql_query($q, $this->connection);
-        $q = 'DELETE FROM ' . TB_PREFIX . 'training WHERE `vref`=' . $vref;
+        $q = 'DELETE FROM training WHERE `vref`=' . $vref;
         mysql_query($q, $this->connection);
     }
 
     function getAdminLog($limit = 5)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "admin_log ORDER BY id DESC LIMIT $limit";
+        $q = "SELECT * FROM admin_log ORDER BY id DESC LIMIT $limit";
         return $this->query_return($q);
     }
 
     function delAdminLog($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "admin_log where id = $id";
+        $q = "DELETE FROM admin_log where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function CheckForum($id)
     {
-        $q = "SELECT id from " . TB_PREFIX . "forum_cat where alliance = '$id'";
+        $q = "SELECT id from forum_cat where alliance = '$id'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -966,7 +966,7 @@ class MYSQL_DB
 
     function CountCat($id)
     {
-        $q = "SELECT count(id) FROM " . TB_PREFIX . "forum_topic where cat = '$id'";
+        $q = "SELECT count(id) FROM forum_topic where cat = '$id'";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         return $row[0];
@@ -974,7 +974,7 @@ class MYSQL_DB
 
     function LastTopic($id)
     {
-        $q = "SELECT `id` from " . TB_PREFIX . "forum_topic where cat = '$id' order by post_date";
+        $q = "SELECT `id` from forum_topic where cat = '$id' order by post_date";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -982,7 +982,7 @@ class MYSQL_DB
     function check_forumRules($id)
     {
         global $session;
-        $q = "SELECT * FROM " . TB_PREFIX . "fpost_rules WHERE forum_id = $id";
+        $q = "SELECT * FROM fpost_rules WHERE forum_id = $id";
         $z = mysql_query($q, $this->connection);
         $row = mysql_fetch_assoc($z);
 
@@ -1000,7 +1000,7 @@ class MYSQL_DB
         foreach ($ids as $pid) {
             if ($pid == $aid) return false;
         }
-        $q = "SELECT `tag` FROM " . TB_PREFIX . "alidata WHERE id = $aid";
+        $q = "SELECT `tag` FROM alidata WHERE id = $aid";
         $z = mysql_query($q, $this->connection);
         $rows = mysql_fetch_assoc($z);
 
@@ -1014,7 +1014,7 @@ class MYSQL_DB
 
     function CheckLastTopic($id)
     {
-        $q = "SELECT id from " . TB_PREFIX . "forum_topic where cat = '$id'";
+        $q = "SELECT id from forum_topic where cat = '$id'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -1025,7 +1025,7 @@ class MYSQL_DB
 
     function CheckLastPost($id)
     {
-        $q = "SELECT id from " . TB_PREFIX . "forum_post where topic = '$id'";
+        $q = "SELECT id from forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -1036,18 +1036,18 @@ class MYSQL_DB
 
     function LastPost($id)
     {
-        $q = "SELECT `date`,`owner` from " . TB_PREFIX . "forum_post where topic = '$id'";
+        $q = "SELECT `date`,`owner` from forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function CountTopic($id)
     {
-        $q = "SELECT count(id) FROM " . TB_PREFIX . "forum_post where owner = '$id'";
+        $q = "SELECT count(id) FROM forum_post where owner = '$id'";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
 
-        $qs = "SELECT count(id) FROM " . TB_PREFIX . "forum_topic where owner = '$id'";
+        $qs = "SELECT count(id) FROM forum_topic where owner = '$id'";
         $results = mysql_query($qs, $this->connection);
         $rows = mysql_fetch_row($results);
         return $row[0] + $rows[0];
@@ -1055,7 +1055,7 @@ class MYSQL_DB
 
     function CountPost($id)
     {
-        $q = "SELECT count(id) FROM " . TB_PREFIX . "forum_post where topic = '$id'";
+        $q = "SELECT count(id) FROM forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         return $row[0];
@@ -1063,21 +1063,21 @@ class MYSQL_DB
 
     function ForumCat($id)
     {
-        $q = "SELECT * from " . TB_PREFIX . "forum_cat where alliance = '$id' ORDER BY id";
+        $q = "SELECT * from forum_cat where alliance = '$id' ORDER BY id";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function ForumCatEdit($id)
     {
-        $q = "SELECT * from " . TB_PREFIX . "forum_cat where id = '$id'";
+        $q = "SELECT * from forum_cat where id = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function ForumCatName($id)
     {
-        $q = "SELECT forum_name from " . TB_PREFIX . "forum_cat where id = $id";
+        $q = "SELECT forum_name from forum_cat where id = $id";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['forum_name'];
@@ -1085,7 +1085,7 @@ class MYSQL_DB
 
     function CheckCatTopic($id)
     {
-        $q = "SELECT id from " . TB_PREFIX . "forum_topic where cat = '$id'";
+        $q = "SELECT id from forum_topic where cat = '$id'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -1096,7 +1096,7 @@ class MYSQL_DB
 
     function CheckResultEdit($alli)
     {
-        $q = "SELECT id from " . TB_PREFIX . "forum_edit where alliance = '$alli'";
+        $q = "SELECT id from forum_edit where alliance = '$alli'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -1107,7 +1107,7 @@ class MYSQL_DB
 
     function CheckCloseTopic($id)
     {
-        $q = "SELECT close from " . TB_PREFIX . "forum_topic where id = '$id'";
+        $q = "SELECT close from forum_topic where id = '$id'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['close'];
@@ -1115,7 +1115,7 @@ class MYSQL_DB
 
     function CheckEditRes($alli)
     {
-        $q = "SELECT result from " . TB_PREFIX . "forum_edit where alliance = '$alli'";
+        $q = "SELECT result from forum_edit where alliance = '$alli'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['result'];
@@ -1123,7 +1123,7 @@ class MYSQL_DB
 
     function CreatResultEdit($alli, $result)
     {
-        $q = "INSERT into " . TB_PREFIX . "forum_edit values (0,'$alli','$result')";
+        $q = "INSERT into forum_edit values (0,'$alli','$result')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
@@ -1131,66 +1131,66 @@ class MYSQL_DB
     function UpdateResultEdit($alli, $result)
     {
         $date = time();
-        $q = "UPDATE " . TB_PREFIX . "forum_edit set result = '$result' where alliance = '$alli'";
+        $q = "UPDATE forum_edit set result = '$result' where alliance = '$alli'";
         return mysql_query($q, $this->connection);
     }
 
     function UpdateEditTopic($id, $title, $cat)
     {
-        $q = "UPDATE " . TB_PREFIX . "forum_topic set title = '$title', cat = '$cat' where id = $id";
+        $q = "UPDATE forum_topic set title = '$title', cat = '$cat' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function UpdateEditForum($id, $name, $des)
     {
-        $q = "UPDATE " . TB_PREFIX . "forum_cat set forum_name = '$name', forum_des = '$des' where id = $id";
+        $q = "UPDATE forum_cat set forum_name = '$name', forum_des = '$des' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function StickTopic($id, $mode)
     {
-        $q = "UPDATE " . TB_PREFIX . "forum_topic set stick = '$mode' where id = '$id'";
+        $q = "UPDATE forum_topic set stick = '$mode' where id = '$id'";
         return mysql_query($q, $this->connection);
     }
 
     function ForumCatTopic($id)
     {
-        $q = "SELECT * from " . TB_PREFIX . "forum_topic where cat = '$id' AND stick = '' ORDER BY post_date desc";
+        $q = "SELECT * from forum_topic where cat = '$id' AND stick = '' ORDER BY post_date desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function ForumCatTopicStick($id)
     {
-        $q = "SELECT * from " . TB_PREFIX . "forum_topic where cat = '$id' AND stick = '1' ORDER BY post_date desc";
+        $q = "SELECT * from forum_topic where cat = '$id' AND stick = '1' ORDER BY post_date desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function ShowTopic($id)
     {
-        $q = "SELECT * from " . TB_PREFIX . "forum_topic where id = '$id'";
+        $q = "SELECT * from forum_topic where id = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function ShowPost($id)
     {
-        $q = "SELECT * from " . TB_PREFIX . "forum_post where topic = '$id'";
+        $q = "SELECT * from forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function ShowPostEdit($id)
     {
-        $q = "SELECT * from " . TB_PREFIX . "forum_post where id = '$id'";
+        $q = "SELECT * from forum_post where id = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function CreatForum($owner, $alli, $name, $des, $area)
     {
-        $q = "INSERT into " . TB_PREFIX . "forum_cat values (0,'$owner','$alli','$name','$des','$area')";
+        $q = "INSERT into forum_cat values (0,'$owner','$alli','$name','$des','$area')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
@@ -1198,7 +1198,7 @@ class MYSQL_DB
     function CreatTopic($title, $post, $cat, $owner, $alli, $ends)
     {
         $date = time();
-        $q = "INSERT into " . TB_PREFIX . "forum_topic values (0,'$title','$post','$date','$date','$cat','$owner','$alli','$ends','','')";
+        $q = "INSERT into forum_topic values (0,'$title','$post','$date','$date','$cat','$owner','$alli','$ends','','')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
@@ -1206,7 +1206,7 @@ class MYSQL_DB
     function CreatPost($post, $tids, $owner)
     {
         $date = time();
-        $q = "INSERT into " . TB_PREFIX . "forum_post values (0,'$post','$tids','$owner','$date')";
+        $q = "INSERT into forum_post values (0,'$post','$tids','$owner','$date')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
@@ -1214,54 +1214,54 @@ class MYSQL_DB
     function UpdatePostDate($id)
     {
         $date = time();
-        $q = "UPDATE " . TB_PREFIX . "forum_topic set post_date = '$date' where id = $id";
+        $q = "UPDATE forum_topic set post_date = '$date' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function EditUpdateTopic($id, $post)
     {
-        $q = "UPDATE " . TB_PREFIX . "forum_topic set post = '$post' where id = $id";
+        $q = "UPDATE forum_topic set post = '$post' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function EditUpdatePost($id, $post)
     {
-        $q = "UPDATE " . TB_PREFIX . "forum_post set post = '$post' where id = $id";
+        $q = "UPDATE forum_post set post = '$post' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function LockTopic($id, $mode)
     {
-        $q = "UPDATE " . TB_PREFIX . "forum_topic set close = '$mode' where id = '$id'";
+        $q = "UPDATE forum_topic set close = '$mode' where id = '$id'";
         return mysql_query($q, $this->connection);
     }
 
     function DeleteCat($id)
     {
-        $qs = "DELETE from " . TB_PREFIX . "forum_cat where id = '$id'";
-        $q = "DELETE from " . TB_PREFIX . "forum_topic where cat = '$id'";
+        $qs = "DELETE from forum_cat where id = '$id'";
+        $q = "DELETE from forum_topic where cat = '$id'";
         mysql_query($qs, $this->connection);
         return mysql_query($q, $this->connection);
     }
 
     function DeleteTopic($id)
     {
-        $qs = "DELETE from " . TB_PREFIX . "forum_topic where id = '$id'";
-        //  $q = "DELETE from ".TB_PREFIX."forum_post where topic = '$id'";//
+        $qs = "DELETE from forum_topic where id = '$id'";
+        //  $q = "DELETE from forum_post where topic = '$id'";//
         return mysql_query($qs, $this->connection); //
         // mysql_query($q,$this->connection);
     }
 
     function DeletePost($id)
     {
-        $q = "DELETE from " . TB_PREFIX . "forum_post where id = '$id'";
+        $q = "DELETE from forum_post where id = '$id'";
         return mysql_query($q, $this->connection);
     }
 
     function getAllianceName($id)
     {
         if (!$id) return false;
-        $q = "SELECT tag from " . TB_PREFIX . "alidata where id = $id";
+        $q = "SELECT tag from alidata where id = $id";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['tag'];
@@ -1270,9 +1270,9 @@ class MYSQL_DB
     function getAlliancePermission($ref, $field, $mode)
     {
         if (!$mode) {
-            $q = "SELECT $field FROM " . TB_PREFIX . "ali_permission where uid = '$ref'";
+            $q = "SELECT $field FROM ali_permission where uid = '$ref'";
         } else {
-            $q = "SELECT $field FROM " . TB_PREFIX . "ali_permission where username = '$ref'";
+            $q = "SELECT $field FROM ali_permission where username = '$ref'";
         }
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
@@ -1281,35 +1281,35 @@ class MYSQL_DB
 
     function ChangePos($id, $mode)
     { //??S-H=a-d=o-W??//
-        $q = "SELECT `forum_area` from " . TB_PREFIX . "forum_cat where id = '$id'";
+        $q = "SELECT `forum_area` from forum_cat where id = '$id'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         if ($mode == '-1') {
-            $q = "SELECT `id` from " . TB_PREFIX . "forum_cat WHERE forum_area = '" . $dbarray['forum_area'] . "' AND id < '$id' ORDER BY id DESC";
+            $q = "SELECT `id` from forum_cat WHERE forum_area = '" . $dbarray['forum_area'] . "' AND id < '$id' ORDER BY id DESC";
             $result2 = mysql_query($q, $this->connection);
             $dbarray2 = mysql_fetch_assoc($result2);
             if ($dbarray2) {
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = 0 where id = '" . $dbarray2['id'] . "'";
+                $q = "UPDATE forum_cat set id = 0 where id = '" . $dbarray2['id'] . "'";
                 mysql_query($q, $this->connection);
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = -1 where id = '" . $id . "'";
+                $q = "UPDATE forum_cat set id = -1 where id = '" . $id . "'";
                 mysql_query($q, $this->connection);
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = '" . $id . "' where id = '0'";
+                $q = "UPDATE forum_cat set id = '" . $id . "' where id = '0'";
                 mysql_query($q, $this->connection);
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = '" . $dbarray2['id'] . "' where id = '-1'";
+                $q = "UPDATE forum_cat set id = '" . $dbarray2['id'] . "' where id = '-1'";
                 mysql_query($q, $this->connection);
             }
         } elseif ($mode == 1) {
-            $q = "SELECT * from " . TB_PREFIX . "forum_cat where id > '$id' AND forum_area = '" . $dbarray['forum_area'] . "' LIMIT 0,1";
+            $q = "SELECT * from forum_cat where id > '$id' AND forum_area = '" . $dbarray['forum_area'] . "' LIMIT 0,1";
             $result2 = mysql_query($q, $this->connection);
             $dbarray2 = mysql_fetch_assoc($result2);
             if ($dbarray2) {
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = 0 where id = '" . $dbarray2['id'] . "'";
+                $q = "UPDATE forum_cat set id = 0 where id = '" . $dbarray2['id'] . "'";
                 mysql_query($q, $this->connection);
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = -1 where id = '" . $id . "'";
+                $q = "UPDATE forum_cat set id = -1 where id = '" . $id . "'";
                 mysql_query($q, $this->connection);
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = '" . $id . "' where id = '0'";
+                $q = "UPDATE forum_cat set id = '" . $id . "' where id = '0'";
                 mysql_query($q, $this->connection);
-                $q = "UPDATE " . TB_PREFIX . "forum_cat set id = '" . $dbarray2['id'] . "' where id = '-1'";
+                $q = "UPDATE forum_cat set id = '" . $dbarray2['id'] . "' where id = '-1'";
                 mysql_query($q, $this->connection);
             }
         }
@@ -1317,7 +1317,7 @@ class MYSQL_DB
 
     function ForumCatAlliance($id)
     {
-        $q = "SELECT `alliance` from " . TB_PREFIX . "forum_cat where id = $id";
+        $q = "SELECT `alliance` from forum_cat where id = $id";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray['alliance'];
@@ -1325,14 +1325,14 @@ class MYSQL_DB
 
     function CreatPoll($id, $name, $p1_name, $p2_name, $p3_name, $p4_name)
     {
-        $q = "INSERT into " . TB_PREFIX . "forum_poll values ('$id','$name','0','0','0','0','$p1_name','$p2_name','$p3_name','$p4_name','')";
+        $q = "INSERT into forum_poll values ('$id','$name','0','0','0','0','$p1_name','$p2_name','$p3_name','$p4_name','')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     function CreatForum_rules($aid, $id, $users_id, $users_name, $alli_id, $alli_name)
     {
-        $q = "INSERT into " . TB_PREFIX . "fpost_rules values ('$aid','$id','$users_id','$users_name', '$alli_id','$alli_name')";
+        $q = "INSERT into fpost_rules values ('$aid','$id','$users_id','$users_name', '$alli_id','$alli_name')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
@@ -1340,14 +1340,14 @@ class MYSQL_DB
     function setAlliName($aid, $name, $tag)
     {
         if (!$aid) return false;
-        $q = "UPDATE " . TB_PREFIX . "alidata set name = '$name', tag = '$tag' where id = $aid";
+        $q = "UPDATE alidata set name = '$name', tag = '$tag' where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
     function isAllianceOwner($id)
     {
         if (!$id) return false;
-        $q = "SELECT id from " . TB_PREFIX . "alidata where leader = '$id'";
+        $q = "SELECT id from alidata where leader = '$id'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -1358,7 +1358,7 @@ class MYSQL_DB
 
     function aExist($ref, $type)
     {
-        $q = "SELECT $type FROM " . TB_PREFIX . "alidata where $type = '$ref'";
+        $q = "SELECT $type FROM alidata where $type = '$ref'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -1369,31 +1369,31 @@ class MYSQL_DB
 
     function createAlliance($tag, $name, $uid, $max)
     {
-        $q = "INSERT into " . TB_PREFIX . "alidata values (0,'$name','$tag',$uid,0,0,0,'','',$max,'','','','','','','','')";
+        $q = "INSERT into alidata values (0,'$name','$tag',$uid,0,0,0,'','',$max,'','','','','','','','')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     /**
      * Function to insert an alliance new
-    */
+     */
     function insertAlliNotice($aid, $notice)
     {
         $time = time();
-        $q = "INSERT into " . TB_PREFIX . "ali_log values (0,'$aid','$notice',$time)";
+        $q = "INSERT into ali_log values (0,'$aid','$notice',$time)";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     /**
      * Function to delete alliance if empty
-    */
+     */
     function deleteAlliance($aid)
     {
-        $result = mysql_query("SELECT id FROM " . TB_PREFIX . "users where alliance = $aid");
+        $result = mysql_query("SELECT id FROM users where alliance = $aid");
         $num_rows = mysql_num_rows($result);
         if ($num_rows == 0) {
-            $q = "DELETE FROM " . TB_PREFIX . "alidata WHERE id = $aid";
+            $q = "DELETE FROM alidata WHERE id = $aid";
         }
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
@@ -1401,10 +1401,10 @@ class MYSQL_DB
 
     /**
      * Function to read all alliance news
-    */
+     */
     function readAlliNotice($aid)
     {
-        $q = "SELECT * from " . TB_PREFIX . "ali_log where aid = $aid ORDER BY date DESC";
+        $q = "SELECT * from ali_log where aid = $aid ORDER BY date DESC";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -1412,40 +1412,40 @@ class MYSQL_DB
     /**
      * Function to create alliance permissions
      * References: ID, notice, description
-    */
+     */
     function createAlliPermissions($uid, $aid, $rank, $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8)
     {
 
-        $q = "INSERT into " . TB_PREFIX . "ali_permission values(0,'$uid','$aid','$rank','$opt1','$opt2','$opt3','$opt4','$opt5','$opt6','$opt7','$opt8')";
+        $q = "INSERT into ali_permission values(0,'$uid','$aid','$rank','$opt1','$opt2','$opt3','$opt4','$opt5','$opt6','$opt7','$opt8')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     /**
      * Function to update alliance permissions
-    */
+     */
     function deleteAlliPermissions($uid)
     {
-        $q = "DELETE from " . TB_PREFIX . "ali_permission where uid = '$uid'";
+        $q = "DELETE from ali_permission where uid = '$uid'";
         return mysql_query($q, $this->connection);
     }
 
     /**
      * Function to update alliance permissions
-    */
+     */
     function updateAlliPermissions($uid, $aid, $rank, $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8 = 0)
     {
-        $q = "UPDATE " . TB_PREFIX . "ali_permission SET rank = '$rank', opt1 = '$opt1', opt2 = '$opt2', opt3 = '$opt3', opt4 = '$opt4', opt5 = '$opt5', opt6 = '$opt6', opt7 = '$opt7', opt8 = '$opt8' where uid = $uid && alliance =$aid";
+        $q = "UPDATE ali_permission SET rank = '$rank', opt1 = '$opt1', opt2 = '$opt2', opt3 = '$opt3', opt4 = '$opt4', opt5 = '$opt5', opt6 = '$opt6', opt7 = '$opt7', opt8 = '$opt8' where uid = $uid && alliance =$aid";
         return mysql_query($q, $this->connection);
     }
 
     /**
      * Function to read alliance permissions
      * References: ID, notice, description
-    */
+     */
     function getAlliPermissions($uid, $aid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "ali_permission where uid = $uid && alliance = $aid";
+        $q = "SELECT * FROM ali_permission where uid = $uid && alliance = $aid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
@@ -1453,30 +1453,30 @@ class MYSQL_DB
     /**
      * Function to update an alliance description and notice
      * References: ID, notice, description
-    */
+     */
     function submitAlliProfile($aid, $notice, $desc)
     {
         if (!$aid) return false;
-        $q = "UPDATE " . TB_PREFIX . "alidata SET `notice` = '$notice', `desc` = '$desc' where id = $aid";
+        $q = "UPDATE alidata SET `notice` = '$notice', `desc` = '$desc' where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
     function diplomacyInviteAdd($alli1, $alli2, $type)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "diplomacy (alli1,alli2,type,accepted) VALUES ($alli1,$alli2," . (int)intval($type) . ",0)";
+        $q = "INSERT INTO diplomacy (alli1,alli2,type,accepted) VALUES ($alli1,$alli2," . (int)intval($type) . ",0)";
         return mysql_query($q, $this->connection);
     }
 
     function diplomacyOwnOffers($session_alliance)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "diplomacy WHERE alli1 = $session_alliance AND accepted = 0";
+        $q = "SELECT * FROM diplomacy WHERE alli1 = $session_alliance AND accepted = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getAllianceID($name)
     {
-        $q = "SELECT id FROM " . TB_PREFIX . "alidata WHERE tag ='" . $this->RemoveXSS($name) . "'";
+        $q = "SELECT id FROM alidata WHERE tag ='" . $this->RemoveXSS($name) . "'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['id'];
@@ -1489,53 +1489,53 @@ class MYSQL_DB
 
     function diplomacyCancelOffer($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "diplomacy WHERE id = $id";
+        $q = "DELETE FROM diplomacy WHERE id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function diplomacyInviteAccept($id, $session_alliance)
     {
-        $q = "UPDATE " . TB_PREFIX . "diplomacy SET accepted = 1 WHERE id = $id AND alli2 = $session_alliance";
+        $q = "UPDATE diplomacy SET accepted = 1 WHERE id = $id AND alli2 = $session_alliance";
         return mysql_query($q, $this->connection);
     }
 
     function diplomacyInviteDenied($id, $session_alliance)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "diplomacy WHERE id = $id AND alli2 = $session_alliance";
+        $q = "DELETE FROM diplomacy WHERE id = $id AND alli2 = $session_alliance";
         return mysql_query($q, $this->connection);
     }
 
     function diplomacyInviteCheck($session_alliance)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "diplomacy WHERE alli2 = $session_alliance AND accepted = 0";
+        $q = "SELECT * FROM diplomacy WHERE alli2 = $session_alliance AND accepted = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function diplomacyExistingRelationships($session_alliance)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "diplomacy WHERE alli2 = $session_alliance AND accepted = 1";
+        $q = "SELECT * FROM diplomacy WHERE alli2 = $session_alliance AND accepted = 1";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function diplomacyExistingRelationships2($session_alliance)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "diplomacy WHERE alli1 = $session_alliance AND accepted = 1";
+        $q = "SELECT * FROM diplomacy WHERE alli1 = $session_alliance AND accepted = 1";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function diplomacyCancelExistingRelationship($id, $session_alliance)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "diplomacy WHERE id = $id AND alli2 = $session_alliance";
+        $q = "DELETE FROM diplomacy WHERE id = $id AND alli2 = $session_alliance";
         return mysql_query($q, $this->connection);
     }
 
     function getUserAlliance($id)
     {
         if (!$id) return false;
-        $q = "SELECT " . TB_PREFIX . "alidata.tag from " . TB_PREFIX . "users join " . TB_PREFIX . "alidata where " . TB_PREFIX . "users.alliance = " . TB_PREFIX . "alidata.id and " . TB_PREFIX . "users.id = $id";
+        $q = "SELECT alidata.tag from users join alidata where users.alliance = alidata.id and users.id = $id";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if ($dbarray['tag'] == "") {
@@ -1548,39 +1548,39 @@ class MYSQL_DB
     function modifyResource($vid, $wood, $clay, $iron, $crop, $mode)
     {
         if (!$mode) {
-            $q = "UPDATE " . TB_PREFIX . "vdata set wood = wood - $wood, clay = clay - $clay, iron = iron - $iron, crop = crop - $crop where wref = $vid";
+            $q = "UPDATE vdata set wood = wood - $wood, clay = clay - $clay, iron = iron - $iron, crop = crop - $crop where wref = $vid";
         } else {
-            $q = "UPDATE " . TB_PREFIX . "vdata set wood = wood + $wood, clay = clay + $clay, iron = iron + $iron, crop = crop + $crop where wref = $vid";
+            $q = "UPDATE vdata set wood = wood + $wood, clay = clay + $clay, iron = iron + $iron, crop = crop + $crop where wref = $vid";
         }
         return mysql_query($q, $this->connection);
     }
 
     function modifyProduction($vid, $woodp, $clayp, $ironp, $cropp, $upkeep)
     {
-        $q = "UPDATE " . TB_PREFIX . "vdata set woodp = $woodp, clayp = $clayp, ironp = $ironp, cropp = $cropp, upkeep = $upkeep where wref = $vid";
+        $q = "UPDATE vdata set woodp = $woodp, clayp = $clayp, ironp = $ironp, cropp = $cropp, upkeep = $upkeep where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
     function modifyOasisResource($vid, $wood, $clay, $iron, $crop, $mode)
     {
         if (!$mode) {
-            $q = "UPDATE " . TB_PREFIX . "odata set wood = wood - $wood, clay = clay - $clay, iron = iron - $iron, crop = crop - $crop where wref = $vid";
+            $q = "UPDATE odata set wood = wood - $wood, clay = clay - $clay, iron = iron - $iron, crop = crop - $crop where wref = $vid";
         } else {
-            $q = "UPDATE " . TB_PREFIX . "odata set wood = wood + $wood, clay = clay + $clay, iron = iron + $iron, crop = crop + $crop where wref = $vid";
+            $q = "UPDATE odata set wood = wood + $wood, clay = clay + $clay, iron = iron + $iron, crop = crop + $crop where wref = $vid";
         }
         return mysql_query($q, $this->connection);
     }
 
     function getFieldType($vid, $field)
     {
-        $q = "SELECT f" . $field . "t from " . TB_PREFIX . "fdata where vref = $vid";
+        $q = "SELECT f" . $field . "t from fdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_result($result, 0);
     }
 
     function getVSumField($uid, $field)
     {
-        $q = "SELECT sum(" . $field . ") FROM " . TB_PREFIX . "vdata where owner = $uid";
+        $q = "SELECT sum(" . $field . ") FROM vdata where owner = $uid";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         return $row[0];
@@ -1589,50 +1589,50 @@ class MYSQL_DB
     function updateVillage($vid)
     {
         $time = time();
-        $q = "UPDATE " . TB_PREFIX . "vdata set lastupdate = $time where wref = $vid";
+        $q = "UPDATE vdata set lastupdate = $time where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
     function updateOasis($vid)
     {
         $time = time();
-        $q = "UPDATE " . TB_PREFIX . "odata set lastupdated = $time where wref = $vid";
+        $q = "UPDATE odata set lastupdated = $time where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
     function setVillageName($vid, $name)
     {
         if ($name == '') return false;
-        $q = "UPDATE " . TB_PREFIX . "vdata set name = '$name' where wref = $vid";
+        $q = "UPDATE vdata set name = '$name' where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
     function modifyPop($vid, $pop, $mode)
     {
         if (!$mode) {
-            $q = "UPDATE " . TB_PREFIX . "vdata set pop = pop + $pop where wref = $vid";
+            $q = "UPDATE vdata set pop = pop + $pop where wref = $vid";
         } else {
-            $q = "UPDATE " . TB_PREFIX . "vdata set pop = pop - $pop where wref = $vid";
+            $q = "UPDATE vdata set pop = pop - $pop where wref = $vid";
         }
         return mysql_query($q, $this->connection);
     }
 
     function addCP($ref, $cp)
     {
-        $q = "UPDATE " . TB_PREFIX . "vdata set cp = cp + '$cp' where wref = '$ref'";
+        $q = "UPDATE vdata set cp = cp + '$cp' where wref = '$ref'";
         return mysql_query($q, $this->connection);
     }
 
     function addCel($ref, $cel, $type)
     {
-        $q = "UPDATE " . TB_PREFIX . "vdata set celebration = $cel, type= $type where wref = $ref";
+        $q = "UPDATE vdata set celebration = $cel, type= $type where wref = $ref";
         return mysql_query($q, $this->connection);
     }
 
     function getCel()
     {
         $time = time();
-        $q = "SELECT `wref`,`type`,`owner` FROM " . TB_PREFIX . "vdata where celebration < $time AND celebration != 0";
+        $q = "SELECT `wref`,`type`,`owner` FROM vdata where celebration < $time AND celebration != 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -1640,40 +1640,40 @@ class MYSQL_DB
     function getActiveGCel($vref)
     {
         $time = time();
-        $q = "SELECT * FROM " . TB_PREFIX . "vdata WHERE vref = $vref AND celebration > $time AND type=2";
+        $q = "SELECT * FROM vdata WHERE vref = $vref AND celebration > $time AND type=2";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function clearCel($ref)
     {
-        $q = "UPDATE " . TB_PREFIX . "vdata set celebration = 0, type = 0 where wref = $ref";
+        $q = "UPDATE vdata set celebration = 0, type = 0 where wref = $ref";
         return mysql_query($q, $this->connection);
     }
 
     function setCelCp($user, $cp)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set cp = cp + $cp where id = $user";
+        $q = "UPDATE users set cp = cp + $cp where id = $user";
         return mysql_query($q, $this->connection);
     }
 
     function getInvitation($uid, $ally)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "ali_invite where uid = $uid AND alliance = $ally";
+        $q = "SELECT * FROM ali_invite where uid = $uid AND alliance = $ally";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getInvitation2($uid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "ali_invite where uid = $uid";
+        $q = "SELECT * FROM ali_invite where uid = $uid";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getAliInvitations($aid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "ali_invite where alliance = $aid && accept = 0";
+        $q = "SELECT * FROM ali_invite where alliance = $aid && accept = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -1681,44 +1681,44 @@ class MYSQL_DB
     function sendInvitation($uid, $alli, $sender)
     {
         $time = time();
-        $q = "INSERT INTO " . TB_PREFIX . "ali_invite values (0,$uid,$alli,$sender,$time,0)";
+        $q = "INSERT INTO ali_invite values (0,$uid,$alli,$sender,$time,0)";
         return mysql_query($q, $this->connection);
     }
 
     function removeInvitation($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "ali_invite where id = $id";
+        $q = "DELETE FROM ali_invite where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function delMessage($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "mdata WHERE id = $id";
+        $q = "DELETE FROM mdata WHERE id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function delNotice($id, $uid)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "ndata WHERE id = $id AND uid = $uid";
+        $q = "DELETE FROM ndata WHERE id = $id AND uid = $uid";
         return mysql_query($q, $this->connection);
     }
 
     function sendMessage($client, $owner, $topic, $message, $send, $alliance, $player, $coor, $report)
     {
         $time = $_SERVER['REQUEST_TIME'];
-        $q = "INSERT INTO " . TB_PREFIX . "mdata values (0,$client,$owner,'$topic',\"$message\",0,0,$send,$time,0,0,$alliance,$player,$coor,$report)";
+        $q = "INSERT INTO mdata values (0,$client,$owner,'$topic',\"$message\",0,0,$send,$time,0,0,$alliance,$player,$coor,$report)";
         return mysql_query($q, $this->connection);
     }
 
     function setArchived($id)
     {
-        $q = "UPDATE " . TB_PREFIX . "mdata set archived = 1 where id = $id";
+        $q = "UPDATE mdata set archived = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function setNorm($id)
     {
-        $q = "UPDATE " . TB_PREFIX . "mdata set archived = 0 where id = $id";
+        $q = "UPDATE mdata set archived = 0 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
@@ -1727,40 +1727,40 @@ class MYSQL_DB
         global $session;
         switch ($mode) {
             case 1:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata WHERE target = $id and send = 0 and archived = 0 ORDER BY time DESC";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata WHERE target = $id and send = 0 and archived = 0 ORDER BY time DESC";
                 break;
             case 2:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata WHERE owner = $id ORDER BY time DESC";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata WHERE owner = $id ORDER BY time DESC";
                 break;
             case 3:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata where id = $id";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata where id = $id";
                 break;
             case 4:
-                $q = "UPDATE " . TB_PREFIX . "mdata set viewed = 1 where id = $id AND target = $session->uid";
+                $q = "UPDATE mdata set viewed = 1 where id = $id AND target = $session->uid";
                 break;
             case 5:
-                $q = "UPDATE " . TB_PREFIX . "mdata set deltarget = 1 ,viewed = 1 where id = $id";
+                $q = "UPDATE mdata set deltarget = 1 ,viewed = 1 where id = $id";
                 break;
             case 6:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata where target = $id and send = 0 and archived = 1";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata where target = $id and send = 0 and archived = 1";
                 break;
             case 7:
-                $q = "UPDATE " . TB_PREFIX . "mdata set delowner = 1 where id = $id";
+                $q = "UPDATE mdata set delowner = 1 where id = $id";
                 break;
             case 8:
-                $q = "UPDATE " . TB_PREFIX . "mdata set deltarget = 1, delowner = 1, viewed = 1 where id = $id";
+                $q = "UPDATE mdata set deltarget = 1, delowner = 1, viewed = 1 where id = $id";
                 break;
             case 9:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata WHERE target = $id and send = 0 and archived = 0 and deltarget = 0 and viewed = 0 ORDER BY time DESC";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata WHERE target = $id and send = 0 and archived = 0 and deltarget = 0 and viewed = 0 ORDER BY time DESC";
                 break;
             case 10:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata WHERE owner = $id and delowner = 0 ORDER BY time DESC";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata WHERE owner = $id and delowner = 0 ORDER BY time DESC";
                 break;
             case 11:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata where target = $id and send = 0 and archived = 1 and deltarget = 0";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata where target = $id and send = 0 and archived = 1 and deltarget = 0";
                 break;
             case 12:
-                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM " . TB_PREFIX . "mdata WHERE target = $id and send = 0 and archived = 0 and deltarget = 0 and viewed = 0 ORDER BY time DESC LIMIT 1";
+                $q = "SELECT `id`,`target`,`owner`,`topic`,`message`,`viewed`,`archived`,`send`,`time`,`deltarget`,`delowner`,`alliance`,`player`,`coor`,`report` FROM mdata WHERE target = $id and send = 0 and archived = 0 and deltarget = 0 and viewed = 0 ORDER BY time DESC LIMIT 1";
                 break;
         }
         if ($mode <= 3 || $mode == 6 || $mode > 8) {
@@ -1773,25 +1773,25 @@ class MYSQL_DB
 
     function unarchiveNotice($id)
     {
-        $q = "UPDATE " . TB_PREFIX . "ndata set `archive` = 0 where id = $id";
+        $q = "UPDATE ndata set `archive` = 0 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function archiveNotice($id)
     {
-        $q = "update " . TB_PREFIX . "ndata set `archive` = 1 where id = $id";
+        $q = "update ndata set `archive` = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function removeNotice($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "ndata where id = $id";
+        $q = "DELETE FROM ndata where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function noticeViewed($id)
     {
-        $q = "UPDATE " . TB_PREFIX . "ndata set viewed = 1 where id = $id";
+        $q = "UPDATE ndata set viewed = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
@@ -1800,20 +1800,20 @@ class MYSQL_DB
         if ($time == 0) {
             $time = time();
         }
-        $q = "INSERT INTO " . TB_PREFIX . "ndata (id, uid, toWref, ally, topic, ntype, data, time, viewed) values (0,'$uid','$toWref','$ally','$topic',$type,'$data',$time,0)";
+        $q = "INSERT INTO ndata (id, uid, toWref, ally, topic, ntype, data, time, viewed) values (0,'$uid','$toWref','$ally','$topic',$type,'$data',$time,0)";
         return mysql_query($q, $this->connection);
     }
 
     function getNotice($uid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "ndata where uid = $uid ORDER BY time DESC LIMIT 99";
+        $q = "SELECT * FROM ndata where uid = $uid ORDER BY time DESC LIMIT 99";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getNoticeReportBox($uid)
     {
-        $q = "SELECT COUNT(`id`) as maxreport FROM " . TB_PREFIX . "ndata where uid = $uid ORDER BY time DESC LIMIT 200";
+        $q = "SELECT COUNT(`id`) as maxreport FROM ndata where uid = $uid ORDER BY time DESC LIMIT 200";
         $result = mysql_query($q, $this->connection);
         $result = mysql_fetch_assoc($result);
         return $result['maxreport'];
@@ -1821,9 +1821,9 @@ class MYSQL_DB
 
     function addBuilding($wid, $field, $type, $loop, $time, $master, $level)
     {
-        $x = "UPDATE " . TB_PREFIX . "fdata SET f" . $field . "t=" . $type . " WHERE vref=" . $wid;
+        $x = "UPDATE fdata SET f" . $field . "t=" . $type . " WHERE vref=" . $wid;
         mysql_query($x, $this->connection);
-        $q = "INSERT into " . TB_PREFIX . "bdata values (0,$wid,$field,$type,$loop,$time,$master,$level)";
+        $q = "INSERT into bdata values (0,$wid,$field,$type,$loop,$time,$master,$level)";
         return mysql_query($q, $this->connection);
     }
 
@@ -1881,7 +1881,7 @@ class MYSQL_DB
                         $uprequire = $building->resourceRequired($jobs[1]['field'], $jobs[1]['type'], 1);
                         $time = $uprequire['time'];
                         $timestamp = $time + time();
-                        $q = "UPDATE " . TB_PREFIX . "bdata SET loopcon=0,level=level-1,timestamp=" . $timestamp . " WHERE id=" . $jobs[1]['id'] . "";
+                        $q = "UPDATE bdata SET loopcon=0,level=level-1,timestamp=" . $timestamp . " WHERE id=" . $jobs[1]['id'] . "";
                         mysql_query($q, $this->connection);
                     }
                 } else if ($SameBuildCount == 6) {
@@ -1889,7 +1889,7 @@ class MYSQL_DB
                         $uprequire = $building->resourceRequired($jobs[2]['field'], $jobs[2]['type'], 1);
                         $time = $uprequire['time'];
                         $timestamp = $time + time();
-                        $q = "UPDATE " . TB_PREFIX . "bdata SET loopcon=0,level=level-1,timestamp=" . $timestamp . " WHERE id=" . $jobs[2]['id'] . "";
+                        $q = "UPDATE bdata SET loopcon=0,level=level-1,timestamp=" . $timestamp . " WHERE id=" . $jobs[2]['id'] . "";
                         mysql_query($q, $this->connection);
                     }
                 } else if ($SameBuildCount == 7) {
@@ -1897,7 +1897,7 @@ class MYSQL_DB
                         $uprequire = $building->resourceRequired($jobs[2]['field'], $jobs[2]['type'], 1);
                         $time = $uprequire['time'];
                         $timestamp = $time + time();
-                        $q = "UPDATE " . TB_PREFIX . "bdata SET loopcon=0,level=level-1,timestamp=" . $timestamp . " WHERE id=" . $jobs[2]['id'] . "";
+                        $q = "UPDATE bdata SET loopcon=0,level=level-1,timestamp=" . $timestamp . " WHERE id=" . $jobs[2]['id'] . "";
                         mysql_query($q, $this->connection);
                     }
                 }
@@ -1905,54 +1905,54 @@ class MYSQL_DB
                     $uprequire1 = $building->resourceRequired($jobs[$jobMaster]['field'], $jobs[$jobMaster]['type'], 2);
                     $time1 = $uprequire1['time'];
                     $timestamp1 = $time1;
-                    $q1 = "UPDATE " . TB_PREFIX . "bdata SET level=level-1,timestamp=" . $timestamp1 . " WHERE id=" . $jobs[$jobMaster]['id'] . "";
+                    $q1 = "UPDATE bdata SET level=level-1,timestamp=" . $timestamp1 . " WHERE id=" . $jobs[$jobMaster]['id'] . "";
                     mysql_query($q1, $this->connection);
                 } else {
                     $uprequire1 = $building->resourceRequired($jobs[$jobMaster]['field'], $jobs[$jobMaster]['type'], 1);
                     $time1 = $uprequire1['time'];
                     $timestamp1 = $time1;
-                    $q1 = "UPDATE " . TB_PREFIX . "bdata SET level=level-1,timestamp=" . $timestamp1 . " WHERE id=" . $jobs[$jobMaster]['id'] . "";
+                    $q1 = "UPDATE bdata SET level=level-1,timestamp=" . $timestamp1 . " WHERE id=" . $jobs[$jobMaster]['id'] . "";
                     mysql_query($q1, $this->connection);
                 }
             } else if ($d == $jobs[floor($SameBuildCount / 3)]['id'] || $d == $jobs[floor($SameBuildCount / 2) + 1]['id']) {
-                $q = "UPDATE " . TB_PREFIX . "bdata SET loopcon=0,level=level-1,timestamp=" . $jobs[floor($SameBuildCount / 3)]['timestamp'] . " WHERE master = 0 AND id > " . $d . " and (ID=" . $jobs[floor($SameBuildCount / 3)]['id'] . " OR ID=" . $jobs[floor($SameBuildCount / 2) + 1]['id'] . ")";
+                $q = "UPDATE bdata SET loopcon=0,level=level-1,timestamp=" . $jobs[floor($SameBuildCount / 3)]['timestamp'] . " WHERE master = 0 AND id > " . $d . " and (ID=" . $jobs[floor($SameBuildCount / 3)]['id'] . " OR ID=" . $jobs[floor($SameBuildCount / 2) + 1]['id'] . ")";
                 mysql_query($q, $this->connection);
             }
         } else {
             if ($jobs[$jobDeleted]['field'] >= 19) {
-                $x = "SELECT f" . $jobs[$jobDeleted]['field'] . " FROM " . TB_PREFIX . "fdata WHERE vref=" . $jobs[$jobDeleted]['wid'];
+                $x = "SELECT f" . $jobs[$jobDeleted]['field'] . " FROM fdata WHERE vref=" . $jobs[$jobDeleted]['wid'];
                 $result = mysql_query($x, $this->connection);
                 $fieldlevel = mysql_fetch_row($result);
                 if ($fieldlevel[0] == 0) {
-                    $x = "UPDATE " . TB_PREFIX . "fdata SET f" . $jobs[$jobDeleted]['field'] . "t=0 WHERE vref=" . $jobs[$jobDeleted]['wid'];
+                    $x = "UPDATE fdata SET f" . $jobs[$jobDeleted]['field'] . "t=0 WHERE vref=" . $jobs[$jobDeleted]['wid'];
                     mysql_query($x, $this->connection);
                 }
             }
             if (($jobLoopconID >= 0) && ($jobs[$jobDeleted]['loopcon'] != 1)) {
                 if (($jobs[$jobLoopconID]['field'] <= 18 && $jobs[$jobDeleted]['field'] <= 18) || ($jobs[$jobLoopconID]['field'] >= 19 && $jobs[$jobDeleted]['field'] >= 19) || sizeof($jobs) < 3) {
                     $uprequire = $building->resourceRequired($jobs[$jobLoopconID]['field'], $jobs[$jobLoopconID]['type']);
-                    $x = "UPDATE " . TB_PREFIX . "bdata SET loopcon=0,timestamp=" . (time() + $uprequire['time']) . " WHERE wid=" . $jobs[$jobDeleted]['wid'] . " AND loopcon=1 AND master=0";
+                    $x = "UPDATE bdata SET loopcon=0,timestamp=" . (time() + $uprequire['time']) . " WHERE wid=" . $jobs[$jobDeleted]['wid'] . " AND loopcon=1 AND master=0";
                     mysql_query($x, $this->connection);
                 }
             }
         }
-        $q = "DELETE FROM " . TB_PREFIX . "bdata where id = $d";
+        $q = "DELETE FROM bdata where id = $d";
         return mysql_query($q, $this->connection);
     }
 
     function addDemolition($wid, $field)
     {
         global $building, $village;
-        $q = "DELETE FROM " . TB_PREFIX . "bdata WHERE field=$field AND wid=$wid";
+        $q = "DELETE FROM bdata WHERE field=$field AND wid=$wid";
         mysql_query($q, $this->connection);
         $uprequire = $building->resourceRequired($field - 1, $village->resarray['f' . $field . 't']);
-        $q = "INSERT INTO " . TB_PREFIX . "demolition VALUES (" . $wid . "," . $field . "," . ($this->getFieldLevel($wid, $field) - 1) . "," . (time() + floor($uprequire['time'] / 2)) . ")";
+        $q = "INSERT INTO demolition VALUES (" . $wid . "," . $field . "," . ($this->getFieldLevel($wid, $field) - 1) . "," . (time() + floor($uprequire['time'] / 2)) . ")";
         return mysql_query($q, $this->connection);
     }
 
     function getFieldLevel($vid, $field)
     {
-        $q = "SELECT f" . $field . " from " . TB_PREFIX . "fdata where vref = $vid";
+        $q = "SELECT f" . $field . " from fdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_result($result, 0);
     }
@@ -1960,9 +1960,9 @@ class MYSQL_DB
     function getDemolition($wid = 0)
     {
         if ($wid) {
-            $q = "SELECT `vref`,`buildnumber`,`timetofinish` FROM " . TB_PREFIX . "demolition WHERE vref=" . $wid;
+            $q = "SELECT `vref`,`buildnumber`,`timetofinish` FROM demolition WHERE vref=" . $wid;
         } else {
-            $q = "SELECT `vref`,`buildnumber`,`timetofinish` FROM " . TB_PREFIX . "demolition WHERE timetofinish<=" . time();
+            $q = "SELECT `vref`,`buildnumber`,`timetofinish` FROM demolition WHERE timetofinish<=" . time();
         }
         $result = mysql_query($q, $this->connection);
         if (!empty($result)) {
@@ -1974,19 +1974,19 @@ class MYSQL_DB
 
     function finishDemolition($wid)
     {
-        $q = "UPDATE " . TB_PREFIX . "demolition SET timetofinish=0 WHERE vref=" . $wid;
+        $q = "UPDATE demolition SET timetofinish=0 WHERE vref=" . $wid;
         return mysql_query($q, $this->connection);
     }
 
     function delDemolition($wid)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "demolition WHERE vref=" . $wid;
+        $q = "DELETE FROM demolition WHERE vref=" . $wid;
         return mysql_query($q, $this->connection);
     }
 
     function getJobs($wid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "bdata where wid = $wid order by ID ASC";
+        $q = "SELECT * FROM bdata where wid = $wid order by ID ASC";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -1994,10 +1994,10 @@ class MYSQL_DB
     function FinishWoodcutter($wid)
     {
         $time = time() - 1;
-        $q = "SELECT id FROM " . TB_PREFIX . "bdata where wid = $wid and type = 1 order by master,timestamp ASC";
+        $q = "SELECT id FROM bdata where wid = $wid and type = 1 order by master,timestamp ASC";
         $result = mysql_query($q);
         $dbarray = mysql_fetch_array($result);
-        $q = "UPDATE " . TB_PREFIX . "bdata SET timestamp = $time WHERE id = '" . $dbarray['id'] . "'";
+        $q = "UPDATE bdata SET timestamp = $time WHERE id = '" . $dbarray['id'] . "'";
         $this->query($q);
     }
 
@@ -2013,17 +2013,17 @@ class MYSQL_DB
     function FinishCropLand($wid)
     {
         $time = $_SERVER['REQUEST_TIME'] - 1;
-        $q = "SELECT `id`,`timestamp` FROM " . TB_PREFIX . "bdata where wid = $wid and type = 4 order by master,timestamp ASC";
+        $q = "SELECT `id`,`timestamp` FROM bdata where wid = $wid and type = 4 order by master,timestamp ASC";
         $result = mysql_query($q);
         $dbarray = mysql_fetch_assoc($result);
-        $q = "UPDATE " . TB_PREFIX . "bdata SET timestamp = $time WHERE id = '" . $dbarray['id'] . "'";
+        $q = "UPDATE bdata SET timestamp = $time WHERE id = '" . $dbarray['id'] . "'";
         $this->query($q);
-        $q2 = "SELECT `id` FROM " . TB_PREFIX . "bdata where wid = $wid and loopcon = 1 and field <= 18 order by master,timestamp ASC";
+        $q2 = "SELECT `id` FROM bdata where wid = $wid and loopcon = 1 and field <= 18 order by master,timestamp ASC";
         if (mysql_num_rows($q2) > 0) {
             $result2 = mysql_query($q2);
             $dbarray2 = mysql_fetch_assoc($result2);
             $wc_time = $dbarray['timestamp'];
-            $q2 = "UPDATE " . TB_PREFIX . "bdata SET timestamp = timestamp - $wc_time WHERE id = '" . $dbarray2['id'] . "'";
+            $q2 = "UPDATE bdata SET timestamp = timestamp - $wc_time WHERE id = '" . $dbarray2['id'] . "'";
             $this->query($q2);
         }
     }
@@ -2031,59 +2031,59 @@ class MYSQL_DB
     function finishBuildings($wid)
     {
         $time = time() - 1;
-        $q = "SELECT id FROM " . TB_PREFIX . "bdata where wid = $wid order by master,timestamp ASC";
+        $q = "SELECT id FROM bdata where wid = $wid order by master,timestamp ASC";
         $result = mysql_query($q);
         while ($row = mysql_fetch_assoc($result)) {
-            $q = "UPDATE " . TB_PREFIX . "bdata SET timestamp = $time WHERE id = '" . $row['id'] . "'";
+            $q = "UPDATE bdata SET timestamp = $time WHERE id = '" . $row['id'] . "'";
             $this->query($q);
         }
     }
 
     function getMasterJobs($wid)
     {
-        $q = "SELECT `id` FROM " . TB_PREFIX . "bdata where wid = $wid and master = 1 order by master,timestamp ASC";
+        $q = "SELECT `id` FROM bdata where wid = $wid and master = 1 order by master,timestamp ASC";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getBuildingByField($wid, $field)
     {
-        $q = "SELECT `id` FROM " . TB_PREFIX . "bdata where wid = $wid and field = $field and master = 0";
+        $q = "SELECT `id` FROM bdata where wid = $wid and field = $field and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getBuildingByType($wid, $type)
     {
-        $q = "SELECT `id` FROM " . TB_PREFIX . "bdata where wid = $wid and type = $type and master = 0";
+        $q = "SELECT `id` FROM bdata where wid = $wid and type = $type and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getDorf1Building($wid)
     {
-        $q = "SELECT `timestamp` FROM " . TB_PREFIX . "bdata where wid = $wid and field < 19 and master = 0";
+        $q = "SELECT `timestamp` FROM bdata where wid = $wid and field < 19 and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getDorf2Building($wid)
     {
-        $q = "SELECT `timestamp` FROM " . TB_PREFIX . "bdata where wid = $wid and field > 18 and master = 0";
+        $q = "SELECT `timestamp` FROM bdata where wid = $wid and field > 18 and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function updateBuildingWithMaster($id, $time, $loop)
     {
-        $q = "UPDATE " . TB_PREFIX . "bdata SET master = 0, timestamp = " . $time . ",loopcon = " . $loop . " WHERE id = " . $id . "";
+        $q = "UPDATE bdata SET master = 0, timestamp = " . $time . ",loopcon = " . $loop . " WHERE id = " . $id . "";
         return mysql_query($q, $this->connection);
     }
 
     function getVillageByName($name)
     {
         $name = mysql_real_escape_string($name, $this->connection);
-        $q = "SELECT wref FROM " . TB_PREFIX . "vdata where name = '$name' limit 1";
+        $q = "SELECT wref FROM vdata where name = '$name' limit 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['wref'];
@@ -2095,7 +2095,7 @@ class MYSQL_DB
      */
     function setMarketAcc($id)
     {
-        $q = "UPDATE " . TB_PREFIX . "market set accept = 1 where id = $id";
+        $q = "UPDATE market set accept = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
@@ -2107,21 +2107,21 @@ class MYSQL_DB
      */
     function sendResource($wood, $clay, $iron, $crop, $merchant)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "send (`wood`, `clay`, `iron`, `crop`, `merchant`) values ($wood,$clay,$iron,$crop,$merchant)";
+        $q = "INSERT INTO send (`wood`, `clay`, `iron`, `crop`, `merchant`) values ($wood,$clay,$iron,$crop,$merchant)";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     function sendResourceMORE($wood, $clay, $iron, $crop, $send)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "send (`wood`, `clay`, `iron`, `crop`, `send`) values ($wood,$clay,$iron,$crop,$send)";
+        $q = "INSERT INTO send (`wood`, `clay`, `iron`, `crop`, `send`) values ($wood,$clay,$iron,$crop,$send)";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     function removeSend($ref)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "send WHERE id = " . $ref;
+        $q = "DELETE FROM send WHERE id = " . $ref;
         mysql_query($q, $this->connection);
     }
 
@@ -2134,21 +2134,21 @@ class MYSQL_DB
     {
         //Xtype (1) = wood, (2) = clay, (3) = iron, (4) = crop
         if ($gtype == 1) {
-            $q = "UPDATE " . TB_PREFIX . "vdata SET `wood` = `wood` + '$gamt' WHERE wref = $vref";
+            $q = "UPDATE vdata SET `wood` = `wood` + '$gamt' WHERE wref = $vref";
             return mysql_query($q, $this->connection);
         } else
             if ($gtype == 2) {
-                $q = "UPDATE " . TB_PREFIX . "vdata SET `clay` = `clay` + '$gamt' WHERE wref = $vref";
-                return mysql_query($q, $this->connection);
-            } else
+            $q = "UPDATE vdata SET `clay` = `clay` + '$gamt' WHERE wref = $vref";
+            return mysql_query($q, $this->connection);
+        } else
                 if ($gtype == 3) {
-                    $q = "UPDATE " . TB_PREFIX . "vdata SET `iron` = `iron` + '$gamt' WHERE wref = $vref";
-                    return mysql_query($q, $this->connection);
-                } else
+            $q = "UPDATE vdata SET `iron` = `iron` + '$gamt' WHERE wref = $vref";
+            return mysql_query($q, $this->connection);
+        } else
                     if ($gtype == 4) {
-                        $q = "UPDATE " . TB_PREFIX . "vdata SET `crop` = `crop` + '$gamt' WHERE wref = $vref";
-                        return mysql_query($q, $this->connection);
-                    }
+            $q = "UPDATE vdata SET `crop` = `crop` + '$gamt' WHERE wref = $vref";
+            return mysql_query($q, $this->connection);
+        }
     }
 
     /**
@@ -2158,7 +2158,7 @@ class MYSQL_DB
      */
     function getMarketField($vref, $field)
     {
-        $q = "SELECT $field FROM " . TB_PREFIX . "market where vref = '$vref'";
+        $q = "SELECT $field FROM market where vref = '$vref'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray[$field];
@@ -2166,7 +2166,7 @@ class MYSQL_DB
 
     function removeAcceptedOffer($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "market where id = $id";
+        $q = "DELETE FROM market where id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
@@ -2180,11 +2180,11 @@ class MYSQL_DB
     function addMarket($vid, $gtype, $gamt, $wtype, $wamt, $time, $alliance, $merchant, $mode)
     {
         if (!$mode) {
-            $q = "INSERT INTO " . TB_PREFIX . "market values (0,$vid,$gtype,$gamt,$wtype,$wamt,0,$time,$alliance,$merchant)";
+            $q = "INSERT INTO market values (0,$vid,$gtype,$gamt,$wtype,$wamt,0,$time,$alliance,$merchant)";
             mysql_query($q, $this->connection);
             return mysql_insert_id($this->connection);
         } else {
-            $q = "DELETE FROM " . TB_PREFIX . "market where id = $gtype and vref = $vid";
+            $q = "DELETE FROM market where id = $gtype and vref = $vid";
             return mysql_query($q, $this->connection);
         }
     }
@@ -2197,9 +2197,9 @@ class MYSQL_DB
     {
         $alliance = $this->getUserField($this->getVillageField($vid, "owner"), "alliance", 0);
         if (!$mode) {
-            $q = "SELECT * FROM " . TB_PREFIX . "market where vref = $vid and accept = 0 ORDER BY id DESC";
+            $q = "SELECT * FROM market where vref = $vid and accept = 0 ORDER BY id DESC";
         } else {
-            $q = "SELECT * FROM " . TB_PREFIX . "market where vref != $vid and alliance = $alliance or vref != $vid and alliance = 0 and accept = 0 ORDER BY id DESC";
+            $q = "SELECT * FROM market where vref != $vid and alliance = $alliance or vref != $vid and alliance = 0 and accept = 0 ORDER BY id DESC";
         }
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
@@ -2208,9 +2208,9 @@ class MYSQL_DB
     function getUserField($ref, $field, $mode)
     {
         if (!$mode) {
-            $q = "SELECT $field FROM " . TB_PREFIX . "users where id = '$ref' LIMIT 1";
+            $q = "SELECT $field FROM users where id = '$ref' LIMIT 1";
         } else {
-            $q = "SELECT $field FROM " . TB_PREFIX . "users where username = '$ref' LIMIT 1";
+            $q = "SELECT $field FROM users where username = '$ref' LIMIT 1";
         }
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
@@ -2219,7 +2219,7 @@ class MYSQL_DB
 
     function getVillageField($ref, $field)
     {
-        $q = "SELECT $field FROM " . TB_PREFIX . "vdata where wref = $ref LIMIT 1";
+        $q = "SELECT $field FROM vdata where wref = $ref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray[$field];
@@ -2231,14 +2231,14 @@ class MYSQL_DB
      */
     function getMarketInfo($id)
     {
-        $q = "SELECT `vref`,`gtype`,`wtype`,`merchant`,`wamt` FROM " . TB_PREFIX . "market where id = $id";
+        $q = "SELECT `vref`,`gtype`,`wtype`,`merchant`,`wamt` FROM market where id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
     function setMovementProc($moveid)
     {
-        $q = "UPDATE " . TB_PREFIX . "movement set proc = 1 where moveid = $moveid";
+        $q = "UPDATE movement set proc = 1 where moveid = $moveid";
         return mysql_query($q, $this->connection);
     }
 
@@ -2249,13 +2249,13 @@ class MYSQL_DB
     function totalMerchantUsed($vid)
     {
         //$time = time();
-        $q = "SELECT sum(" . TB_PREFIX . "send.merchant) from " . TB_PREFIX . "send, " . TB_PREFIX . "movement where " . TB_PREFIX . "movement.from = $vid and " . TB_PREFIX . "send.id = " . TB_PREFIX . "movement.ref and " . TB_PREFIX . "movement.proc = 0 and sort_type = 0";
+        $q = "SELECT sum(send.merchant) from send, movement where movement.from = $vid and send.id = movement.ref and movement.proc = 0 and sort_type = 0";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
-        $q2 = "SELECT sum(" . TB_PREFIX . "send.merchant) from " . TB_PREFIX . "send, " . TB_PREFIX . "movement where " . TB_PREFIX . "movement.to = $vid and " . TB_PREFIX . "send.id = " . TB_PREFIX . "movement.ref and " . TB_PREFIX . "movement.proc = 0 and sort_type = 1";
+        $q2 = "SELECT sum(send.merchant) from send, movement where movement.to = $vid and send.id = movement.ref and movement.proc = 0 and sort_type = 1";
         $result2 = mysql_query($q2, $this->connection);
         $row2 = mysql_fetch_row($result2);
-        $q3 = "SELECT sum(merchant) from " . TB_PREFIX . "market where vref = $vid and accept = 0";
+        $q3 = "SELECT sum(merchant) from market where vref = $vid and accept = 0";
         $result3 = mysql_query($q3, $this->connection);
         $row3 = mysql_fetch_row($result3);
         return $row[0] + $row2[0] + $row3[0];
@@ -2263,7 +2263,7 @@ class MYSQL_DB
 
     function getMovementById($id)
     {
-        $q = "SELECT `starttime`,`to`,`from` FROM " . TB_PREFIX . "movement where moveid = " . $id;
+        $q = "SELECT `starttime`,`to`,`from` FROM movement where moveid = " . $id;
         $result = mysql_query($q, $this->connection);
         $array = $this->mysql_fetch_all($result);
         if (count($array) > 0) {
@@ -2276,20 +2276,20 @@ class MYSQL_DB
     function cancelMovement($id, $newfrom, $newto)
     {
         $refstr = '';
-        $q = "SELECT ref FROM " . TB_PREFIX . "movement WHERE moveid=$id";
+        $q = "SELECT ref FROM movement WHERE moveid=$id";
         $amove = $this->query_return($q);
         if (count($amove) > 0) $mov = $amove[0];
         if ($mov['ref'] == 0) {
             $ref = $this->addAttack($newto, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0);
             $refstr = ',`ref`=' . $ref;
         }
-        $q = "UPDATE " . TB_PREFIX . "movement SET `from`=" . $newfrom . ", `to`=" . $newto . ", `sort_type`=4, `endtime`=(" . (2 * time()) . "-`starttime`),`starttime`=" . time() . " " . $refstr . " WHERE moveid = " . $id;
+        $q = "UPDATE movement SET `from`=" . $newfrom . ", `to`=" . $newto . ", `sort_type`=4, `endtime`=(" . (2 * time()) . "-`starttime`),`starttime`=" . time() . " " . $refstr . " WHERE moveid = " . $id;
         $this->query($q);
     }
 
     function addAttack($vid, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $type, $ctar1, $ctar2, $spy)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "attacks values (0,$vid,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9,$t10,$t11,$type,$ctar1,$ctar2,$spy)";
+        $q = "INSERT INTO attacks values (0,$vid,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9,$t10,$t11,$type,$ctar1,$ctar2,$spy)";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
@@ -2297,7 +2297,7 @@ class MYSQL_DB
     function getAdvMovement($village)
     {
         $where = "from";
-        $q = "SELECT `moveid` FROM " . TB_PREFIX . "movement where " . TB_PREFIX . "movement." . $where . " = $village and sort_type = 9";
+        $q = "SELECT `moveid` FROM movement where movement." . $where . " = $village and sort_type = 9";
         $result = mysql_query($q, $this->connection);
         $array = $this->mysql_fetch_all($result);
         return $array;
@@ -2306,7 +2306,7 @@ class MYSQL_DB
     function getCompletedAdvMovement($village)
     {
         $where = "from";
-        $q = "SELECT `moveid` FROM " . TB_PREFIX . "movement where " . TB_PREFIX . "movement." . $where . " = $village and sort_type = 9 and proc = 1";
+        $q = "SELECT `moveid` FROM movement where movement." . $where . " = $village and sort_type = 9 and proc = 1";
         $result = mysql_query($q, $this->connection);
         $array = $this->mysql_fetch_all($result);
         return $array;
@@ -2314,14 +2314,14 @@ class MYSQL_DB
 
     function addA2b($ckey, $timestamp, $to, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $type)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "a2b (ckey,time_check,to_vid,u1,u2,u3,u4,u5,u6,u7,u8,u9,u10,u11,type) VALUES ('$ckey', '$timestamp', '$to', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9', '$t10', '$t11', '$type')";
+        $q = "INSERT INTO a2b (ckey,time_check,to_vid,u1,u2,u3,u4,u5,u6,u7,u8,u9,u10,u11,type) VALUES ('$ckey', '$timestamp', '$to', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9', '$t10', '$t11', '$type')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     function getA2b($ckey, $check)
     {
-        $q = "SELECT * from " . TB_PREFIX . "a2b where ckey = '" . $ckey . "' AND time_check = '" . $check . "'";
+        $q = "SELECT * from a2b where ckey = '" . $ckey . "' AND time_check = '" . $check . "'";
         $result = mysql_query($q, $this->connection);
         if ($result) {
             return mysql_fetch_assoc($result);
@@ -2332,7 +2332,7 @@ class MYSQL_DB
 
     function removeA2b($ckey, $check)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "a2b where ckey = '" . $ckey . "' AND time_check = '" . $check . "'";
+        $q = "DELETE FROM a2b where ckey = '" . $ckey . "' AND time_check = '" . $check . "'";
         $result = mysql_query($q, $this->connection);
         if ($result) {
             return mysql_fetch_assoc($result);
@@ -2343,32 +2343,32 @@ class MYSQL_DB
 
     function addMovement($type, $from, $to, $ref, $data, $endtime)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "movement values (0,$type,$from,$to,$ref,'$data'," . time() . ",$endtime,0)";
+        $q = "INSERT INTO movement values (0,$type,$from,$to,$ref,'$data'," . time() . ",$endtime,0)";
         return mysql_query($q, $this->connection);
     }
 
     function modifyAttack($aid, $unit, $amt)
     {
         $unit = 't' . $unit;
-        $q = "SELECT $unit FROM " . TB_PREFIX . "attacks WHERE id = " . $aid;
+        $q = "SELECT $unit FROM attacks WHERE id = " . $aid;
         $result = mysql_query($q, $this->connection);
         $result = $this->mysql_fetch_all($result);
         $row = $result[0];
         $amt = min($row[$unit], $amt);
-        $q = "UPDATE " . TB_PREFIX . "attacks SET `$unit` = `$unit` - $amt WHERE id = $aid";
+        $q = "UPDATE attacks SET `$unit` = `$unit` - $amt WHERE id = $aid";
         return mysql_query($q, $this->connection);
     }
 
     function getRanking()
     {
-        $q = "SELECT id,username,alliance,ap,apall,dp,dpall,access FROM " . TB_PREFIX . "users WHERE tribe<=3 AND access<" . (INCLUDE_ADMIN ? "10" : "8");
+        $q = "SELECT id,username,alliance,ap,apall,dp,dpall,access FROM users WHERE tribe<=3 AND access<" . (INCLUDE_ADMIN ? "10" : "8");
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getBuildList($type, $wid = 0)
     {
-        $q = "SELECT `id` FROM " . TB_PREFIX . "bdata WHERE TRUE "
+        $q = "SELECT `id` FROM bdata WHERE TRUE "
             . ($type ? " AND type = $type " : '')
             . ($wid ? " AND wid = $wid " : '');
         $result = mysql_query($q, $this->connection);
@@ -2377,35 +2377,35 @@ class MYSQL_DB
 
     function getVRanking()
     {
-        $q = "SELECT v.wref,v.name,v.owner,v.pop FROM " . TB_PREFIX . "vdata AS v," . TB_PREFIX . "users AS u WHERE v.owner=u.id AND u.tribe<=3 AND v.wref != '' AND u.access<" . (INCLUDE_ADMIN ? "10" : "8");
+        $q = "SELECT v.wref,v.name,v.owner,v.pop FROM vdata AS v,users AS u WHERE v.owner=u.id AND u.tribe<=3 AND v.wref != '' AND u.access<" . (INCLUDE_ADMIN ? "10" : "8");
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getARanking()
     {
-        $q = "SELECT id,name,tag FROM " . TB_PREFIX . "alidata where id != ''";
+        $q = "SELECT id,name,tag FROM alidata where id != ''";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getHeroRanking($limit = '')
     {
-        $q = "SELECT `uid`,`level`,`experience` FROM " . TB_PREFIX . "hero ORDER BY `experience` DESC $limit";
+        $q = "SELECT `uid`,`level`,`experience` FROM hero ORDER BY `experience` DESC $limit";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getAllMember($aid)
     {
-        $q = "SELECT `id`,`username`,`timestamp` FROM " . TB_PREFIX . "users where alliance = $aid order  by (SELECT sum(pop) FROM " . TB_PREFIX . "vdata WHERE owner =  " . TB_PREFIX . "users.id) desc";
+        $q = "SELECT `id`,`username`,`timestamp` FROM users where alliance = $aid order  by (SELECT sum(pop) FROM vdata WHERE owner =  users.id) desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getUnit($vid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "units where vref = " . $vid . "";
+        $q = "SELECT * FROM units where vref = " . $vid . "";
         $result = mysql_query($q, $this->connection);
         if (!empty($result)) {
             return mysql_fetch_assoc($result);
@@ -2416,7 +2416,7 @@ class MYSQL_DB
 
     function getHUnit($vid)
     {
-        $q = "SELECT hero FROM " . TB_PREFIX . "units where vref = " . $vid . "";
+        $q = "SELECT hero FROM units where vref = " . $vid . "";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if ($dbarray['hero'] != 0) {
@@ -2428,7 +2428,7 @@ class MYSQL_DB
 
     function getHero($uid = 0, $id = 0, $dead = 2)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "hero WHERE TRUE "
+        $q = "SELECT * FROM hero WHERE TRUE "
             . ($uid ? " AND uid=$uid " : "")
             . ($id ? " AND id=$id " : "")
             . ($dead == 2 ? "" : " AND dead=$dead ")
@@ -2467,7 +2467,7 @@ class MYSQL_DB
                 $cmd .= " ,rc = 1 ";
                 break;
         }
-        $q = "UPDATE " . TB_PREFIX . "hero SET $cmd WHERE TRUE "
+        $q = "UPDATE hero SET $cmd WHERE TRUE "
             . ($uid ? " AND uid = $uid " : '')
             . ($id ? " AND heroid = $id " : '');
         return mysql_query($q, $this->connection);
@@ -2475,53 +2475,53 @@ class MYSQL_DB
 
     function clearTech($vref)
     {
-        $q = "DELETE from " . TB_PREFIX . "tdata WHERE vref = $vref";
+        $q = "DELETE from tdata WHERE vref = $vref";
         mysql_query($q, $this->connection);
         return $this->addTech($vref);
     }
 
     function addTech($vid)
     {
-        $q = "INSERT into " . TB_PREFIX . "tdata (vref) values ($vid)";
+        $q = "INSERT into tdata (vref) values ($vid)";
         return mysql_query($q, $this->connection);
     }
 
     function clearABTech($vref)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "abdata WHERE vref = $vref";
+        $q = "DELETE FROM abdata WHERE vref = $vref";
         mysql_query($q, $this->connection);
         return $this->addABTech($vref);
     }
 
     function addABTech($vid)
     {
-        $q = "INSERT into " . TB_PREFIX . "abdata (vref) values ($vid)";
+        $q = "INSERT into abdata (vref) values ($vid)";
         return mysql_query($q, $this->connection);
     }
 
     function getABTech($vid)
     {
-        $q = "SELECT `vref`,`a1`,`a2`,`a3`,`a4`,`a5`,`a6`,`a7`,`a8`,`a9`,`a10`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10` FROM " . TB_PREFIX . "abdata where vref = $vid";
+        $q = "SELECT `vref`,`a1`,`a2`,`a3`,`a4`,`a5`,`a6`,`a7`,`a8`,`a9`,`a10`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10` FROM abdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
     function addResearch($vid, $tech, $time)
     {
-        $q = "INSERT into " . TB_PREFIX . "research values (0,$vid,'$tech',$time)";
+        $q = "INSERT into research values (0,$vid,'$tech',$time)";
         return mysql_query($q, $this->connection);
     }
 
     function getResearching($vid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "research where vref = $vid";
+        $q = "SELECT * FROM research where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function checkIfResearched($vref, $unit)
     {
-        $q = "SELECT $unit FROM " . TB_PREFIX . "tdata WHERE vref = $vref";
+        $q = "SELECT $unit FROM tdata WHERE vref = $vref";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray[$unit];
@@ -2529,14 +2529,14 @@ class MYSQL_DB
 
     function getTech($vid)
     {
-        $q = "SELECT * from " . TB_PREFIX . "tdata where vref = $vid";
+        $q = "SELECT * from tdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
     function getTraining($vid)
     {
-        $q = "SELECT `amt`,`unit`,`endat`,`commence`,`id`,`vref`,`pop`,`timestamp`,`eachtime` FROM " . TB_PREFIX . "training where vref = $vid ORDER BY id";
+        $q = "SELECT `amt`,`unit`,`endat`,`commence`,`id`,`vref`,`pop`,`timestamp`,`eachtime` FROM training where vref = $vid ORDER BY id";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -2576,27 +2576,26 @@ class MYSQL_DB
 
             if ($queued[count($queued) - 1]['unit'] == $unit) {
                 $endat = $each * $amt / 1000;
-                $q = "UPDATE " . TB_PREFIX . "training SET amt = amt + $amt, timestamp = $timestamp,endat = endat + $endat WHERE id = " . $queued[count($queued) - 1]['id'] . "";
+                $q = "UPDATE training SET amt = amt + $amt, timestamp = $timestamp,endat = endat + $endat WHERE id = " . $queued[count($queued) - 1]['id'] . "";
             } else {
                 $endat = $timestamp + ($each * $amt / 1000);
-                $q = "INSERT INTO " . TB_PREFIX . "training values (0,$vid,$unit,$amt,$pop,$timestamp,$each,$commence,$endat)";
+                $q = "INSERT INTO training values (0,$vid,$unit,$amt,$pop,$timestamp,$each,$commence,$endat)";
             }
-
         } else {
-            $q = "DELETE FROM " . TB_PREFIX . "training where id = $vid";
+            $q = "DELETE FROM training where id = $vid";
         }
         return mysql_query($q, $this->connection);
     }
 
     function removeZeroTrain()
     {
-        $q = "DELETE FROM " . TB_PREFIX . "training where `unit` <> 0 AND amt <= 0";
+        $q = "DELETE FROM training where `unit` <> 0 AND amt <= 0";
         return mysql_query($q, $this->connection);
     }
 
     function getHeroTrain($vid)
     {
-        $q = "SELECT `id`,`eachtime` from " . TB_PREFIX . "training where vref = $vid and unit = 0";
+        $q = "SELECT `id`,`eachtime` from training where vref = $vid and unit = 0";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if (empty($result)) {
@@ -2610,9 +2609,9 @@ class MYSQL_DB
     {
         if (!$mode) {
             $time = time();
-            $q = "INSERT INTO " . TB_PREFIX . "training values (0, $vid, 0, 1, 6, $time, $each, $time, $endat)";
+            $q = "INSERT INTO training values (0, $vid, 0, 1, 6, $time, $each, $time, $endat)";
         } else {
-            $q = "DELETE FROM " . TB_PREFIX . "training where id = $vid";
+            $q = "DELETE FROM training where id = $vid";
         }
         return mysql_query($q, $this->connection);
     }
@@ -2620,7 +2619,7 @@ class MYSQL_DB
     function updateTraining($id, $trained)
     {
         $time = time();
-        $q = "UPDATE " . TB_PREFIX . "training set amt = GREATEST(amt - $trained, 0), timestamp = $time where id = $id";
+        $q = "UPDATE training set amt = GREATEST(amt - $trained, 0), timestamp = $time where id = $id";
         return mysql_query($q, $this->connection);
     }
 
@@ -2645,17 +2644,17 @@ class MYSQL_DB
         }
         switch ($mode) {
             case 0:
-                $q = "SELECT $unit FROM " . TB_PREFIX . "units WHERE vref = $vref";
+                $q = "SELECT $unit FROM units WHERE vref = $vref";
                 $result = mysql_query($q, $this->connection);
                 $row = mysql_fetch_assoc($result);
                 $amt = min($row[$unit], $amt);
-                $q = "UPDATE " . TB_PREFIX . "units set $unit = ($unit - $amt) where vref = $vref";
+                $q = "UPDATE units set $unit = ($unit - $amt) where vref = $vref";
                 break;
             case 1:
-                $q = "UPDATE " . TB_PREFIX . "units set $unit = $unit + $amt where vref = $vref";
+                $q = "UPDATE units set $unit = $unit + $amt where vref = $vref";
                 break;
             case 2:
-                $q = "UPDATE " . TB_PREFIX . "units set $unit = $amt where vref = $vref";
+                $q = "UPDATE units set $unit = $amt where vref = $vref";
                 break;
         }
         return mysql_query($q, $this->connection);
@@ -2664,7 +2663,7 @@ class MYSQL_DB
     function getFilledTrapCount($vref)
     {
         $result = 0;
-        $q = "SELECT * FROM " . TB_PREFIX . "trapped WHERE `vref` = $vref";
+        $q = "SELECT * FROM trapped WHERE `vref` = $vref";
         $trapped = $this->query_return($q);
         if (count($trapped) > 0) {
             foreach ($trapped as $k => $v) {
@@ -2679,20 +2678,20 @@ class MYSQL_DB
 
     function getTrapped($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "trapped WHERE `id` = $id";
+        $q = "SELECT * FROM trapped WHERE `id` = $id";
         $result = mysql_query($q);
         return mysql_fetch_assoc($result);
     }
 
     function getTrappedIn($vref)
     {
-        $q = "SELECT * from " . TB_PREFIX . "trapped where `vref` = '$vref'";
+        $q = "SELECT * from trapped where `vref` = '$vref'";
         return $this->query_return($q);
     }
 
     function getTrappedFrom($from)
     {
-        $q = "SELECT * from " . TB_PREFIX . "trapped where `from` = '$from'";
+        $q = "SELECT * from trapped where `from` = '$from'";
         return $this->query_return($q);
     }
 
@@ -2700,7 +2699,7 @@ class MYSQL_DB
     {
         $id = $this->hasTrapped($vref, $from);
         if (!$id) {
-            $q = "INSERT into " . TB_PREFIX . "trapped (vref,`from`) values (" . $vref . "," . $from . ")";
+            $q = "INSERT into trapped (vref,`from`) values (" . $vref . "," . $from . ")";
             mysql_query($q, $this->connection);
             $id = mysql_insert_id($this->connection);
         }
@@ -2709,7 +2708,7 @@ class MYSQL_DB
 
     function hasTrapped($vref, $from)
     {
-        $q = "SELECT id FROM " . TB_PREFIX . "trapped WHERE `vref` = $vref AND `from` = $from";
+        $q = "SELECT id FROM trapped WHERE `vref` = $vref AND `from` = $from";
         $result = mysql_query($q, $this->connection);
         $result = mysql_fetch_assoc($result);
         if (isset($result['id'])) {
@@ -2722,33 +2721,33 @@ class MYSQL_DB
     function modifyTrapped($id, $unit, $amt, $mode)
     {
         if (!$mode) {
-            $q = "SELECT $unit FROM " . TB_PREFIX . "trapped WHERE id = $id";
+            $q = "SELECT $unit FROM trapped WHERE id = $id";
             $result = mysql_query($q, $this->connection);
             $result = $this->mysql_fetch_all($result);
             $row = $result[0];
             $amt = min($row['u' . $unit], $amt);
-            $q = "UPDATE " . TB_PREFIX . "trapped set $unit = $unit - $amt where id = $id";
+            $q = "UPDATE trapped set $unit = $unit - $amt where id = $id";
         } else {
-            $q = "UPDATE " . TB_PREFIX . "trapped set $unit = $unit + $amt where id = $id";
+            $q = "UPDATE trapped set $unit = $unit + $amt where id = $id";
         }
         mysql_query($q, $this->connection);
     }
 
     function removeTrapped($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "trapped WHERE `id`=$id";
+        $q = "DELETE FROM trapped WHERE `id`=$id";
         mysql_query($q, $this->connection);
     }
 
     function removeAnimals($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "enforcement WHERE `id`=$id";
+        $q = "DELETE FROM enforcement WHERE `id`=$id";
         mysql_query($q, $this->connection);
     }
 
     function checkEnforce($vid, $from)
     {
-        $q = "SELECT `id` from " . TB_PREFIX . "enforcement where `from` = $from and vref = $vid";
+        $q = "SELECT `id` from enforcement where `from` = $from and vref = $vid";
         $result = $this->query_return($q);
         if (count($result)) {
             return $result[0];
@@ -2759,7 +2758,7 @@ class MYSQL_DB
 
     function addEnforce($data)
     {
-        $q = "INSERT into " . TB_PREFIX . "enforcement (vref,`from`) values (" . $data['to'] . "," . $data['from'] . ")";
+        $q = "INSERT into enforcement (vref,`from`) values (" . $data['to'] . "," . $data['from'] . ")";
         mysql_query($q, $this->connection);
         $id = mysql_insert_id($this->connection);
         $isoasis = $this->isVillageOases($data['from']);
@@ -2782,14 +2781,14 @@ class MYSQL_DB
 
     function getOMInfo($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "wdata left JOIN " . TB_PREFIX . "odata ON " . TB_PREFIX . "odata.wref = " . TB_PREFIX . "wdata.id where " . TB_PREFIX . "wdata.id = $id";
+        $q = "SELECT * FROM wdata left JOIN odata ON odata.wref = wdata.id where wdata.id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getMInfo($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "wdata left JOIN " . TB_PREFIX . "vdata ON " . TB_PREFIX . "vdata.wref = " . TB_PREFIX . "wdata.id where " . TB_PREFIX . "wdata.id = $id";
+        $q = "SELECT * FROM wdata left JOIN vdata ON vdata.wref = wdata.id where wdata.id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
@@ -2802,32 +2801,32 @@ class MYSQL_DB
             $unit = 'u' . $unit;
         }
         if (!$mode) {
-            $q = "SELECT $unit FROM " . TB_PREFIX . "enforcement WHERE id = $id";
+            $q = "SELECT $unit FROM enforcement WHERE id = $id";
             $result = $this->query_return($q);
             if (isset($result) && !empty($result) && count($result) > 0) {
                 $row = $result[0];
                 $amt = min($row[$unit], $amt);
-                $q = "UPDATE " . TB_PREFIX . "enforcement set $unit = $unit - $amt where id = $id";
+                $q = "UPDATE enforcement set $unit = $unit - $amt where id = $id";
                 mysql_query($q, $this->connection);
             }
         } else {
-            $q = "UPDATE " . TB_PREFIX . "enforcement set $unit = $unit + $amt where id = $id";
+            $q = "UPDATE enforcement set $unit = $unit + $amt where id = $id";
             mysql_query($q, $this->connection);
         }
     }
 
     function addHeroEnforce($data)
     {
-        $q = "INSERT into " . TB_PREFIX . "enforcement (`vref`,`from`,`hero`) values (" . $data['to'] . "," . $data['from'] . ",1)";
+        $q = "INSERT into enforcement (`vref`,`from`,`hero`) values (" . $data['to'] . "," . $data['from'] . ",1)";
         mysql_query($q, $this->connection);
     }
 
     function getEnforceArray($id, $mode)
     {
         if (!$mode) {
-            $q = "SELECT * from " . TB_PREFIX . "enforcement where id = $id";
+            $q = "SELECT * from enforcement where id = $id";
         } else {
-            $q = "SELECT * from " . TB_PREFIX . "enforcement where `from` = $id";
+            $q = "SELECT * from enforcement where `from` = $id";
         }
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
@@ -2836,9 +2835,9 @@ class MYSQL_DB
     function getEnforceVillage($id, $mode)
     {
         if (!$mode) {
-            $q = "SELECT * from " . TB_PREFIX . "enforcement where `vref` = '$id'";
+            $q = "SELECT * from enforcement where `vref` = '$id'";
         } else {
-            $q = "SELECT * from " . TB_PREFIX . "enforcement where `from` = '$id'";
+            $q = "SELECT * from enforcement where `from` = '$id'";
         }
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
@@ -2852,7 +2851,7 @@ class MYSQL_DB
             foreach ($oasisowned as $oo) $inos .= $oo['wref'] . ',';
             $inos = substr($inos, 0, strlen($inos) - 1);
             $inos .= ')';
-            $q = "SELECT * FROM " . TB_PREFIX . "enforcement WHERE `from` = '$id' AND `vref` IN " . $inos;
+            $q = "SELECT * FROM enforcement WHERE `from` = '$id' AND `vref` IN " . $inos;
             $result = mysql_query($q, $this->connection);
             return $this->mysql_fetch_all($result);
         } else {
@@ -2862,7 +2861,7 @@ class MYSQL_DB
 
     function getOasis($vid)
     {
-        $q = "SELECT `type`,`wref` FROM " . TB_PREFIX . "odata where conqured = $vid";
+        $q = "SELECT `type`,`wref` FROM odata where conqured = $vid";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -2934,31 +2933,31 @@ class MYSQL_DB
         }
         switch ($type) {
             case 0:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "send where " . TB_PREFIX . "movement." . $where . " = $village and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "send.id and " . TB_PREFIX . "movement.proc = 0 and " . TB_PREFIX . "movement.sort_type = 0";
+                $q = "SELECT * FROM movement, send where movement." . $where . " = $village and movement.ref = send.id and movement.proc = 0 and movement.sort_type = 0";
                 break;
             case 1:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "send where " . TB_PREFIX . "movement." . $where . " = $village and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "send.id and " . TB_PREFIX . "movement.proc = 0 and " . TB_PREFIX . "movement.sort_type = 1";
+                $q = "SELECT * FROM movement, send where movement." . $where . " = $village and movement.ref = send.id and movement.proc = 0 and movement.sort_type = 1";
                 break;
             case 2:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement where " . TB_PREFIX . "movement." . $where . " = $village and " . TB_PREFIX . "movement.proc = 0 and " . TB_PREFIX . "movement.sort_type = 2";
+                $q = "SELECT * FROM movement where movement." . $where . " = $village and movement.proc = 0 and movement.sort_type = 2";
                 break;
             case 3:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "attacks where " . TB_PREFIX . "movement." . $where . " = $village and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.proc = 0 and " . TB_PREFIX . "movement.sort_type = 3 ORDER BY endtime ASC";
+                $q = "SELECT * FROM movement, attacks where movement." . $where . " = $village and movement.ref = attacks.id and movement.proc = 0 and movement.sort_type = 3 ORDER BY endtime ASC";
                 break;
             case 4:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "attacks where " . TB_PREFIX . "movement." . $where . " = $village and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.proc = 0 and " . TB_PREFIX . "movement.sort_type = 4 ORDER BY endtime ASC";
+                $q = "SELECT * FROM movement, attacks where movement." . $where . " = $village and movement.ref = attacks.id and movement.proc = 0 and movement.sort_type = 4 ORDER BY endtime ASC";
                 break;
             case 5:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement where " . TB_PREFIX . "movement." . $where . " = $village and sort_type = 5 and proc = 0";
+                $q = "SELECT * FROM movement where movement." . $where . " = $village and sort_type = 5 and proc = 0";
                 break;
             case 6:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement," . TB_PREFIX . "odata, " . TB_PREFIX . "attacks where " . TB_PREFIX . "odata.conqured = $village and " . TB_PREFIX . "movement.to = " . TB_PREFIX . "odata.wref and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.proc = 0 and " . TB_PREFIX . "movement.sort_type = 3 ORDER BY endtime ASC";
+                $q = "SELECT * FROM movement,odata, attacks where odata.conqured = $village and movement.to = odata.wref and movement.ref = attacks.id and movement.proc = 0 and movement.sort_type = 3 ORDER BY endtime ASC";
                 break;
             case 9:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement where " . TB_PREFIX . "movement." . $where . " = $village and sort_type = 9 and proc = 0";
+                $q = "SELECT * FROM movement where movement." . $where . " = $village and sort_type = 9 and proc = 0";
                 break;
             case 34:
-                $q = "SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "attacks where (" . TB_PREFIX . "movement." . $where . " = $village and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.proc = 0) and (" . TB_PREFIX . "movement.sort_type = 3 or  " . TB_PREFIX . "movement.sort_type = 4) ORDER BY endtime ASC";
+                $q = "SELECT * FROM movement, attacks where (movement." . $where . " = $village and movement.ref = attacks.id and movement.proc = 0) and (movement.sort_type = 3 or  movement.sort_type = 4) ORDER BY endtime ASC";
                 break;
         }
         $result = mysql_query($q, $this->connection);
@@ -2978,7 +2977,7 @@ class MYSQL_DB
 
     function getWW()
     {
-        $q = "SELECT vref FROM " . TB_PREFIX . "fdata WHERE f99t = 40";
+        $q = "SELECT vref FROM fdata WHERE f99t = 40";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return true;
@@ -2993,7 +2992,7 @@ class MYSQL_DB
      */
     function getWWLevel($vref)
     {
-        $q = "SELECT f99 FROM " . TB_PREFIX . "fdata WHERE vref = $vref";
+        $q = "SELECT f99 FROM fdata WHERE vref = $vref";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['f99'];
@@ -3005,7 +3004,7 @@ class MYSQL_DB
      */
     function getWWOwnerID($vref)
     {
-        $q = "SELECT owner FROM " . TB_PREFIX . "vdata WHERE wref = $vref LIMIT 1";
+        $q = "SELECT owner FROM vdata WHERE wref = $vref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['owner'];
@@ -3017,7 +3016,7 @@ class MYSQL_DB
      */
     function getUserAllianceID($id)
     {
-        $q = "SELECT alliance FROM " . TB_PREFIX . "users where id = $id LIMIT 1";
+        $q = "SELECT alliance FROM users where id = $id LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['alliance'];
@@ -3029,7 +3028,7 @@ class MYSQL_DB
      */
     function getWWName($vref)
     {
-        $q = "SELECT wwname FROM " . TB_PREFIX . "fdata WHERE vref = $vref";
+        $q = "SELECT wwname FROM fdata WHERE vref = $vref";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['wwname'];
@@ -3041,20 +3040,20 @@ class MYSQL_DB
      */
     function submitWWname($vref, $name)
     {
-        $q = "UPDATE " . TB_PREFIX . "fdata SET `wwname` = '$name' WHERE " . TB_PREFIX . "fdata.`vref` = $vref";
+        $q = "UPDATE fdata SET `wwname` = '$name' WHERE fdata.`vref` = $vref";
         return mysql_query($q, $this->connection);
     }
 
     function modifyCommence($id, $commence = 0)
     {
         if ($commence == 0) $commence = time();
-        $q = "UPDATE " . TB_PREFIX . "training set commence = $commence WHERE id=$id";
+        $q = "UPDATE training set commence = $commence WHERE id=$id";
         return mysql_query($q, $this->connection);
     }
 
     function getTrainingList()
     {
-        $q = "SELECT `id`,`vref`,`unit`,`eachtime`,`endat`,`commence`,`amt` FROM " . TB_PREFIX . "training where amt != 0 LIMIT 500";
+        $q = "SELECT `id`,`vref`,`unit`,`eachtime`,`endat`,`commence`,`amt` FROM training where amt != 0 LIMIT 500";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -3062,14 +3061,14 @@ class MYSQL_DB
     function getNeedDelete()
     {
         $time = time();
-        $q = "SELECT uid FROM " . TB_PREFIX . "deleting where timestamp <= $time";
+        $q = "SELECT uid FROM deleting where timestamp <= $time";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function countUser()
     {
-        $q = "SELECT count(id) FROM " . TB_PREFIX . "users where id != 0";
+        $q = "SELECT count(id) FROM users where id != 0";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         return $row[0];
@@ -3077,7 +3076,7 @@ class MYSQL_DB
 
     function countAlli()
     {
-        $q = "SELECT count(id) FROM " . TB_PREFIX . "alidata where id != 0";
+        $q = "SELECT count(id) FROM alidata where id != 0";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         return $row[0];
@@ -3086,7 +3085,7 @@ class MYSQL_DB
     //MARKET FIXES
     function getWoodAvailable($wref)
     {
-        $q = "SELECT wood FROM " . TB_PREFIX . "vdata WHERE wref = $wref LIMIT 1";
+        $q = "SELECT wood FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['wood'];
@@ -3094,7 +3093,7 @@ class MYSQL_DB
 
     function getClayAvailable($wref)
     {
-        $q = "SELECT clay FROM " . TB_PREFIX . "vdata WHERE wref = $wref LIMIT 1";
+        $q = "SELECT clay FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['clay'];
@@ -3102,7 +3101,7 @@ class MYSQL_DB
 
     function getIronAvailable($wref)
     {
-        $q = "SELECT iron FROM " . TB_PREFIX . "vdata WHERE wref = $wref LIMIT 1";
+        $q = "SELECT iron FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['iron'];
@@ -3110,7 +3109,7 @@ class MYSQL_DB
 
     function getCropAvailable($wref)
     {
-        $q = "SELECT crop FROM " . TB_PREFIX . "vdata WHERE wref = $wref LIMIT 1";
+        $q = "SELECT crop FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['crop'];
@@ -3118,7 +3117,7 @@ class MYSQL_DB
 
     function poulateOasisdata()
     {
-        $q2 = "SELECT id FROM " . TB_PREFIX . "wdata where oasistype != 0";
+        $q2 = "SELECT id FROM wdata where oasistype != 0";
         $result2 = mysql_query($q2, $this->connection);
         while ($row = mysql_fetch_array($result2)) {
             $wid = $row['id'];
@@ -3134,7 +3133,7 @@ class MYSQL_DB
             $tt = "$t1,$t2,$t3,0,0,0,$t4,$t5,0,$t6,$time,$time,$time";
             $basearray = $this->getOMInfo($wid);
             //We switch type of oasis and instert record with apropriate infomation.
-            $q = "INSERT into " . TB_PREFIX . "odata VALUES ('" . $basearray['id'] . "'," . $basearray['oasistype'] . ",0," . $tt . ",100,3,'Unoccupied oasis')";
+            $q = "INSERT into odata VALUES ('" . $basearray['id'] . "'," . $basearray['oasistype'] . ",0," . $tt . ",100,3,'Unoccupied oasis')";
             mysql_query($q, $this->connection);
         }
     }
@@ -3142,7 +3141,7 @@ class MYSQL_DB
     public function getAvailableExpansionTraining()
     {
         global $building, $session, $technology, $village;
-        $q = "SELECT (IF(exp1=0,1,0)+IF(exp2=0,1,0)+IF(exp3=0,1,0)) FROM " . TB_PREFIX . "vdata WHERE wref = $village->wid";
+        $q = "SELECT (IF(exp1=0,1,0)+IF(exp2=0,1,0)+IF(exp3=0,1,0)) FROM vdata WHERE wref = $village->wid";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         $maxslots = $row[0];
@@ -3155,11 +3154,11 @@ class MYSQL_DB
             $maxslots -= (3 - floor(($palace - 5) / 5));
         }
 
-        $q = "SELECT (u10+u20+u30) FROM " . TB_PREFIX . "units WHERE vref = $village->wid";
+        $q = "SELECT (u10+u20+u30) FROM units WHERE vref = $village->wid";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         $settlers = $row[0];
-        $q = "SELECT (u9+u19+u29) FROM " . TB_PREFIX . "units WHERE vref = $village->wid";
+        $q = "SELECT (u9+u19+u29) FROM units WHERE vref = $village->wid";
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         $chiefs = $row[0];
@@ -3193,7 +3192,7 @@ class MYSQL_DB
                 $chiefs += $build['t9'];
             }
         }
-        $q = "SELECT (u10+u20+u30) FROM " . TB_PREFIX . "enforcement WHERE `from` = " . $village->wid;
+        $q = "SELECT (u10+u20+u30) FROM enforcement WHERE `from` = " . $village->wid;
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         if (!empty($row)) {
@@ -3201,7 +3200,7 @@ class MYSQL_DB
                 $settlers += $reinf[0];
             }
         }
-        $q = "SELECT (u10+u20+u30) FROM " . TB_PREFIX . "trapped WHERE `from` = " . $village->wid;
+        $q = "SELECT (u10+u20+u30) FROM trapped WHERE `from` = " . $village->wid;
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         if (!empty($row)) {
@@ -3209,7 +3208,7 @@ class MYSQL_DB
                 $settlers += $trapped[0];
             }
         }
-        $q = "SELECT (u9+u19+u29) FROM " . TB_PREFIX . "enforcement WHERE `from` = " . $village->wid;
+        $q = "SELECT (u9+u19+u29) FROM enforcement WHERE `from` = " . $village->wid;
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         if (!empty($row)) {
@@ -3217,7 +3216,7 @@ class MYSQL_DB
                 $chiefs += $reinf[0];
             }
         }
-        $q = "SELECT (u9+u19+u29) FROM " . TB_PREFIX . "trapped WHERE `from` = " . $village->wid;
+        $q = "SELECT (u9+u19+u29) FROM trapped WHERE `from` = " . $village->wid;
         $result = mysql_query($q, $this->connection);
         $row = mysql_fetch_row($result);
         if (!empty($row)) {
@@ -3250,13 +3249,13 @@ class MYSQL_DB
 
     function addArtefact($vref, $owner, $type, $size, $name, $desc, $effecttype, $effect, $aoe, $img)
     {
-        $q = "INSERT INTO `" . TB_PREFIX . "artefacts` (`vref`, `owner`, `type`, `size`, `conquered`, `name`, `desc`, `effecttype`, `effect`, `aoe`, `img`) VALUES ('$vref', '$owner', '$type', '$size', '" . time() . "', '$name', '$desc', '$effecttype', '$effect', '$aoe', '$img')";
+        $q = "INSERT INTO `artefacts` (`vref`, `owner`, `type`, `size`, `conquered`, `name`, `desc`, `effecttype`, `effect`, `aoe`, `img`) VALUES ('$vref', '$owner', '$type', '$size', '" . time() . "', '$name', '$desc', '$effecttype', '$effect', '$aoe', '$img')";
         return mysql_query($q, $this->connection);
     }
 
     function getOwnArtefactInfo($vref)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "artefacts WHERE vref = $vref";
+        $q = "SELECT * FROM artefacts WHERE vref = $vref";
         return $this->query_return($q);
     }
 
@@ -3265,13 +3264,13 @@ class MYSQL_DB
         if (count($sizes) != 0) {
             $sizestr = ' AND ( FALSE ';
             foreach ($sizes as $s) {
-                $sizestr .= ' OR `' . TB_PREFIX . 'artefacts`.`size` = ' . $s . ' ';
+                $sizestr .= ' OR `artefacts`.`size` = ' . $s . ' ';
             }
             $sizestr .= ' ) ';
         } else {
             $sizestr = '';
         }
-        $q = "SELECT * FROM " . TB_PREFIX . "artefacts WHERE true " . $sizestr . ' ORDER BY type';
+        $q = "SELECT * FROM artefacts WHERE true " . $sizestr . ' ORDER BY type';
         return $this->query_return($q);
     }
 
@@ -3280,16 +3279,16 @@ class MYSQL_DB
         if (count($sizes) != 0) {
             $sizestr = ' AND ( FALSE ';
             foreach ($sizes as $s) {
-                $sizestr .= ' OR ' . TB_PREFIX . 'artefacts.size = ' . $s . ' ';
+                $sizestr .= ' OR artefacts.size = ' . $s . ' ';
             }
             $sizestr .= ' ) ';
         } else {
             $sizestr = '';
         }
         $q = "SELECT *,"
-            . " (ROUND(SQRT(POW(LEAST(ABS(" . $coor['x'] . " - " . TB_PREFIX . "wdata.x), ABS(" . $coor['max'] . " - ABS(" . $coor['x'] . " - " . TB_PREFIX . "wdata.x))), 2) + POW(LEAST(ABS(" . $coor['y'] . " - " . TB_PREFIX . "wdata.y), ABS(" . $coor['max'] . " - ABS(" . $coor['y'] . " - " . TB_PREFIX . "wdata.y))), 2)),3)) AS distance "
-            . " FROM " . TB_PREFIX . "wdata, " . TB_PREFIX . "artefacts WHERE " . TB_PREFIX . "artefacts.vref = " . TB_PREFIX . "wdata.id"
-            . " AND (ROUND(SQRT(POW(LEAST(ABS(" . $coor['x'] . " - " . TB_PREFIX . "wdata.x), ABS(" . $coor['max'] . " - ABS(" . $coor['x'] . " - " . TB_PREFIX . "wdata.x))), 2) + POW(LEAST(ABS(" . $coor['y'] . " - " . TB_PREFIX . "wdata.y), ABS(" . $coor['max'] . " - ABS(" . $coor['y'] . " - " . TB_PREFIX . "wdata.y))), 2)),3)) <= " . $distance
+            . " (ROUND(SQRT(POW(LEAST(ABS(" . $coor['x'] . " - wdata.x), ABS(" . $coor['max'] . " - ABS(" . $coor['x'] . " - wdata.x))), 2) + POW(LEAST(ABS(" . $coor['y'] . " - wdata.y), ABS(" . $coor['max'] . " - ABS(" . $coor['y'] . " - wdata.y))), 2)),3)) AS distance "
+            . " FROM wdata, artefacts WHERE artefacts.vref = wdata.id"
+            . " AND (ROUND(SQRT(POW(LEAST(ABS(" . $coor['x'] . " - wdata.x), ABS(" . $coor['max'] . " - ABS(" . $coor['x'] . " - wdata.x))), 2) + POW(LEAST(ABS(" . $coor['y'] . " - wdata.y), ABS(" . $coor['max'] . " - ABS(" . $coor['y'] . " - wdata.y))), 2)),3)) <= " . $distance
             . $sizestr
             . ' ORDER BY distance';
         return $this->query_return($q);
@@ -3297,7 +3296,7 @@ class MYSQL_DB
 
     function arteIsMine($id, $newvref, $newowner)
     {
-        $q = "UPDATE " . TB_PREFIX . "artefacts SET `owner` = " . $newowner . " WHERE id = " . $id;
+        $q = "UPDATE artefacts SET `owner` = " . $newowner . " WHERE id = " . $id;
         $this->query($q);
         $this->captureArtefact($id, $newvref, $newowner);
     }
@@ -3311,30 +3310,30 @@ class MYSQL_DB
 
         #---------first inactive large and uinque artes if this currentArte is large/unique
         if ($currentArte['size'] == 2 || $currentArte['size'] == 3) {
-            $ulArts = $this->query_return('SELECT * FROM ' . TB_PREFIX . 'artefacts WHERE `owner`=' . $newowner . ' AND `status`=1 AND `size`<>1');
+            $ulArts = $this->query_return('SELECT * FROM artefacts WHERE `owner`=' . $newowner . ' AND `status`=1 AND `size`<>1');
             if (!empty($ulArts) && count($ulArts) > 0) {
-                foreach ($ulArts as $art) $this->query("UPDATE " . TB_PREFIX . "artefacts SET `status` = 2 WHERE id = " . $art['id']);
+                foreach ($ulArts as $art) $this->query("UPDATE artefacts SET `status` = 2 WHERE id = " . $art['id']);
             }
         }
         #---------then check extra artes
-        $vArts = $this->query_return('SELECT * FROM ' . TB_PREFIX . 'artefacts WHERE `vref`=' . $newvref . ' AND `status`=1');
+        $vArts = $this->query_return('SELECT * FROM artefacts WHERE `vref`=' . $newvref . ' AND `status`=1');
         if (!empty($vArts) && count($vArts) > 0) {
-            foreach ($vArts as $art) $this->query("UPDATE " . TB_PREFIX . "artefacts SET `status` = 2 WHERE id = " . $art['id']);
+            foreach ($vArts as $art) $this->query("UPDATE artefacts SET `status` = 2 WHERE id = " . $art['id']);
         } else {
-            $uArts = $this->query_return('SELECT * FROM ' . TB_PREFIX . 'artefacts WHERE `owner`=' . $newowner . ' AND `status`=1 ORDER BY conquered DESC');
+            $uArts = $this->query_return('SELECT * FROM artefacts WHERE `owner`=' . $newowner . ' AND `status`=1 ORDER BY conquered DESC');
             if (!empty($uArts) && count($uArts) > 2) {
-                for ($i = 2; $i < count($uArts); $i++) $this->query("UPDATE " . TB_PREFIX . "artefacts SET `status` = 2 WHERE id = " . $uArts[$i]['id']);
+                for ($i = 2; $i < count($uArts); $i++) $this->query("UPDATE artefacts SET `status` = 2 WHERE id = " . $uArts[$i]['id']);
             }
         }
         // set currentArte -> owner,vref,conquered,status
         $time = time();
-        $q = "UPDATE " . TB_PREFIX . "artefacts SET vref = $newvref, owner = $newowner, conquered = $time, `status` = 1 WHERE id = $id";
+        $q = "UPDATE artefacts SET vref = $newvref, owner = $newowner, conquered = $time, `status` = 1 WHERE id = $id";
         $this->query($q);
         // set new active artes for old user
         if ($currentArte['status'] == 1) {
             #--- get olduser's active artes
-            $ouaArts = $this->query_return('SELECT * FROM ' . TB_PREFIX . 'artefacts WHERE `owner`=' . $currentArte['owner'] . ' AND `status`=1');
-            $ouiArts = $this->query_return('SELECT * FROM ' . TB_PREFIX . 'artefacts WHERE `owner`=' . $currentArte['owner'] . ' AND `status`=2 ORDER BY conquered DESC');
+            $ouaArts = $this->query_return('SELECT * FROM artefacts WHERE `owner`=' . $currentArte['owner'] . ' AND `status`=1');
+            $ouiArts = $this->query_return('SELECT * FROM artefacts WHERE `owner`=' . $currentArte['owner'] . ' AND `status`=2 ORDER BY conquered DESC');
             if (!empty($ouaArts) && count($ouaArts) < 3 && !empty($ouiArts) && count($ouiArts) > 0) {
                 $ouiaCount = count($ouiArts);
                 for ($i = 0; $i < $ouiaCount; $i++) {
@@ -3353,7 +3352,7 @@ class MYSQL_DB
                         }
                         if ($accepted) {
                             $ouaArts[] = $ia;
-                            $q = "UPDATE " . TB_PREFIX . "artefacts SET `status` = 1 WHERE id = " . $ia['id'];
+                            $q = "UPDATE artefacts SET `status` = 1 WHERE id = " . $ia['id'];
                             $this->query($q);
                         }
                     } else {
@@ -3366,14 +3365,14 @@ class MYSQL_DB
 
     function getArtefactDetails($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "artefacts WHERE id = " . $id;
+        $q = "SELECT * FROM artefacts WHERE id = " . $id;
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getHeroFace($uid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "heroface WHERE uid = " . $uid;
+        $q = "SELECT * FROM heroface WHERE uid = " . $uid;
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
@@ -3381,28 +3380,28 @@ class MYSQL_DB
     function addHeroFace($uid, $bread, $ear, $eye, $eyebrow, $face, $hair, $mouth, $nose, $color)
     {
 
-        $q = "INSERT INTO `" . TB_PREFIX . "heroface` (`uid`, `beard`, `ear`, `eye`, `eyebrow`, `face`, `hair`, `mouth`, `nose`, `color`) VALUES ('$uid', '$bread', '$ear', '$eye', '$eyebrow', '$face', '$hair', '$mouth', '$nose', '$color')";
+        $q = "INSERT INTO `heroface` (`uid`, `beard`, `ear`, `eye`, `eyebrow`, `face`, `hair`, `mouth`, `nose`, `color`) VALUES ('$uid', '$bread', '$ear', '$eye', '$eyebrow', '$face', '$hair', '$mouth', '$nose', '$color')";
         return mysql_query($q, $this->connection);
     }
 
     function modifyHeroFace($uid, $column, $value)
     {
         $hash = md5("$uid" . time());
-        $q = "UPDATE " . TB_PREFIX . "heroface SET `$column`='$value',`hash`='$hash' WHERE `uid` = '$uid'";
+        $q = "UPDATE heroface SET `$column`='$value',`hash`='$hash' WHERE `uid` = '$uid'";
         return mysql_query($q, $this->connection);
     }
 
     function modifyWholeHeroFace($uid, $face, $color, $hair, $ear, $eyebrow, $eye, $nose, $mouth, $beard)
     {
         $hash = md5("$uid" . time());
-        $q = "UPDATE " . TB_PREFIX . "heroface SET `face`=$face,`color`=$color,`hair`=$hair,`ear`=$ear,`eyebrow`=$eyebrow,`eye`=$eye,`nose`=$nose,`mouth`=$mouth,`beard`=$beard,`hash`='$hash' WHERE uid = $uid";
+        $q = "UPDATE heroface SET `face`=$face,`color`=$color,`hair`=$hair,`ear`=$ear,`eyebrow`=$eyebrow,`eye`=$eye,`nose`=$nose,`mouth`=$mouth,`beard`=$beard,`hash`='$hash' WHERE uid = $uid";
 
         return mysql_query($q, $this->connection);
     }
 
     function populateOasisUnitsLow()
     {
-        $q2 = "SELECT * FROM " . TB_PREFIX . "wdata where oasistype != 0";
+        $q2 = "SELECT * FROM wdata where oasistype != 0";
         $result2 = mysql_query($q2, $this->connection);
         while ($row = mysql_fetch_array($result2)) {
             $wid = $row['id'];
@@ -3416,7 +3415,7 @@ class MYSQL_DB
                     $UP36 = rand(5, 30) * (SPEED / 10);
                     $UP37 = rand(0, 30) * (SPEED / 10);
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u35 = u35 +  '" . $UP35 . "', u36 = u36 + '" . $UP36 . "', u37 = u37 + '" . $UP37 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u35 = u35 +  '" . $UP35 . "', u36 = u36 + '" . $UP36 . "', u37 = u37 + '" . $UP37 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
                 case 3:
@@ -3432,7 +3431,7 @@ class MYSQL_DB
                         $UP40 = 0;
                     }
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u35 = u35 +  '" . $UP35 . "', u36 = u36 + '" . $UP36 . "', u37 = u37 + '" . $UP37 . "', u39 = u39 + '" . $UP39 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u35 = u35 +  '" . $UP35 . "', u36 = u36 + '" . $UP36 . "', u37 = u37 + '" . $UP37 . "', u39 = u39 + '" . $UP39 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
                 case 4:
@@ -3442,7 +3441,7 @@ class MYSQL_DB
                     $UP32 = rand(5, 30) * (SPEED / 10);
                     $UP35 = rand(0, 25) * (SPEED / 10);
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u35 = u35 + '" . $UP35 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u35 = u35 + '" . $UP35 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
                 case 6:
@@ -3458,7 +3457,7 @@ class MYSQL_DB
                         $UP40 = 0;
                     }
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u35 = u35 + '" . $UP35 . "', u38 = u38 + '" . $UP38 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u35 = u35 + '" . $UP35 . "', u38 = u38 + '" . $UP38 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
                 case 7:
@@ -3468,7 +3467,7 @@ class MYSQL_DB
                     $UP32 = rand(5, 30) * (SPEED / 10);
                     $UP34 = rand(0, 25) * (SPEED / 10);
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u34 = u34 + '" . $UP34 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u34 = u34 + '" . $UP34 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
                 case 9:
@@ -3484,7 +3483,7 @@ class MYSQL_DB
                         $UP40 = 0;
                     }
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u34 = u34 + '" . $UP34 . "', u37 = u37 + '" . $UP37 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u31 = u31 +  '" . $UP31 . "', u32 = u32 + '" . $UP32 . "', u34 = u34 + '" . $UP34 . "', u37 = u37 + '" . $UP37 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
                 case 10:
@@ -3495,7 +3494,7 @@ class MYSQL_DB
                     $UP37 = rand(1, 25) * (SPEED / 10);
                     $UP39 = rand(0, 25) * (SPEED / 10);
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u31 = u31 +  '" . $UP31 . "', u33 = u33 + '" . $UP33 . "', u37 = u37 + '" . $UP37 . "', u39 = u39 + '" . $UP39 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u31 = u31 +  '" . $UP31 . "', u33 = u33 + '" . $UP33 . "', u37 = u37 + '" . $UP37 . "', u39 = u39 + '" . $UP39 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
                 case 12:
@@ -3511,7 +3510,7 @@ class MYSQL_DB
                         $UP40 = 0;
                     }
                     //+25% lumber per hour
-                    $q = "UPDATE " . TB_PREFIX . "units SET u31 = u31 +  '" . $UP31 . "', u33 = u33 + '" . $UP33 . "', u38 = u38 + '" . $UP38 . "', u39 = u39 + '" . $UP39 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
+                    $q = "UPDATE units SET u31 = u31 +  '" . $UP31 . "', u33 = u33 + '" . $UP33 . "', u38 = u38 + '" . $UP38 . "', u39 = u39 + '" . $UP39 . "', u40 = u40 + '" . $UP40 . "' WHERE vref = '" . $wid . "'";
                     $result = mysql_query($q, $this->connection);
                     break;
             }
@@ -3520,7 +3519,7 @@ class MYSQL_DB
 
     public function hasBeginnerProtection($vid)
     {
-        $q = "SELECT u.protect FROM " . TB_PREFIX . "users u," . TB_PREFIX . "vdata v WHERE u.id=v.owner AND v.wref=" . $vid;
+        $q = "SELECT u.protect FROM users u,vdata v WHERE u.id=v.owner AND v.wref=" . $vid;
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if (!empty($dbarray)) {
@@ -3536,33 +3535,33 @@ class MYSQL_DB
 
     function addCLP($uid, $clp)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set clp = clp + $clp where id = $uid";
+        $q = "UPDATE users set clp = clp + $clp where id = $uid";
         return mysql_query($q, $this->connection);
     }
 
     function sendwlcMessage($client, $owner, $topic, $message, $send)
     {
         $time = time();
-        $q = "INSERT INTO " . TB_PREFIX . "mdata values (0,$client,$owner,'$topic',\"$message\",1,0,$send,$time)";
+        $q = "INSERT INTO mdata values (0,$client,$owner,'$topic',\"$message\",1,0,$send,$time)";
         return mysql_query($q, $this->connection);
     }
 
     function getLinks($id)
     {
-        $q = 'SELECT `url`,`name` FROM ' . TB_PREFIX . 'links WHERE `userid` = ' . $id . ' ORDER BY `pos` ASC';
+        $q = 'SELECT `url`,`name` FROM links WHERE `userid` = ' . $id . ' ORDER BY `pos` ASC';
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function removeLinks($id, $uid)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "links WHERE `id` = " . $id . " and `userid` = " . $uid . "";
+        $q = "DELETE FROM links WHERE `id` = " . $id . " and `userid` = " . $uid . "";
         return mysql_query($q, $this->connection);
     }
 
     function getFarmlist($uid)
     {
-        $q = 'SELECT id FROM ' . TB_PREFIX . 'farmlist WHERE owner = ' . $uid . ' ORDER BY name ASC';
+        $q = 'SELECT id FROM farmlist WHERE owner = ' . $uid . ' ORDER BY name ASC';
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
 
@@ -3575,21 +3574,21 @@ class MYSQL_DB
 
     function getRaidList($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "raidlist WHERE id = " . $id . "";
+        $q = "SELECT * FROM raidlist WHERE id = " . $id . "";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getAllAuction()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "auction WHERE finish = 0";
+        $q = "SELECT * FROM auction WHERE finish = 0";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getVilFarmlist($wref)
     {
-        $q = 'SELECT id FROM ' . TB_PREFIX . 'farmlist WHERE wref = ' . $wref . ' ORDER BY wref ASC';
+        $q = 'SELECT id FROM farmlist WHERE wref = ' . $wref . ' ORDER BY wref ASC';
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
 
@@ -3602,46 +3601,46 @@ class MYSQL_DB
 
     function delFarmList($id, $owner)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "farmlist where id = $id and owner = $owner";
+        $q = "DELETE FROM farmlist where id = $id and owner = $owner";
         return mysql_query($q, $this->connection);
     }
 
     function delSlotFarm($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "raidlist where id = $id";
+        $q = "DELETE FROM raidlist where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function createFarmList($wref, $owner, $name)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "farmlist (`wref`, `owner`, `name`) VALUES ('$wref', '$owner', '$name')";
+        $q = "INSERT INTO farmlist (`wref`, `owner`, `name`) VALUES ('$wref', '$owner', '$name')";
         return mysql_query($q, $this->connection);
     }
 
     function addSlotFarm($lid, $towref, $x, $y, $distance, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "raidlist (`lid`, `towref`, `x`, `y`, `distance`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `t8`, `t9`, `t10`) VALUES ('$lid', '$towref', '$x', '$y', '$distance', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9', '$t10')";
+        $q = "INSERT INTO raidlist (`lid`, `towref`, `x`, `y`, `distance`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `t8`, `t9`, `t10`) VALUES ('$lid', '$towref', '$x', '$y', '$distance', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9', '$t10')";
         return mysql_query($q, $this->connection);
     }
 
     function editSlotFarm($eid, $lid, $wref, $x, $y, $dist, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10)
     {
-        $q = "UPDATE " . TB_PREFIX . "raidlist set lid = '$lid', towref = '$wref', x = '$x', y = '$y', t1 = '$t1', t2 = '$t2', t3 = '$t3', t4 = '$t4', t5 = '$t5', t6 = '$t6', t7 = '$t7', t8 = '$t8', t9 = '$t9', t10 = '$t10' WHERE id = $eid";
+        $q = "UPDATE raidlist set lid = '$lid', towref = '$wref', x = '$x', y = '$y', t1 = '$t1', t2 = '$t2', t3 = '$t3', t4 = '$t4', t5 = '$t5', t6 = '$t6', t7 = '$t7', t8 = '$t8', t9 = '$t9', t10 = '$t10' WHERE id = $eid";
         return mysql_query($q, $this->connection);
     }
 
     function removeOases($wref)
     {
-        $q = "UPDATE " . TB_PREFIX . "odata SET conqured = 0, owner = 3, name = '" . UNOCCUPIEDOASES . "' WHERE wref = $wref";
+        $q = "UPDATE odata SET conqured = 0, owner = 3, name = '" . UNOCCUPIEDOASES . "' WHERE wref = $wref";
         $r = mysql_query($q, $this->connection);
-        $q = "UPDATE " . TB_PREFIX . "wdata SET occupied = 0 WHERE id = $wref";
+        $q = "UPDATE wdata SET occupied = 0 WHERE id = $wref";
         $r2 = mysql_query($q, $this->connection);
         return ($r && $r2);
     }
 
     function getArrayMemberVillage($uid)
     {
-        $q = 'SELECT a.wref, a.name, a.capital, b.x, b.y from ' . TB_PREFIX . 'vdata AS a left join ' . TB_PREFIX . 'wdata AS b ON b.id = a.wref where owner = ' . $uid . ' order by capital DESC,pop DESC';
+        $q = 'SELECT a.wref, a.name, a.capital, b.x, b.y from vdata AS a left join wdata AS b ON b.id = a.wref where owner = ' . $uid . ' order by capital DESC,pop DESC';
         $result = mysql_query($q, $this->connection);
         $array = $this->mysql_fetch_all($result);
         return $array;
@@ -3649,7 +3648,7 @@ class MYSQL_DB
 
     function getNoticeData($nid)
     {
-        $q = "SELECT `data` FROM " . TB_PREFIX . "ndata where id = $nid";
+        $q = "SELECT `data` FROM ndata where id = $nid";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['data'];
@@ -3657,7 +3656,7 @@ class MYSQL_DB
 
     function getUsersNotice($uid, $ntype = -1, $viewed = -1)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "ndata where uid=$uid ";
+        $q = "SELECT * FROM ndata where uid=$uid ";
         if ($ntype >= 0) {
             $q .= " and ntype=$ntype ";
         }
@@ -3672,14 +3671,14 @@ class MYSQL_DB
     function setSilver($uid, $silver, $mode)
     {
         if (!$mode) {
-            $q = "UPDATE " . TB_PREFIX . "users set silver = silver - $silver where id = $uid";
+            $q = "UPDATE users set silver = silver - $silver where id = $uid";
             //Used Silver
-            $q2 = "UPDATE " . TB_PREFIX . "users set usedsilver = usedsilver+" . $silver . " where id = $uid";
+            $q2 = "UPDATE users set usedsilver = usedsilver+" . $silver . " where id = $uid";
             mysql_query($q2, $this->connection);
         } else {
-            $q = "UPDATE " . TB_PREFIX . "users set silver = silver + $silver where id = $uid";
+            $q = "UPDATE users set silver = silver + $silver where id = $uid";
             //Addgold gold
-            $q2 = "UPDATE " . TB_PREFIX . "users set Addsilver = Addsilver+" . $silver . " where id = $uid";
+            $q2 = "UPDATE users set Addsilver = Addsilver+" . $silver . " where id = $uid";
             mysql_query($q2, $this->connection);
         }
         return mysql_query($q, $this->connection);
@@ -3687,7 +3686,7 @@ class MYSQL_DB
 
     function getAuctionSilver($uid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "auction where uid = $uid and finish = 0";
+        $q = "SELECT * FROM auction where uid = $uid and finish = 0";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
@@ -3699,7 +3698,7 @@ class MYSQL_DB
         if (($usedtime < (AUCTIONTIME / 10)) && !$aucData['bids']) {
             $this->modifyHeroItem($aucData['itemid'], 'num', $aucData['num'], 1);
             $this->modifyHeroItem($aucData['itemid'], 'proc', 0, 0);
-            $q = "DELETE FROM " . TB_PREFIX . "auction where id = $id and finish = 0";
+            $q = "DELETE FROM auction where id = $id and finish = 0";
             return mysql_query($q, $this->connection);
         } else {
             return false;
@@ -3708,7 +3707,7 @@ class MYSQL_DB
 
     function getAuctionData($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "auction where id = $id";
+        $q = "SELECT * FROM auction where id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
@@ -3733,14 +3732,14 @@ class MYSQL_DB
                 $cmd = " $column = $column/$value ";
                 break;
         }
-        $q = "UPDATE " . TB_PREFIX . "heroitems set $cmd where id = $id";
+        $q = "UPDATE heroitems set $cmd where id = $id";
         $result = mysql_query($q, $this->connection);
         return ($result ? true : false);
     }
 
     function getAuctionUser($uid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "auction where owner = $uid";
+        $q = "SELECT * FROM auction where owner = $uid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
@@ -3768,13 +3767,13 @@ class MYSQL_DB
                 $silver = $amount * 100;
                 break;
         }
-        $q = "INSERT INTO " . TB_PREFIX . "auction (`owner`, `itemid`, `btype`, `type`, `num`, `uid`, `bids`, `silver`, `maxsilver`, `time`, `finish`) VALUES ('$owner', '$itemid', '$btype', '$type', '$amount', 0, 0, '$silver', '$silver', '$time', 0)";
+        $q = "INSERT INTO auction (`owner`, `itemid`, `btype`, `type`, `num`, `uid`, `bids`, `silver`, `maxsilver`, `time`, `finish`) VALUES ('$owner', '$itemid', '$btype', '$type', '$amount', 0, 0, '$silver', '$silver', '$time', 0)";
         return mysql_query($q, $this->connection);
     }
 
     function getHeroItem($id = 0, $uid = 0, $btype = 0, $type = 0, $proc = 2)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "heroitems WHERE TRUE "
+        $q = "SELECT * FROM heroitems WHERE TRUE "
             . ($id ? (" AND id = " . $id) : (""))
             . ($uid ? (" AND uid = " . $uid) : (""))
             . ($btype ? (" AND btype = " . $btype) : (""))
@@ -3787,25 +3786,25 @@ class MYSQL_DB
 
     function addBid($id, $uid, $silver, $maxsilver, $time)
     {
-        $q = "UPDATE " . TB_PREFIX . "auction set uid = $uid, silver = $silver, maxsilver = $maxsilver, bids = bids + 1, time = $time where id = $id";
+        $q = "UPDATE auction set uid = $uid, silver = $silver, maxsilver = $maxsilver, bids = bids + 1, time = $time where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function removeBidNotice($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "auction where id = $id";
+        $q = "DELETE FROM auction where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function addHeroItem($uid, $btype, $type, $num)
     {
-        $q = "INSERT INTO " . TB_PREFIX . "heroitems (`uid`, `btype`, `type`, `num`, `proc`) VALUES ('$uid', '$btype', '$type', '$num', 0)";
+        $q = "INSERT INTO heroitems (`uid`, `btype`, `type`, `num`, `proc`) VALUES ('$uid', '$btype', '$type', '$num', 0)";
         return mysql_query($q, $this->connection);
     }
 
     function checkHeroItem($uid, $btype, $type = 0, $proc = 2)
     {
-        $q = "SELECT id,btype FROM " . TB_PREFIX . "heroitems WHERE TRUE "
+        $q = "SELECT id, btype FROM heroitems WHERE TRUE "
             . ($uid ? " AND uid = '$uid'" : '')
             . ($btype ? " AND btype = '$btype'" : '')
             . ($type ? " AND type = '$type'" : '')
@@ -3821,27 +3820,27 @@ class MYSQL_DB
 
     function editBid($id, $maxsilver, $minsilver)
     {
-        $q = "UPDATE " . TB_PREFIX . "auction set maxsilver = $maxsilver, silver = $minsilver where id = $id";
+        $q = "UPDATE auction set maxsilver = $maxsilver, silver = $minsilver where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function getBidData($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "auction WHERE id = $id";
+        $q = "SELECT * FROM auction WHERE id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getFLData($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "farmlist where id = $id";
+        $q = "SELECT * FROM farmlist where id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getHeroField($uid, $field)
     {
-        $q = "SELECT " . $field . " FROM " . TB_PREFIX . "hero WHERE uid = $uid";
+        $q = "SELECT " . $field . " FROM hero WHERE uid = $uid";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray[$field];
@@ -3851,7 +3850,7 @@ class MYSQL_DB
     {
         $capWref = $this->getVFH($uid);
         if ($capWref) {
-            $q = "SELECT * FROM " . TB_PREFIX . "fdata WHERE vref = " . $capWref;
+            $q = "SELECT * FROM fdata WHERE vref = " . $capWref;
             $result = mysql_query($q, $this->connection);
             if ($result) {
                 $dbarray = mysql_fetch_assoc($result);
@@ -3869,7 +3868,7 @@ class MYSQL_DB
 
     function getVFH($uid)
     {
-        $q = "SELECT wref FROM " . TB_PREFIX . "vdata WHERE owner = $uid and capital = 1";
+        $q = "SELECT wref FROM vdata WHERE owner = $uid and capital = 1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray['wref'];
@@ -3877,7 +3876,7 @@ class MYSQL_DB
 
     function getNotice2($id, $field)
     {
-        $q = "SELECT " . $field . " FROM " . TB_PREFIX . "ndata where `id` = '$id'";
+        $q = "SELECT " . $field . " FROM ndata where `id` = '$id'";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         return $dbarray[$field];
@@ -3888,7 +3887,7 @@ class MYSQL_DB
         if ($time == 0) $time = time();
         // $ddd = rand(0,3);
         // if($ddd == 1){ $dif = 1; }else{ $dif = 0; }
-        $sql = mysql_query("SELECT id FROM " . TB_PREFIX . "wdata ORDER BY id DESC LIMIT 1");
+        $sql = mysql_query("SELECT id FROM wdata ORDER BY id DESC LIMIT 1");
         $myvar = mysql_fetch_assoc($sql);
         // print_r($myvar);die;
         $lastw = $myvar['id'];
@@ -3899,7 +3898,7 @@ class MYSQL_DB
         } else {
             $w1 = rand(($wref - 10000), ($wref + 10000));
         }
-        $q = "INSERT into " . TB_PREFIX . "adventure (`wref`, `uid`, `dif`, `time`, `end`) values ('$w1', '$uid', '$dif', '$time', 0)";
+        $q = "INSERT into adventure (`wref`, `uid`, `dif`, `time`, `end`) values ('$w1', '$uid', '$dif', '$time', 0)";
         return mysql_query($q, $this->connection);
     }
 
@@ -4007,7 +4006,7 @@ class MYSQL_DB
                 $returnmspeed = 0;
                 break;
         }
-        $q = "INSERT into " . TB_PREFIX . "hero (`uid`, `wref`, `level`, `speed`, `points`, `experience`, `dead`, `health`, `power`, `fsperpoint`, `offBonus`, `defBonus`, `product`, `r0`, `autoregen`, `extraexpgain`, `cpproduction`, `rob`, `extraresist`, `vsnatars`, `accountmspeed`, `allymspeed`, `longwaymspeed`, `returnmspeed`, `lastupdate`, `lastadv`, `hash`) values
+        $q = "INSERT into hero (`uid`, `wref`, `level`, `speed`, `points`, `experience`, `dead`, `health`, `power`, `fsperpoint`, `offBonus`, `defBonus`, `product`, `r0`, `autoregen`, `extraexpgain`, `cpproduction`, `rob`, `extraresist`, `vsnatars`, `accountmspeed`, `allymspeed`, `longwaymspeed`, `returnmspeed`, `lastupdate`, `lastadv`, `hash`) values
 				('$uid', 0, 0, '$speed', 0, '0', 0, '100', '0', '$fsperpoint', '0', '0', '4', '1', '$autoregen', '$extraexpgain', '$cpproduction', '$rob', '$extraresist', '$vsnatars', '$accountmspeed', '$allymspeed', '$longwaymspeed', '$returnmspeed', '$time', '0', '$hash')";
         return mysql_query($q, $this->connection);
     }
@@ -4018,9 +4017,9 @@ class MYSQL_DB
     {
         $time = time();
         if (!$mode) {
-            $q = "INSERT into " . TB_PREFIX . "newproc (uid, npw, act, time, proc) values ('$uid', '$npw', '$act', '$time', 0)";
+            $q = "INSERT into newproc (uid, npw, act, time, proc) values ('$uid', '$npw', '$act', '$time', 0)";
         } else {
-            $q = "INSERT into " . TB_PREFIX . "newproc (uid, nemail, act, time, proc) values ('$uid', '$nemail', '$act', '$time', 0)";
+            $q = "INSERT into newproc (uid, nemail, act, time, proc) values ('$uid', '$nemail', '$act', '$time', 0)";
         }
 
         return mysql_query($q, $this->connection);
@@ -4028,7 +4027,7 @@ class MYSQL_DB
 
     function checkProcExist($uid)
     {
-        $q = "SELECT uid FROM " . TB_PREFIX . "newproc where uid = '$uid' and proc = 0";
+        $q = "SELECT uid FROM newproc where uid = '$uid' and proc = 0";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return false;
@@ -4039,13 +4038,13 @@ class MYSQL_DB
 
     function removeProc($uid)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "newproc where uid = $uid";
+        $q = "DELETE FROM newproc where uid = $uid";
         return mysql_query($q, $this->connection);
     }
 
     function checkBan($uid)
     {
-        $q = "SELECT access FROM " . TB_PREFIX . "users WHERE id = $uid LIMIT 1";
+        $q = "SELECT access FROM users WHERE id = $uid LIMIT 1";
         $result = $this->query_return($q);
         if (!empty($result) && ($result[0]['access'] <= 1 /*|| $result[0]['access']>=7*/)) {
             return true;
@@ -4056,7 +4055,7 @@ class MYSQL_DB
 
     function getNewProc($uid)
     {
-        $q = "SELECT `npw`,`act` FROM " . TB_PREFIX . "newproc WHERE uid = $uid";
+        $q = "SELECT `npw`,`act` FROM newproc WHERE uid = $uid";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result)) {
             return mysql_fetch_array($result);
@@ -4067,7 +4066,7 @@ class MYSQL_DB
 
     function CheckAdventure($uid, $wref, $end)
     {
-        $q = "SELECT `id` FROM " . TB_PREFIX . "adventure WHERE uid = $uid AND wref = $wref AND end = $end";
+        $q = "SELECT `id` FROM adventure WHERE uid = $uid AND wref = $wref AND end = $end";
         $result = mysql_query($q, $this->connection);
         if ($result) {
             return mysql_fetch_array($result);
@@ -4078,7 +4077,7 @@ class MYSQL_DB
 
     function getAdventure($uid, $wref = 0, $end = 2)
     {
-        $q = "SELECT `id`,`dif` FROM " . TB_PREFIX . "adventure WHERE uid = $uid "
+        $q = "SELECT `id`,`dif` FROM adventure WHERE uid = $uid "
             . ($wref != 0 ? " AND wref = '$wref'" : '')
             . ($end != 2 ? " AND end = $end" : '');
         $result = mysql_query($q, $this->connection);
@@ -4091,23 +4090,23 @@ class MYSQL_DB
 
     function editTableField($table, $field, $value, $refField, $ref)
     {
-        $q = "UPDATE " . TB_PREFIX . "" . $table . " set $field = '$value' where " . $refField . " = '$ref'";
+        $q = "UPDATE " . $table . " set $field = '$value' where " . $refField . " = '$ref'";
         return mysql_query($q, $this->connection);
     }
 
     function config()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "config";
+        $q = "SELECT * FROM config";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
     function getAllianceDipProfile($aid, $type)
     {
-        $q = "SELECT `alli2` FROM " . TB_PREFIX . "diplomacy WHERE alli1 = '$aid' AND type = '$type' AND accepted = '1'";
+        $q = "SELECT `alli2` FROM diplomacy WHERE alli1 = '$aid' AND type = '$type' AND accepted = '1'";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result) == 0) {
-            $q2 = "SELECT `alli1` FROM " . TB_PREFIX . "diplomacy WHERE alli2 = '$aid' AND type = '$type' AND accepted = '1'";
+            $q2 = "SELECT `alli1` FROM diplomacy WHERE alli2 = '$aid' AND type = '$type' AND accepted = '1'";
             $result2 = mysql_query($q2, $this->connection);
             while ($row = mysql_fetch_array($result2)) {
                 $alliance = $this->getAlliance($row['alli1']);
@@ -4141,7 +4140,7 @@ class MYSQL_DB
                 $where = ' tag = "' . $id . '"';
                 break;
         }
-        $q = "SELECT `id`,`tag`,`desc`,`max`,`name`,`notice` from " . TB_PREFIX . "alidata where " . $where;
+        $q = "SELECT `id`,`tag`,`desc`,`max`,`name`,`notice` from alidata where " . $where;
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
@@ -4255,7 +4254,7 @@ class MYSQL_DB
                 $bakery = $buildarray['f' . $i];
             }
         }
-        $q = "SELECT type FROM `" . TB_PREFIX . "odata` WHERE conqured = $wref";
+        $q = "SELECT type FROM `odata` WHERE conqured = $wref";
         $oasis = $this->query_return($q);
         $cropo = 0;
         foreach ($oasis as $oa) {
@@ -4294,7 +4293,7 @@ class MYSQL_DB
 
     public function getNatarsProgress()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "natarsprogress";
+        $q = "SELECT * FROM natarsprogress";
         $sql = mysql_query($q);
         $result = mysql_fetch_array($sql);
         return $result;
@@ -4302,20 +4301,20 @@ class MYSQL_DB
 
     public function setNatarsProgress($field, $value)
     {
-        $q = "UPDATE " . TB_PREFIX . "natarsprogress SET `$field` = '$value'";
+        $q = "UPDATE natarsprogress SET `$field` = '$value'";
         return mysql_query($q, $this->connection);
     }
 
     public function getNatarsCapital()
     {
-        $q = "SELECT `wref` FROM " . TB_PREFIX . "vdata WHERE owner=2 AND capital = 1 ORDER BY created ASC";
+        $q = "SELECT `wref` FROM vdata WHERE owner=2 AND capital = 1 ORDER BY created ASC";
         $result = $this->query_return($q);
         return $result[0];
     }
 
     public function getNatarsWWVillages()
     {
-        $q = "SELECT `owner` FROM " . TB_PREFIX . "vdata WHERE owner=2 AND name = 'WW Village' ORDER BY created ASC";
+        $q = "SELECT `owner` FROM vdata WHERE owner=2 AND name = 'WW Village' ORDER BY created ASC";
         $result = $this->query_return($q);
         return $result;
     }
@@ -4325,7 +4324,7 @@ class MYSQL_DB
         $total = count($this->getVillagesID($uid));
         $vname = sprintf("[%05d] Natars", $total + 1);
         $time = time();
-        $q = "INSERT into " . TB_PREFIX . "vdata "
+        $q = "INSERT into vdata "
             . " (wref, owner, name, capital, pop, cp, celebration, wood, clay, iron, maxstore, crop, maxcrop, lastupdate, created, natar)"
             . " values ('$wid', '$uid', '$vname', '$capital', 2, 1, 0, 780, 780, 780, 800, 780, 800, '$time', '$time', '1')";
         return mysql_query($q, $this->connection);
@@ -4333,9 +4332,9 @@ class MYSQL_DB
 
     function instantTrain($vref)
     {
-        $q = 'SELECT `id` FROM ' . TB_PREFIX . 'training WHERE `vref`=' . $vref;
+        $q = 'SELECT `id` FROM training WHERE `vref`=' . $vref;
         $count = count($this->query_return($q));
-        $q = 'UPDATE ' . TB_PREFIX . 'training SET `commence`=0,`eachtime`=1,`endat`=0,`timestamp`=0 WHERE `vref`=' . $vref;
+        $q = 'UPDATE training SET `commence`=0,`eachtime`=1,`endat`=0,`timestamp`=0 WHERE `vref`=' . $vref;
         $result = mysql_query($q, $this->connection);
         if ($result) {
             return $count;
@@ -4346,20 +4345,20 @@ class MYSQL_DB
 
     function hasWinner()
     {
-        $sql = mysql_query("SELECT vref FROM " . TB_PREFIX . "fdata WHERE f99 = '100' and f99t = '40'");
+        $sql = mysql_query("SELECT vref FROM fdata WHERE f99 = '100' and f99t = '40'");
         $winner = mysql_num_rows($sql);
         return ($winner > 0 ? true : false);
     }
 
     function getVillageActiveArte($vref)
     {
-        $q = 'SELECT * FROM ' . TB_PREFIX . 'artefacts WHERE `vref`=' . $vref . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600));
+        $q = 'SELECT * FROM artefacts WHERE `vref`=' . $vref . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600));
         return $this->query_return($q);
     }
 
     function getAccountActiveArte($owner)
     {
-        $q = 'SELECT * FROM ' . TB_PREFIX . 'artefacts WHERE `owner`=' . $owner . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600));
+        $q = 'SELECT * FROM artefacts WHERE `owner`=' . $owner . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600));
         return $this->query_return($q);
     }
 
@@ -4378,7 +4377,7 @@ class MYSQL_DB
         $vinfo = $this->getVillage($wref);
         if (!empty($vinfo) && isset($vinfo['owner'])) {
             $owner = $vinfo['owner'];
-            $q = 'SELECT `vref`,`effect`,`aoe` FROM ' . TB_PREFIX . 'artefacts WHERE `owner`=' . $owner . ' AND `effecttype`=' . $type . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' ORDER BY `conquered` DESC';
+            $q = 'SELECT `vref`,`effect`,`aoe` FROM artefacts WHERE `owner`=' . $owner . ' AND `effecttype`=' . $type . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' ORDER BY `conquered` DESC';
             $result = $this->query_return($q);
             if (!empty($result) && count($result) > 0) {
                 $i = 0;
@@ -4400,7 +4399,7 @@ class MYSQL_DB
 
     function updateFoolArtes()
     {
-        $q = 'SELECT `id`,`size` FROM ' . TB_PREFIX . 'artefacts WHERE `type`=3 AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' AND lastupdate<=' . (time() - max(86400 / SPEED, 600));
+        $q = 'SELECT `id`,`size` FROM artefacts WHERE `type`=3 AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' AND lastupdate<=' . (time() - max(86400 / SPEED, 600));
         $result = $this->query_return($q);
         if (!empty($result) && count($result) > 0) {
             foreach ($result as $r) {
@@ -4466,7 +4465,7 @@ class MYSQL_DB
                 if ($r['size'] == 1 && rand(1, 100) <= 50) {
                     $effect = 1 / $effect;
                 }
-                $q = 'UPDATE ' . TB_PREFIX . 'artefacts SET `effecttype`=' . $effecttype . ',`effect`=' . $effect . ',`aoe`=' . $aoe . ' WHERE `id`=' . $r['id'];
+                $q = 'UPDATE artefacts SET `effecttype`=' . $effecttype . ',`effect`=' . $effect . ',`aoe`=' . $aoe . ' WHERE `id`=' . $r['id'];
                 mysql_query($q, $this->connection);
             }
         }
@@ -4525,7 +4524,7 @@ class MYSQL_DB
         $artEff = 0;
         $vinfo = $this->getVillage($wref);
         $owner = $vinfo['owner'];
-        $q = 'SELECT `id` FROM ' . TB_PREFIX . 'artefacts WHERE `owner`=' . $owner . ' AND `effecttype`=11 AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' ORDER BY `conquered` DESC';
+        $q = 'SELECT `id` FROM artefacts WHERE `owner`=' . $owner . ' AND `effecttype`=11 AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' ORDER BY `conquered` DESC';
         $result = $this->query_return($q);
         if (!empty($result) && count($result) > 0) {
             return $artEff = 1;
@@ -4537,7 +4536,7 @@ class MYSQL_DB
     {
         $artEff = 0;
         $userAlli = $this->getUserField($uid, 'alliance', 0);
-        $q = 'SELECT `alli1`,`alli2` FROM ' . TB_PREFIX . 'diplomacy WHERE alli1=' . $userAlli . ' OR alli2=' . $userAlli . ' AND accepted<>0';
+        $q = 'SELECT `alli1`,`alli2` FROM diplomacy WHERE alli1=' . $userAlli . ' OR alli2=' . $userAlli . ' AND accepted<>0';
         $diplos = $this->query_return($q);
         $diplos[] = array('alli1' => $userAlli, 'alli2' => $userAlli);
         if (!empty($diplos) && count($diplos) > 0) {
@@ -4548,7 +4547,7 @@ class MYSQL_DB
             }
             $al = array_unique($al);
             $alstr = implode(',', $al);
-            $q = 'SELECT `id` FROM ' . TB_PREFIX . 'users WHERE alliance IN (' . $alstr . ') AND id<>' . $uid;
+            $q = 'SELECT `id` FROM users WHERE alliance IN (' . $alstr . ') AND id<>' . $uid;
             $mate = $this->query_return($q);
             if (!empty($mate) && count($mate) > 0) {
                 $ml = array();
@@ -4556,7 +4555,7 @@ class MYSQL_DB
                     $ml[] = $ms['id'];
                 }
                 $matestr = implode(',', $ml);
-                $q = 'SELECT `id` FROM ' . TB_PREFIX . 'artefacts WHERE `owner` IN (' . $matestr . ') AND `effecttype`=11 AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' ORDER BY `conquered` DESC';
+                $q = 'SELECT `id` FROM artefacts WHERE `owner` IN (' . $matestr . ') AND `effecttype`=11 AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' ORDER BY `conquered` DESC';
                 $result = $this->query_return($q);
                 if (!empty($result) && count($result) > 0) {
                     return $artEff = 1;
@@ -4568,27 +4567,27 @@ class MYSQL_DB
 
     function modifyExtraVillage($wid, $column, $value)
     {
-        return $this->query("UPDATE " . TB_PREFIX . "vdata SET $column=$column+$value WHERE wref=$wid");
+        return $this->query("UPDATE vdata SET $column=$column+$value WHERE wref=$wid");
     }
 
     function modifyFieldLevel($wid, $field, $level, $mode)
     {
         $b = 'f' . $field;
         if (!$mode) {
-            return $this->query("UPDATE " . TB_PREFIX . "fdata SET $b=$b-$level WHERE vref=" . $wid);
+            return $this->query("UPDATE fdata SET $b=$b-$level WHERE vref=" . $wid);
         }
-        return $this->query("UPDATE " . TB_PREFIX . "fdata SET $b=$b+$level WHERE vref=" . $wid);
+        return $this->query("UPDATE fdata SET $b=$b+$level WHERE vref=" . $wid);
     }
 
     function modifyFieldType($wid, $field, $type)
     {
         $b = 'f' . $field . 't';
-        return $this->query("UPDATE " . TB_PREFIX . "fdata SET $b=$type WHERE vref=" . $wid);
+        return $this->query("UPDATE fdata SET $b=$type WHERE vref=" . $wid);
     }
 
     function resendact($mail)
     {
-        $q = "SELECT `email`, `username`, `password`, `id` from " . TB_PREFIX . "users WHERE email = " . $mail . " LIMIT 0,1";
+        $q = "SELECT `email`, `username`, `password`, `id` from users WHERE email = " . $mail . " LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray;
@@ -4596,7 +4595,7 @@ class MYSQL_DB
 
     function changemail($mail, $id)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set email= '$mail' WHERE id ='$id'";
+        $q = "UPDATE users set email= '$mail' WHERE id ='$id'";
         mysql_query($q, $this->connection);
     }
 
@@ -4608,7 +4607,7 @@ class MYSQL_DB
         }
         $timep = ($time + PROTECTION);
         $rand = rand(8900, 9000);
-        $q = "INSERT INTO " . TB_PREFIX . "users (username,password,access,email,timestamp,act,protect,fquest,clp,cp,reg2,activateat) VALUES ('$username', '$password', " . USER . ", '$email', $time, '$act', $timep, '0,0,0,0,0,0,0,0,0,0,0', '$rand', 1, 1,$activateat)";
+        $q = "INSERT INTO users (username,password,access,email,timestamp,act,protect,fquest,clp,cp,reg2,activateat) VALUES ('$username', '$password', " . USER . ", '$email', $time, '$act', $timep, '0,0,0,0,0,0,0,0,0,0,0', '$rand', 1, 1,$activateat)";
         if (mysql_query($q, $this->connection)) {
             return mysql_insert_id($this->connection);
         } else {
@@ -4618,7 +4617,7 @@ class MYSQL_DB
 
     function checkname($id)
     {
-        $q = "SELECT `username`, `email` FROM " . TB_PREFIX . "users WHERE id = $id  LIMIT 0,1";
+        $q = "SELECT `username`, `email` FROM users WHERE id = $id  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray;
@@ -4626,13 +4625,13 @@ class MYSQL_DB
 
     function settribe($tribe, $id)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set tribe= '$tribe' WHERE id ='$id' && reg2 = 1";
+        $q = "UPDATE users set tribe= '$tribe' WHERE id ='$id' && reg2 = 1";
         mysql_query($q, $this->connection);
     }
 
     function checkreg($uid)
     {
-        $q = "SELECT `reg2` FROM " . TB_PREFIX . "users WHERE id = '" . $uid . "'  LIMIT 0,1";
+        $q = "SELECT `reg2` FROM users WHERE id = '" . $uid . "'  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray;
@@ -4640,7 +4639,7 @@ class MYSQL_DB
 
     function checkreg2($name)
     {
-        $q = "SELECT `reg2` FROM " . TB_PREFIX . "users WHERE username = '" . $name . "'  LIMIT 0,1";
+        $q = "SELECT `reg2` FROM users WHERE username = '" . $name . "'  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray;
@@ -4648,7 +4647,7 @@ class MYSQL_DB
 
     function checkid($name)
     {
-        $q = "SELECT `id` FROM " . TB_PREFIX . "users WHERE username = '" . $name . "'  LIMIT 0,1";
+        $q = "SELECT `id` FROM users WHERE username = '" . $name . "'  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray;
@@ -4656,27 +4655,27 @@ class MYSQL_DB
 
     function setreg2($id)
     {
-        $q = "UPDATE " . TB_PREFIX . "users set reg2= 0 WHERE id ='$id' && reg2 = 1";
+        $q = "UPDATE users set reg2= 0 WHERE id ='$id' && reg2 = 1";
         mysql_query($q, $this->connection);
     }
 
     function getNotice5($uid)
     {
-        $q = "SELECT `id` FROM " . TB_PREFIX . "ndata where uid = $uid and viewed = 0 ORDER BY time DESC LIMIT 1";
+        $q = "SELECT `id` FROM ndata where uid = $uid and viewed = 0 ORDER BY time DESC LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function setref($id, $name)
     {
-        $q = "INSERT into " . TB_PREFIX . "refrence values (0,'$id','$name')";
+        $q = "INSERT into refrence values (0,'$id','$name')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
     function getAttackCasualties($time)
     {
-        $q = "SELECT `time` FROM " . TB_PREFIX . "general where shown = 1";
+        $q = "SELECT `time` FROM general where shown = 1";
         $casualties = 0;
         $res = mysql_query($q);
         while ($general = mysql_fetch_assoc($res)) {
@@ -4689,7 +4688,7 @@ class MYSQL_DB
 
     function getAttackByDate($time)
     {
-        $q = "SELECT `time` FROM " . TB_PREFIX . "general where shown = 1";
+        $q = "SELECT `time` FROM general where shown = 1";
         $attack = 0;
         $res = mysql_query($q);
         while ($general = mysql_fetch_assoc($res)) {
@@ -4702,7 +4701,7 @@ class MYSQL_DB
 
     function getStatsinfo($uid, $time, $inf)
     {
-        $q = "SELECT `$inf`,`time` FROM " . TB_PREFIX . "stats where owner = " . $uid;
+        $q = "SELECT `$inf`,`time` FROM stats where owner = " . $uid;
         $t = 0;
         if ($inf == 'rank') {
             $res = mysql_query($q);
@@ -4727,35 +4726,35 @@ class MYSQL_DB
     {
         switch ($mode) {
             case 1:
-                $q = "UPDATE " . TB_PREFIX . "hero SET $column = $column + $value WHERE uid = $uid";
+                $q = "UPDATE hero SET $column = $column + $value WHERE uid = $uid";
                 break;
             case 2:
-                $q = "UPDATE " . TB_PREFIX . "hero SET $column = $column - $value WHERE uid = $uid";
+                $q = "UPDATE hero SET $column = $column - $value WHERE uid = $uid";
                 break;
             default:
-                $q = "UPDATE " . TB_PREFIX . "hero SET $column = $value WHERE uid = $uid";
+                $q = "UPDATE hero SET $column = $value WHERE uid = $uid";
         }
         return mysql_query($q, $this->connection);
     }
 
     function createTradeRoute($uid, $wid, $from, $r1, $r2, $r3, $r4, $start, $deliveries, $merchant, $time)
     {
-        $x = "UPDATE " . TB_PREFIX . "users SET gold = gold - 2 WHERE id = " . $uid . "";
+        $x = "UPDATE users SET gold = gold - 2 WHERE id = " . $uid . "";
         mysql_query($x, $this->connection) or die(mysql_error());
-        $q = "INSERT into " . TB_PREFIX . "route values (0,$uid,$wid,$from,$r1,$r2,$r3,$r4,$start,$deliveries,$merchant,'$time')";
+        $q = "INSERT into route values (0,$uid,$wid,$from,$r1,$r2,$r3,$r4,$start,$deliveries,$merchant,'$time')";
         return mysql_query($q, $this->connection) or die(mysql_error());
     }
 
     function getTradeRoute($uid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "route where uid = $uid ORDER BY timestamp ASC";
+        $q = "SELECT * FROM route where uid = $uid ORDER BY timestamp ASC";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function getTradeRoute2($id)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "route where id = $id";
+        $q = "SELECT * FROM route where id = $id";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray;
@@ -4763,7 +4762,7 @@ class MYSQL_DB
 
     function getTradeRouteUid($id)
     {
-        $q = "SELECT `uid` FROM " . TB_PREFIX . "route where id = $id";
+        $q = "SELECT `uid` FROM route where id = $id";
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_assoc($result);
         return $dbarray['uid'];
@@ -4772,39 +4771,39 @@ class MYSQL_DB
     function editTradeRoute($id, $column, $value, $mode)
     {
         if (!$mode) {
-            $q = "UPDATE " . TB_PREFIX . "route set $column = $value where id = $id";
+            $q = "UPDATE route set $column = $value where id = $id";
         } else {
-            $q = "UPDATE " . TB_PREFIX . "route set $column = $column + $value where id = $id";
+            $q = "UPDATE route set $column = $column + $value where id = $id";
         }
         return mysql_query($q, $this->connection);
     }
 
     function deleteTradeRoute($id)
     {
-        $q = "DELETE FROM " . TB_PREFIX . "route where id = $id";
+        $q = "DELETE FROM route where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     function getHeroData($uid)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "hero WHERE uid = $uid";
+        $q = "SELECT * FROM hero WHERE uid = $uid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
     function getHeroData2($uid)
     {
-        $q = "SELECT `heroid` FROM " . TB_PREFIX . "hero WHERE dead = 0 and uid = $uid LIMIT 0, 1";
+        $q = "SELECT `heroid` FROM hero WHERE dead = 0 and uid = $uid LIMIT 0, 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
     function getHeroInVillid($uid, $mode)
     {
-        $q = "SELECT `wref`, `name` FROM " . TB_PREFIX . "vdata WHERE owner = " . $uid . " ORDER BY owner";
+        $q = "SELECT `wref`, `name` FROM vdata WHERE owner = " . $uid . " ORDER BY owner";
         $result = mysql_query($q);
         while ($row = mysql_fetch_assoc($result)) {
-            $q2 = "SELECT `hero` FROM " . TB_PREFIX . "units WHERE vref = " . $row['wref'] . " ORDER BY vref";
+            $q2 = "SELECT `hero` FROM units WHERE vref = " . $row['wref'] . " ORDER BY vref";
             $result2 = mysql_query($q2);
             while ($row2 = mysql_fetch_assoc($result2)) {
                 if ($mode) {

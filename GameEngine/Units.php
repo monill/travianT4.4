@@ -149,7 +149,7 @@ class Units
             }
             if ($data['u11'] > 0) $database->modifyUnit($village->wid, "hero", $data['u11'], 0);
 
-            $query21 = mysql_query('SELECT * FROM `' . TB_PREFIX . 'users` WHERE `id` = ' . $session->uid);
+            $query21 = mysql_query('SELECT * FROM `users` WHERE `id` = ' . $session->uid);
             $data21 = mysql_fetch_assoc($query21);
 
             $eigen = $database->getCoor($village->wid);
@@ -238,8 +238,8 @@ class Units
             $defender_name = $database->getVillageField($data['to_vid'], 'name');
 
             if ($database->hasBeginnerProtection($village->wid) == 1) {
-                if ($database->isVillageOases($data['to_vid']) == 0 && $attacker_id != $defender_id AND $defender_name != 'Farm Village') {
-                    mysql_query('UPDATE `' . TB_PREFIX . 'users` set protect = 0 WHERE `id` = ' . $session->uid);
+                if ($database->isVillageOases($data['to_vid']) == 0 && $attacker_id != $defender_id and $defender_name != 'Farm Village') {
+                    mysql_query('UPDATE `users` set protect = 0 WHERE `id` = ' . $session->uid);
                 }
             }
             if (!isset($post['spy'])) {
@@ -580,7 +580,6 @@ class Units
         if ($getHero > 0 && $unit['hero'] > 0) {
             $database->modifyUnit($village->wid, 'hero', 1, 0);
             $database->addMovement(9, $village->wid, $post['h'], 0, 0, time() + $time);
-
         }
         header("Location: build.php?id=39");
         exit;
@@ -740,5 +739,3 @@ class Units
 }
 
 $units = new Units;
-
-?>

@@ -22,7 +22,7 @@ class Profile
                     break;
             }
         }
-        if (isset($post['f']) AND isset($post['t'])) {
+        if (isset($post['f']) and isset($post['t'])) {
             $this->options();
         }
     }
@@ -67,7 +67,7 @@ class Profile
             if ($post['pw2'] == $post['pw3']) {
                 if ($database->login($session->username, $post['pw1'])) {
                     $database->updateUserField($session->uid, "password", $this->generateHash($post['pw2']), 1);
-                    mysql_query("UPDATE " . TB_PREFIX . "users set sessid = '' WHERE id = " . $session->uid);
+                    mysql_query("UPDATE users set sessid = '' WHERE id = " . $session->uid);
                 } else {
                     $form->addError("pw", US_LOGINPWERROR);
                 }
@@ -96,7 +96,7 @@ class Profile
         if ($post['v1'] != '') {
             $sitid = $database->getUserField($post['v1'], 'id', 1);
 
-            $qu = mysql_query("SELECT COUNT(`id`) FROM " . TB_PREFIX . "users WHERE sit1 = " . $sitid . " OR sit2 = " . $sitid . " LIMIT 2");
+            $qu = mysql_query("SELECT COUNT(`id`) FROM users WHERE sit1 = " . $sitid . " OR sit2 = " . $sitid . " LIMIT 2");
             $qu = mysql_fetch_assoc($qu);
 
             //$sitterz = $database->whoissitter($sitid);
@@ -135,7 +135,6 @@ class Profile
                 }
                 //}
             }
-
         } else if ($post['v2'] != '') {
             $sitid = $database->getUserField($post['v2'], 'id', 1);
             //$sitterz = $database->whoissitter($sitid);
@@ -242,20 +241,19 @@ class Profile
     private function options()
     {
         global $session;
-        if (isset ($_POST['t']) && $_POST['t'] == 1 && isset ($_POST['f']) && $_POST['f'] == 1) {
+        if (isset($_POST['t']) && $_POST['t'] == 1 && isset($_POST['f']) && $_POST['f'] == 1) {
             $_POST['timezone'] = (int)$_POST['timezone'];
             $_POST['timezone'] = filter_var($_POST['timezone'], FILTER_SANITIZE_MAGIC_QUOTES);
             $_POST['timezone'] = filter_var($_POST['timezone'], FILTER_SANITIZE_NUMBER_INT);
             $_POST['timezone'] = filter_var($_POST['timezone'], FILTER_SANITIZE_SPECIAL_CHARS);
             $result = preg_replace('[^0-9]', '', $_POST['timezone']);
-            mysql_query("UPDATE " . TB_PREFIX . "users SET timezone = '" . $result . "' WHERE id = $session->uid") or die(mysql_error());
+            mysql_query("UPDATE users SET timezone = '" . $result . "' WHERE id = $session->uid") or die(mysql_error());
         }
         if (isset($_POST['v4'])) {
-            mysql_query("UPDATE " . TB_PREFIX . "users_setting SET nopicn = 1 WHERE id = $session->uid") or die(mysql_error());
+            mysql_query("UPDATE users_setting SET nopicn = 1 WHERE id = $session->uid") or die(mysql_error());
         } else {
-            mysql_query("UPDATE " . TB_PREFIX . "users_setting SET nopicn = 0 WHERE id = $session->uid") or die(mysql_error());
+            mysql_query("UPDATE users_setting SET nopicn = 0 WHERE id = $session->uid") or die(mysql_error());
         }
-
     }
 
     public function procSpecial($get)
@@ -316,9 +314,6 @@ class Profile
         header("Location: spieler.php?s=" . $get['s']);
         exit;
     }
-
 }
 
 $profile = new Profile;
-
-?>

@@ -18,7 +18,7 @@ if ($_POST) {
     $id_user = $session->uid;
     $alliance = $session->alliance;
     $now = time();
-    $q = "INSERT into " . TB_PREFIX . "chat (id,id_user,name,alli,date,msg) values ('','$id_user','$name','$alliance','$now','$msg')";
+    $q = "INSERT into chat (id,id_user,name,alli,date,msg) values ('','$id_user','$name','$alliance','$now','$msg')";
     mysql_query($q, $database->connection) or die(mysql_error());
 }
 ?>

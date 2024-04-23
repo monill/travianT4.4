@@ -9,11 +9,11 @@ if ($_GET['fid']) {
 }
 
 
-// $q = mysql_query("SELECT `ends` FROM ".TB_PREFIX."forum_topic where alliance = '".$session->alliance."'");
+// $q = mysql_query("SELECT `ends` FROM forum_topic where alliance = '".$session->alliance."'");
 //$q = mysql_fetch_assoc($q);
 //foreach($q as $qu){
 // echo $qu;
-$query = "UPDATE " . TB_PREFIX . "forum_topic set `close` = '1' where ends <= '" . $_SERVER['REQUEST_TIME'] . "' && ends > 0 && alliance = '" . $session->alliance . "'";
+$query = "UPDATE forum_topic set `close` = '1' where ends <= '" . $_SERVER['REQUEST_TIME'] . "' && ends > 0 && alliance = '" . $session->alliance . "'";
 //echo $query;
 mysql_query($query) or die(mysql_error());
 //}
@@ -310,12 +310,12 @@ if (isset($_POST['editans'])) {
             }
 
             $database->EditUpdateTopic($topic_id, $text, $alliance, $player, $coor, $report);
-            $q = "SELECT `voters` FROM " . TB_PREFIX . "forum_poll where id = '" . $topic_id . "'";
+            $q = "SELECT `voters` FROM forum_poll where id = '" . $topic_id . "'";
             if (mysql_query($q)) {
                 $q = mysql_query($q);
                 $q = mysql_fetch_assoc($q);
                 if ($q && $q['voters'] == 0) {
-                    mysql_query("UPDATE " . TB_PREFIX . "forum_poll set `p1_name` = '" . $_POST['option_1'] . "' , `p2_name` = '" . $_POST['option_2'] . "' ,
+                    mysql_query("UPDATE forum_poll set `p1_name` = '" . $_POST['option_1'] . "' , `p2_name` = '" . $_POST['option_2'] . "' ,
 			`p3_name` = '" . $_POST['option_3'] . "' , `p4_name` = '" . $_POST['option_4'] . "' ,`name` = '" . $_POST['option_5'] . "'
 			where id = '" . $topic_id . "'") or die(mysql_error());
                 }

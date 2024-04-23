@@ -13,7 +13,7 @@ class Logging
                     $log .= "access village $ref";
                     break;
             }
-            $q = "Insert into " . TB_PREFIX . "illegal_log values (0,$uid,'$log')";
+            $q = "Insert into illegal_log values (0,$uid,'$log')";
             $database->query($q);
         }
     }
@@ -22,7 +22,7 @@ class Logging
     {
         global $database;
         if (LOG_LOGIN) {
-            $q = "Insert into " . TB_PREFIX . "login_log values (0,$id,'$ip')";
+            $q = "Insert into login_log values (0,$id,'$ip')";
             $database->query($q);
         }
     }
@@ -37,7 +37,7 @@ class Logging
                 $log = "Start Upgrade of ";
             }
             $log .= $building . " at level " . $level;
-            $q = "Insert into " . TB_PREFIX . "build_log values (0,$wid,'$log')";
+            $q = "Insert into build_log values (0,$wid,'$log')";
             $database->query($q);
         }
     }
@@ -47,7 +47,7 @@ class Logging
         global $database;
         if (LOG_TECH) {
             $log = "Upgrading of tech " . $tech . " to level " . $level;
-            $q = "Insert into " . TB_PREFIX . "tech_log values (0,$wid,'$log')";
+            $q = "Insert into tech_log values (0,$wid,'$log')";
             $database->query($q);
         }
     }
@@ -57,7 +57,7 @@ class Logging
         global $database;
         if (LOG_GOLD_FIN) {
             $log = "Finish construction and research with gold";
-            $q = "Insert into " . TB_PREFIX . "gold_fin_log values (0,$wid,'$log')";
+            $q = "Insert into gold_fin_log values (0,$wid,'$log')";
             $database->query($q);
         }
     }
@@ -76,7 +76,7 @@ class Logging
             } else if ($type == 2) {
                 $log = "Traded resource between " . $wid . " and " . $data[0] . " market ref is " . $data[1];
             }
-            $q = "Insert into " . TB_PREFIX . "market_log values (0,$wid,'$log')";
+            $q = "Insert into market_log values (0,$wid,'$log')";
             $database->query($q);
         }
     }
@@ -86,7 +86,7 @@ class Logging
         global $database;
         if (LOG_GOLD_FIN) {
             $log = "Village destroyed";
-            $q = "Insert into " . TB_PREFIX . "destroy_log values (0,$wid,'$log')";
+            $q = "Insert into destroy_log values (0,$wid,'$log')";
             $database->query($q);
         }
     }
@@ -110,11 +110,10 @@ class Logging
         //fwrite($fh,"\n".date("Y-m-d H:i:s")." : ".$time.",".$uid.",".$debug_info."\n");
         //fclose($fh);
 
-        $q = "INSERT INTO " . TB_PREFIX . "debug_log (time,uid,debug_info) VALUES ($time,$uid,'$debug_info')";
+        $q = "INSERT INTO debug_log (time,uid,debug_info) VALUES ($time,$uid,'$debug_info')";
         $database->query($q);
     }
 }
 
 $logging = new Logging;
 //$logging->debug(time(),2,'Logging.php loaded');
-?>

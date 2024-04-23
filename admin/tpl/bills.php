@@ -1,6 +1,6 @@
 <?php
 
-$sql = mysql_query("SELECT * FROM " . TB_PREFIX . "bill where true ORDER BY `invoicenumber` ASC");
+$sql = mysql_query("SELECT * FROM bill where true ORDER BY `invoicenumber` ASC");
 $queryCount = mysql_num_rows($sql);
 
 if (isset($_GET['page'])) { // Get page number
@@ -136,7 +136,7 @@ $lastPage = ceil($queryCount / $itemsPerPage); // Number of items to display per
 
     $limit = 'LIMIT ' . ($page - 1) * $itemsPerPage . ',' . $itemsPerPage;
     $time = time() - (60 * 5);
-    $sql2 = mysql_query("SELECT * FROM " . TB_PREFIX . "bill WHERE true ORDER BY `invoicenumber` ASC $limit");
+    $sql2 = mysql_query("SELECT * FROM bill WHERE true ORDER BY `invoicenumber` ASC $limit");
 
     if ($queryCount > 0) {
         while ($row = mysql_fetch_array($sql2)) {

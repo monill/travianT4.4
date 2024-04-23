@@ -11,7 +11,7 @@ if (isset($_POST['method'])) {
         $amount = $_POST['amount'];
         if (strlen($_POST['uname']) > 0) {
             $uname = $_POST['uname'];
-            $result = mysql_query("SELECT * FROM " . TB_PREFIX . "users WHERE username='$uname'");
+            $result = mysql_query("SELECT * FROM users WHERE username='$uname'");
             if (@mysql_num_rows($result) >= 1) {
                 $row = mysql_fetch_array($result);
                 $gold = $row['gold'];
@@ -20,12 +20,12 @@ if (isset($_POST['method'])) {
                     case "addgold":
                         $gold = $gold + $amount;
                         echo "the amount of " . $amount . " Gold unit to user " . $uname . " added. Total Gold: " . $gold . "<br>";
-                        mysql_query("UPDATE " . TB_PREFIX . "users SET gold=" . $gold . " WHERE username='$uname'");
+                        mysql_query("UPDATE users SET gold=" . $gold . " WHERE username='$uname'");
                         break;
                     case "addsilver":
                         $silver = $silver + $amount;
                         echo "the amount of " . $amount . " Silver unit to user " . $uname . "added. Total Silver: " . $silver . "<br>";
-                        mysql_query("UPDATE " . TB_PREFIX . "users SET silver=" . $silver . " WHERE username='$uname'");
+                        mysql_query("UPDATE users SET silver=" . $silver . " WHERE username='$uname'");
                         break;
                     default:
                         echo "Unknown method<br>";

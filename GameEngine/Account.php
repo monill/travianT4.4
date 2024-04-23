@@ -86,9 +86,9 @@ class Account
             $database->addHero($uid);
             $database->updateUserField($uid, "act", "", 1);
             $_POST['sector'] = filter_var($_POST['sector'], FILTER_SANITIZE_SPECIAL_CHARS);
-            
+
             $this->generateBase($_POST['sector'], $uid, $name);
-            
+
             $database->modifyUnit($database->getVFH($uid), 'hero', 1, 1);
             $database->modifyHero($uid, 0, 'wref', $database->getVFH($uid), 0);
             for ($s = 1; $s <= 3; $s++) {
@@ -97,12 +97,12 @@ class Account
             $database->setreg2($uid);
             $database->modifyGold($uid, Activate_Plus, 1);
             $time = time() + (MINPROTECTION * 2);
-            mysql_query("UPDATE " . TB_PREFIX . "users set protect = '" . $time . "' WHERE id = " . $uid) or die(mysql_error());
+            mysql_query("UPDATE users set protect = '" . $time . "' WHERE id = " . $uid) or die(mysql_error());
 
-            mysql_query("INSERT INTO " . TB_PREFIX . "users_setting (`id`) values ('" . $uid . "')") or die(mysql_error());
+            mysql_query("INSERT INTO users_setting (`id`) values ('" . $uid . "')") or die(mysql_error());
 
             $times = time() + EXTRAPLUS;
-            mysql_query("UPDATE " . TB_PREFIX . "users set plus = '" . $times . "' WHERE id = " . $uid) or die(mysql_error());
+            mysql_query("UPDATE users set plus = '" . $times . "' WHERE id = " . $uid) or die(mysql_error());
 
             $session->login($name);
         }
@@ -188,52 +188,52 @@ class Account
         } else
 
             if (isset($_POST['name']) && isset($_POST['pw']) && isset($_POST['email'])) {
-                function StrRegister2($TextVar)
+            function StrRegister2($TextVar)
+            {
+                $bug = array('', '!', '\'', '/', '"', '!', '%', '*', '(', '$', '#', '^', '&', ')', '<', '>', '?', '{', '}', '[', ']');
+
+                return @str_replace($bug, '', $TextVar);
+            }
+
+            $act = $generator->generateRandStr(10);
+            if (AUTH_EMAIL) {
+
+                $uid = $database->activate(StrRegister2($_POST['name']), $_POST['pw'], $_POST['email'], $act, $_POST['server'], '');
+                if (isset($_POST['ref']) && is_numeric($_POST['ref'])) {
+                    $name1 = $database->checkname($_POST['ref']);
+                    $name = $name1['username'];
+                    $database->setref($uid, $name);
+                }
+                if ($uid) {
+                    $mailer->sendActivate($_POST['email'], StrRegister2($_POST['name']), $_POST['pw'], $act, $_POST['server']);
+                    header('Location: ' . HOMEPAGE . '/?worldid=' . $_POST['server'] . '#activation');
+                    exit;
+                }
+            } else if (!AUTH_EMAIL) {
+                function StrRegister3($TextVar)
                 {
                     $bug = array('', '!', '\'', '/', '"', '!', '%', '*', '(', '$', '#', '^', '&', ')', '<', '>', '?', '{', '}', '[', ']');
 
                     return @str_replace($bug, '', $TextVar);
                 }
 
-                $act = $generator->generateRandStr(10);
-                if (AUTH_EMAIL) {
+                $uid = $database->register2(StrRegister3($_POST['name']), md5($_POST['pw']), $_POST['email'], $act, time());
+                if (isset($_POST['ref']) && is_numeric($_POST['ref'])) {
+                    $name1 = $database->checkname($_POST['ref']);
+                    $name = $name1['username'];
+                    $database->setref($uid, $name);
+                }
+                $reg2 = $database->checkreg2(StrRegister3($_POST['name']));
+                $mailer->sendActivate2($_POST['email'], StrRegister2($_POST['name']), $_POST['pw'], $_POST['server']);
+                $reg = $reg2['reg2'];
 
-                    $uid = $database->activate(StrRegister2($_POST['name']), $_POST['pw'], $_POST['email'], $act, $_POST['server'], '');
-                    if (isset($_POST['ref']) && is_numeric($_POST['ref'])) {
-                        $name1 = $database->checkname($_POST['ref']);
-                        $name = $name1['username'];
-                        $database->setref($uid, $name);
-                    }
-                    if ($uid) {
-                        $mailer->sendActivate($_POST['email'], StrRegister2($_POST['name']), $_POST['pw'], $act, $_POST['server']);
-                        header('Location: ' . HOMEPAGE . '/?worldid=' . $_POST['server'] . '#activation');
-                        exit;
-                    }
-                } else if (!AUTH_EMAIL) {
-                    function StrRegister3($TextVar)
-                    {
-                        $bug = array('', '!', '\'', '/', '"', '!', '%', '*', '(', '$', '#', '^', '&', ')', '<', '>', '?', '{', '}', '[', ']');
-
-                        return @str_replace($bug, '', $TextVar);
-                    }
-
-                    $uid = $database->register2(StrRegister3($_POST['name']), md5($_POST['pw']), $_POST['email'], $act, time());
-                    if (isset($_POST['ref']) && is_numeric($_POST['ref'])) {
-                        $name1 = $database->checkname($_POST['ref']);
-                        $name = $name1['username'];
-                        $database->setref($uid, $name);
-                    }
-                    $reg2 = $database->checkreg2(StrRegister3($_POST['name']));
-                    $mailer->sendActivate2($_POST['email'], StrRegister2($_POST['name']), $_POST['pw'], $_POST['server']);
-                    $reg = $reg2['reg2'];
-                    
-                    if ($reg == 1) {                        
-                        setcookie("COOKUSR", $_POST['name'], time() + 3600); /* expire in 1 hour */
-                        header("Location: login.php");
-                        exit;
-                    }
+                if ($reg == 1) {
+                    setcookie("COOKUSR", $_POST['name'], time() + 3600); /* expire in 1 hour */
+                    header("Location: login.php");
+                    exit;
                 }
             }
+        }
     }
 
     private function validEmail($email)
@@ -249,7 +249,7 @@ class Account
     private function Activate()
     {
         global $database, $form;
-        $q = "SELECT * FROM " . TB_PREFIX . "activate where act = '" . $_POST['id'] . "'";
+        $q = "SELECT * FROM activate where act = '" . $_POST['id'] . "'";
         $result = mysql_query($q, $database->connection);
         $dbarray = mysql_fetch_array($result);
         if ($_POST['id'] == '') {
@@ -293,7 +293,7 @@ class Account
     private function Unreg()
     {
         global $database, $form;
-        $q = "SELECT * FROM " . TB_PREFIX . "activate where username = '" . $_POST['name'] . "'";
+        $q = "SELECT * FROM activate where username = '" . $_POST['name'] . "'";
         $result = mysql_query($q, $database->connection);
         $dbarray = mysql_fetch_array($result);
         if (md5($_POST['pw']) == $dbarray['password']) {
@@ -438,7 +438,7 @@ class Account
     {
         global $database, $form, $mailer;
         $_POST['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-        $q = "SELECT * FROM " . TB_PREFIX . "activate where email = '" . $_POST['email'] . "' LIMIT 1";
+        $q = "SELECT * FROM activate where email = '" . $_POST['email'] . "' LIMIT 1";
         $result = mysql_query($q, $database->connection);
         if ($dbarray = mysql_fetch_assoc($result)) {
             // if (!empty($_REQUEST['captcha'])){
@@ -457,7 +457,7 @@ class Account
                         // $name = $dbarray['username'];
                         // $pw = $dbarray['password'];
                         // $id = $dbarray['id'];
-                        // $q2 = "SELECT * FROM ".TB_PREFIX."activate where act = '".$id."' LIMIT 1";
+                        // $q2 = "SELECT * FROM activate where act = '".$id."' LIMIT 1";
                         // $result2 = mysql_query($q2, $database->connection);
                         // $dbarray2 = mysql_fetch_assoc($result2);
                         // if($dbarray['id'] == $id){
@@ -544,12 +544,12 @@ class Account
         $_POST['oldEmail'] = filter_var($_POST['oldEmail'], FILTER_SANITIZE_EMAIL);
         $_POST['newEmail'] = filter_var($_POST['newEmail'], FILTER_SANITIZE_EMAIL);
         $_POST['password'] = filter_var($_POST['password'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $q = "SELECT * FROM " . TB_PREFIX . "activate where email = '" . $_POST['oldEmail'] . "' OR username = '" . $_POST['oldEmail'] . "' LIMIT 1";
+        $q = "SELECT * FROM activate where email = '" . $_POST['oldEmail'] . "' OR username = '" . $_POST['oldEmail'] . "' LIMIT 1";
         $result = mysql_query($q, $database->connection);
         $dbarray = mysql_fetch_assoc($result);
 
         if ($_POST['oldEmail'] != '' && $_POST['newEmail'] != '' && $_POST['password'] != '') {
-            if ($dbarray['email'] == $_POST['oldEmail'] OR $dbarray['username'] == $_POST['oldEmail']) {
+            if ($dbarray['email'] == $_POST['oldEmail'] or $dbarray['username'] == $_POST['oldEmail']) {
                 if ($this->validEmail($_POST['newEmail'])) {
                     if (!$database->checkExist($_POST['newEmail'], 1)) {
                         if ($dbarray['password'] == md5($_POST['password'])) {
@@ -602,7 +602,7 @@ class Account
     private function changeEmail($mail, $id)
     {
         global $database;
-        $q = "UPDATE " . TB_PREFIX . "activate set email='$mail' WHERE id ='$id'";
+        $q = "UPDATE activate set email='$mail' WHERE id ='$id'";
         mysql_query($q, $database->connection);
     }
 
@@ -644,4 +644,3 @@ class Account
 }
 
 $account = new Account;
-?>

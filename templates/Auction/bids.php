@@ -103,7 +103,7 @@
         </div>
     </div>
     <?php
-    $prefix = "" . TB_PREFIX . "auction";
+    $prefix = "auction";
     if (isset($_GET['filter'])) {
         $mmm = "AND btype=" . $_GET['filter'];
     } else {
@@ -229,7 +229,7 @@
         </tbody>
     </table>
     <?php
-    $prefix = "" . TB_PREFIX . "auction";
+    $prefix = "auction";
     $sql = mysql_query("SELECT * FROM $prefix WHERE finish = 1 and uid = $session->uid ORDER BY time DESC");
     $query = mysql_num_rows($sql);
 

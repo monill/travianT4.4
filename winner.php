@@ -29,25 +29,25 @@ $defender[] = mysql_fetch_assoc($sql);
 $defender[] = mysql_fetch_assoc($sql);
 
 ## Get WW Winner Details
-$sql = mysql_fetch_assoc(mysql_query("SELECT vref FROM " . TB_PREFIX . "fdata WHERE f99 = '100' and f99t = '40'"));
+$sql = mysql_fetch_assoc(mysql_query("SELECT vref FROM fdata WHERE f99 = '100' and f99t = '40'"));
 $vref = $sql['vref'];
 
-$sql = mysql_fetch_assoc(mysql_query("SELECT name FROM " . TB_PREFIX . "vdata WHERE wref = '$vref'"));
+$sql = mysql_fetch_assoc(mysql_query("SELECT name FROM vdata WHERE wref = '$vref'"));
 $winningvillagename = $sql['name'];
 
-$sql = mysql_fetch_assoc(mysql_query("SELECT owner FROM " . TB_PREFIX . "vdata WHERE wref = '$vref'"));
+$sql = mysql_fetch_assoc(mysql_query("SELECT owner FROM vdata WHERE wref = '$vref'"));
 $owner = $sql['owner'];
 
-$sql = mysql_fetch_assoc(mysql_query("SELECT username FROM " . TB_PREFIX . "users WHERE id = '$owner'"));
+$sql = mysql_fetch_assoc(mysql_query("SELECT username FROM users WHERE id = '$owner'"));
 $username = $sql['username'];
 
-$sql = mysql_fetch_assoc(mysql_query("SELECT alliance FROM " . TB_PREFIX . "users WHERE id = '$owner'"));
+$sql = mysql_fetch_assoc(mysql_query("SELECT alliance FROM users WHERE id = '$owner'"));
 $allianceid = $sql['alliance'];
 
-$sql = mysql_fetch_assoc(mysql_query("SELECT name, tag FROM " . TB_PREFIX . "alidata WHERE id = '$allianceid'"));
+$sql = mysql_fetch_assoc(mysql_query("SELECT name, tag FROM alidata WHERE id = '$allianceid'"));
 $winningalliance = $sql;
 
-$sql = mysql_fetch_assoc(mysql_query("SELECT tag FROM " . TB_PREFIX . "alidata WHERE id = '$allianceid'"));
+$sql = mysql_fetch_assoc(mysql_query("SELECT tag FROM alidata WHERE id = '$allianceid'"));
 $winningalliancetag = $sql['tag'];
 
 $winner = $database->hasWinner();

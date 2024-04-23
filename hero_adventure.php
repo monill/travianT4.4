@@ -150,7 +150,7 @@ include("templates/html.php");
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $sql = mysql_query("SELECT `wref`,`dif`,`time` FROM " . TB_PREFIX . "adventure WHERE end = 0 and uid = " . $session->uid . " ORDER BY time ASC");
+                                        $sql = mysql_query("SELECT `wref`,`dif`,`time` FROM adventure WHERE end = 0 and uid = " . $session->uid . " ORDER BY time ASC");
                                         $query = mysql_num_rows($sql);
 
                                         $outputList = '';

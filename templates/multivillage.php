@@ -252,7 +252,7 @@ for ($i = 1; $i <= $total_vill; $i++) {
             </script>
             <div class="clear"></div>
             <?php
-            $q = mysql_query("SELECT `cp` FROM " . TB_PREFIX . "users WHERE `id` =" . $session->uid);
+            $q = mysql_query("SELECT `cp` FROM users WHERE `id` =" . $session->uid);
             $row = mysql_fetch_assoc($q);
             $x = $row['cp'];
             $max = count($session->villages);

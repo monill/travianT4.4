@@ -10,8 +10,7 @@ function culturePoints()
     }
     $time = $_SERVER['REQUEST_TIME'] - (86400 / SPEED);
     $array = array();
-    $q = "SELECT " . TB_PREFIX . "users.id, " . TB_PREFIX . "users.lastupdate, cpproduction, itemcpproduction FROM "
-        . TB_PREFIX . "users," . TB_PREFIX . "hero where " . TB_PREFIX . "users.lastupdate < $time AND " . TB_PREFIX . "hero.uid=" . TB_PREFIX . "users.id LIMIT 100";
+    $q = "SELECT users.id, users.lastupdate, cpproduction, itemcpproduction FROM users, hero where users.lastupdate < $time AND hero.uid=users.id LIMIT 100";
     $array = $database->query_return($q);
     foreach ($array as $indi) {
         if ($indi['lastupdate'] < $time) {
@@ -21,10 +20,8 @@ function culturePoints()
             $cp = $heroproduction + $sumcp;
             $cp = ($cp / 24) / 2;
             $newupdate = $_SERVER['REQUEST_TIME'];
-            $q = "UPDATE " . TB_PREFIX . "users set cp = cp + $cp, lastupdate = $newupdate where id = '" . $indi['id'] . "'";
+            $q = "UPDATE users set cp = cp + $cp, lastupdate = $newupdate where id = '" . $indi['id'] . "'";
             $database->query($q);
         }
     }
 }
-
-?>

@@ -8,17 +8,19 @@ if (!isset($SAJAX_INCLUDED)) {
     $GLOBALS['sajax_remote_uri'] = '';
     $GLOBALS['sajax_failure_redirect'] = '';
 
-    function sajax_init() {
-
+    function sajax_init()
+    {
     }
 
-    function sajax_get_my_uri() {
+    function sajax_get_my_uri()
+    {
         return $_SERVER["REQUEST_URI"];
     }
 
     $sajax_remote_uri = sajax_get_my_uri();
 
-    function sajax_get_js_repr($value) {
+    function sajax_get_js_repr($value)
+    {
         $type = gettype($value);
 
         if ($type == "boolean") {
@@ -50,7 +52,8 @@ if (!isset($SAJAX_INCLUDED)) {
         }
     }
 
-    function sajax_handle_client_request() {
+    function sajax_handle_client_request()
+    {
         global $sajax_export_list;
 
         $mode = "";
@@ -96,7 +99,8 @@ if (!isset($SAJAX_INCLUDED)) {
         exit;
     }
 
-    function sajax_get_common_js() {
+    function sajax_get_common_js()
+    {
         global $sajax_debug_mode;
         global $sajax_request_type;
         global $sajax_remote_uri;
@@ -107,7 +111,7 @@ if (!isset($SAJAX_INCLUDED)) {
             return "// Invalid type: $t.. \n\n";
 
         ob_start();
-        ?>
+?>
 
         // remote scripting library
         // (c) copyright 2005 modernmethod, inc
@@ -133,64 +137,7 @@ if (!isset($SAJAX_INCLUDED)) {
         'Msxml2.XMLHTTP.3.0',
         'Msxml2.XMLHTTP',
         'Microsoft.XMLHTTP');
-        for (var i = 0; i < msxmlhttp.length; i++) {
-        try {
-        A = new ActiveXObject(msxmlhttp[i]);
-        } catch (e) {
-        A = null;
-        }
-        }
-
-        if(!A && typeof XMLHttpRequest != "undefined")
-        A = new XMLHttpRequest();
-        if (!A)
-        sajax_debug("Could not create connection object.");
-        return A;
-        }
-
-        var sajax_requests = new Array();
-
-        function sajax_cancel() {
-        for (var i = 0; i < sajax_requests.length; i++)
-        sajax_requests[i].abort();
-        }
-
-        function sajax_do_call(func_name, args) {
-        var i, x, n;
-        var uri;
-        var post_data;
-        var target_id;
-
-        sajax_debug("in sajax_do_call().." + sajax_request_type + "/" + sajax_target_id);
-        target_id = sajax_target_id;
-        if (typeof(sajax_request_type) == "undefined" || sajax_request_type == "")
-        sajax_request_type = "GET";
-
-        uri = "<?php echo $sajax_remote_uri; ?>";
-        if (sajax_request_type == "GET") {
-
-        if (uri.indexOf("?") == -1)
-        uri += "?rs=" + escape(func_name);
-        else
-        uri += "&rs=" + escape(func_name);
-        uri += "&rst=" + escape(sajax_target_id);
-        uri += "&rsrnd=" + new Date().getTime();
-
-        for (i = 0; i < args.length-1; i++)
-        uri += "&rsargs[]=" + escape(args[i]);
-
-        post_data = null;
-        }
-        else if (sajax_request_type == "POST") {
-        post_data = "rs=" + escape(func_name);
-        post_data += "&rst=" + escape(sajax_target_id);
-        post_data += "&rsrnd=" + new Date().getTime();
-
-        for (i = 0; i < args.length-1; i++)
-        post_data = post_data + "&rsargs[]=" + escape(args[i]);
-        }
-        else {
-        alert("Illegal request type: " + sajax_request_type);
+        for (var i = 0; i < msxmlhttp.length; i++) { try { A=new ActiveXObject(msxmlhttp[i]); } catch (e) { A=null; } } if(!A && typeof XMLHttpRequest !="undefined" ) A=new XMLHttpRequest(); if (!A) sajax_debug("Could not create connection object."); return A; } var sajax_requests=new Array(); function sajax_cancel() { for (var i=0; i < sajax_requests.length; i++) sajax_requests[i].abort(); } function sajax_do_call(func_name, args) { var i, x, n; var uri; var post_data; var target_id; sajax_debug("in sajax_do_call().." + sajax_request_type + "/" + sajax_target_id); target_id=sajax_target_id; if (typeof(sajax_request_type)=="undefined" || sajax_request_type=="" ) sajax_request_type="GET" ; uri="<?php echo $sajax_remote_uri; ?>" ; if (sajax_request_type=="GET" ) { if (uri.indexOf("?")==-1) uri +="?rs=" + escape(func_name); else uri +="&rs=" + escape(func_name); uri +="&rst=" + escape(sajax_target_id); uri +="&rsrnd=" + new Date().getTime(); for (i=0; i < args.length-1; i++) uri +="&rsargs[]=" + escape(args[i]); post_data=null; } else if (sajax_request_type=="POST" ) { post_data="rs=" + escape(func_name); post_data +="&rst=" + escape(sajax_target_id); post_data +="&rsrnd=" + new Date().getTime(); for (i=0; i < args.length-1; i++) post_data=post_data + "&rsargs[]=" + escape(args[i]); } else { alert("Illegal request type: " + sajax_request_type);
         }
 
         x = sajax_init_object();
@@ -199,25 +146,7 @@ if (!isset($SAJAX_INCLUDED)) {
         location.href = sajax_failure_redirect;
         return false;
         } else {
-        sajax_debug("NULL sajax object for user agent:\n" + navigator.userAgent);
-        return false;
-        }
-        } else {
-        x.open(sajax_request_type, uri, true);
-        // window.open(uri);
-
-        sajax_requests[sajax_requests.length] = x;
-
-        if (sajax_request_type == "POST") {
-        x.setRequestHeader("Method", "POST " + uri + " HTTP/1.1");
-        x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        }
-
-        x.onreadystatechange = function() {
-        if (x.readyState != 4)
-        return;
-
-        sajax_debug("received " + x.responseText);
+        sajax_debug(" NULL sajax object for user agent:\n" + navigator.userAgent); return false; } } else { x.open(sajax_request_type, uri, true); // window.open(uri); sajax_requests[sajax_requests.length]=x; if (sajax_request_type=="POST" ) { x.setRequestHeader("Method", "POST " + uri + " HTTP/1.1" ); x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded" ); } x.onreadystatechange=function() { if (x.readyState !=4) return; sajax_debug("received " + x.responseText);
 
         var status;
         var data;
@@ -227,8 +156,7 @@ if (!isset($SAJAX_INCLUDED)) {
 
         if (status == "") {
         // let's just assume this is a pre-response bailout and let it slide for now
-        } else if (status == "-")
-        alert("Error: " + data);
+        } else if (status == " -") alert("Error: " + data);
         else {
         if (target_id != "")
         document.getElementById(target_id).innerHTML = eval(data);
@@ -236,128 +164,115 @@ if (!isset($SAJAX_INCLUDED)) {
         try {
         var callback;
         var extra_data = false;
-        if (typeof args[args.length-1] == "object") {
-        callback = args[args.length-1].callback;
-        extra_data = args[args.length-1].extra_data;
-        } else {
-        callback = args[args.length-1];
-        }
-        callback(eval(data), extra_data);
-        } catch (e) {
-        sajax_debug("Caught error " + e + ": Could not eval " + data );
+        if (typeof args[args.length-1] == " object") { callback=args[args.length-1].callback; extra_data=args[args.length-1].extra_data; } else { callback=args[args.length-1]; } callback(eval(data), extra_data); } catch (e) { sajax_debug("Caught error " + e + " : Could not eval " + data );
         }
         }
         }
         }
         }
 
-        sajax_debug(func_name + " uri = " + uri + "/post = " + post_data);
+        sajax_debug(func_name + " uri=" + uri + " /post=" + post_data);
         x.send(post_data);
-        sajax_debug(func_name + " waiting..");
-        delete x;
-        return true;
-        }
+        sajax_debug(func_name + " waiting.."); delete x; return true; } <?php
+                                                                        $html = ob_get_contents();
+                                                                        ob_end_clean();
+                                                                        return $html;
+                                                                    }
 
-        <?php
-        $html = ob_get_contents();
-        ob_end_clean();
-        return $html;
-    }
+                                                                    function sajax_show_common_js()
+                                                                    {
+                                                                        echo sajax_get_common_js();
+                                                                    }
 
-    function sajax_show_common_js() {
-        echo sajax_get_common_js();
-    }
+                                                                    // javascript escape a value
+                                                                    function sajax_esc($val)
+                                                                    {
+                                                                        $val = str_replace("\\", "\\\\", $val);
+                                                                        $val = str_replace("\r", "\\r", $val);
+                                                                        $val = str_replace("\n", "\\n", $val);
+                                                                        $val = str_replace("'", "\\'", $val);
+                                                                        return str_replace('"', '\\"', $val);
+                                                                    }
 
-    // javascript escape a value
-    function sajax_esc($val) {
-        $val = str_replace("\\", "\\\\", $val);
-        $val = str_replace("\r", "\\r", $val);
-        $val = str_replace("\n", "\\n", $val);
-        $val = str_replace("'", "\\'", $val);
-        return str_replace('"', '\\"', $val);
-    }
+                                                                    function sajax_get_one_stub($func_name)
+                                                                    {
+                                                                        ob_start();
+                                                                        ?> // wrapper for <?php echo $func_name; ?> function x_<?php echo $func_name; ?>() { sajax_do_call("<?php echo $func_name; ?>", x_<?php echo $func_name; ?>.arguments); } <?php
+                                                                                                                                                                                    $html = ob_get_contents();
+                                                                                                                                                                                    ob_end_clean();
+                                                                                                                                                                                    return $html;
+                                                                                                                                                                                }
 
-    function sajax_get_one_stub($func_name) {
-        ob_start();
-        ?>
+                                                                                                                                                                                function sajax_show_one_stub($func_name)
+                                                                                                                                                                                {
+                                                                                                                                                                                    echo sajax_get_one_stub($func_name);
+                                                                                                                                                                                }
 
-        // wrapper for <?php echo $func_name; ?>
+                                                                                                                                                                                function sajax_export()
+                                                                                                                                                                                {
+                                                                                                                                                                                    global $sajax_export_list;
 
-        function x_<?php echo $func_name; ?>() {
-        sajax_do_call("<?php echo $func_name; ?>",
-        x_<?php echo $func_name; ?>.arguments);
-        }
+                                                                                                                                                                                    $n = func_num_args();
+                                                                                                                                                                                    for ($i = 0; $i < $n; $i++) {
+                                                                                                                                                                                        $sajax_export_list[] = func_get_arg($i);
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
 
-        <?php
-        $html = ob_get_contents();
-        ob_end_clean();
-        return $html;
-    }
+                                                                                                                                                                                $sajax_js_has_been_shown = 0;
 
-    function sajax_show_one_stub($func_name) {
-        echo sajax_get_one_stub($func_name);
-    }
+                                                                                                                                                                                function sajax_get_javascript()
+                                                                                                                                                                                {
+                                                                                                                                                                                    global $sajax_js_has_been_shown;
+                                                                                                                                                                                    global $sajax_export_list;
 
-    function sajax_export() {
-        global $sajax_export_list;
+                                                                                                                                                                                    $html = "";
+                                                                                                                                                                                    if (!$sajax_js_has_been_shown) {
+                                                                                                                                                                                        $html .= sajax_get_common_js();
+                                                                                                                                                                                        $sajax_js_has_been_shown = 1;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    foreach ($sajax_export_list as $func) {
+                                                                                                                                                                                        $html .= sajax_get_one_stub($func);
+                                                                                                                                                                                    }
+                                                                                                                                                                                    return $html;
+                                                                                                                                                                                }
 
-        $n = func_num_args();
-        for ($i = 0; $i < $n; $i++) {
-            $sajax_export_list[] = func_get_arg($i);
-        }
-    }
+                                                                                                                                                                                function sajax_show_javascript()
+                                                                                                                                                                                {
+                                                                                                                                                                                    echo sajax_get_javascript();
+                                                                                                                                                                                }
 
-    $sajax_js_has_been_shown = 0;
+                                                                                                                                                                                $SAJAX_INCLUDED = 1;
+                                                                                                                                                                            }
 
-    function sajax_get_javascript() {
-        global $sajax_js_has_been_shown;
-        global $sajax_export_list;
+                                                                                                                                                                            function add_data($data)
+                                                                                                                                                                            {
+                                                                                                                                                                                global $session, $database;
 
-        $html = "";
-        if (!$sajax_js_has_been_shown) {
-            $html .= sajax_get_common_js();
-            $sajax_js_has_been_shown = 1;
-        }
-        foreach ($sajax_export_list as $func) {
-            $html .= sajax_get_one_stub($func);
-        }
-        return $html;
-    }
+                                                                                                                                                                                $data = explode("|", $data);
+                                                                                                                                                                                $name = $session->username;
+                                                                                                                                                                                $msg = htmlspecialchars($data[1]);
+                                                                                                                                                                                $id_user = $session->uid;
+                                                                                                                                                                                $alliance = $session->alliance;
+                                                                                                                                                                                $now = time();
+                                                                                                                                                                                $q = "INSERT into chat (id_user,name,alli,date,msg) values ('$id_user','$name','$alliance','$now','$msg')";
+                                                                                                                                                                                mysql_query($q, $database->connection);
+                                                                                                                                                                            }
 
-    function sajax_show_javascript() {
-        echo sajax_get_javascript();
-    }
+                                                                                                                                                                            function get_data()
+                                                                                                                                                                            {
+                                                                                                                                                                                global $session, $database;
 
-    $SAJAX_INCLUDED = 1;
-}
+                                                                                                                                                                                $alliance = $session->alliance;
+                                                                                                                                                                                $query = mysql_query("select * from chat where alli='$alliance' order by id desc limit 0,13");
+                                                                                                                                                                                while ($r = mysql_fetch_array($query)) {
+                                                                                                                                                                                    $dates = date("g:i", $r[date]);
+                                                                                                                                                                                    $data .= "[{$dates}] <a href='spieler.php?uid={$r['id_user']}'>{$r['name']}</a>: {$r[msg]} <br>";
+                                                                                                                                                                                }
+                                                                                                                                                                                return $data;
+                                                                                                                                                                            }
 
-function add_data($data) {
-    global $session, $database;
-
-    $data = explode("|", $data);
-    $name = $session->username;
-    $msg = htmlspecialchars($data[1]);
-    $id_user = $session->uid;
-    $alliance = $session->alliance;
-    $now = time();
-    $q = "INSERT into " . TB_PREFIX . "chat (id_user,name,alli,date,msg) values ('$id_user','$name','$alliance','$now','$msg')";
-    mysql_query($q, $database->connection);
-}
-
-function get_data() {
-    global $session, $database;
-
-    $alliance = $session->alliance;
-    $query = mysql_query("select * from " . TB_PREFIX . "chat where alli='$alliance' order by id desc limit 0,13");
-    while ($r = mysql_fetch_array($query)) {
-        $dates = date("g:i", $r[date]);
-        $data .= "[{$dates}] <a href='spieler.php?uid={$r['id_user']}'>{$r['name']}</a>: {$r[msg]} <br>";
-    }
-    return $data;
-}
-
-$sajax_request_type = "GET";
-sajax_init();
-sajax_export("add_data", "get_data");
-sajax_handle_client_request();
-?>
+                                                                                                                                                                            $sajax_request_type = "GET";
+                                                                                                                                                                            sajax_init();
+                                                                                                                                                                            sajax_export("add_data", "get_data");
+                                                                                                                                                                            sajax_handle_client_request();
+                                                                                                                                                                                    ?>

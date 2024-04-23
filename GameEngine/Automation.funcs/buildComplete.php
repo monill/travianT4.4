@@ -25,21 +25,21 @@ function buildComplete()
     }
     $time = time();
     $array = array();
-    $q = "SELECT `id`,`wid`,`field`,`level`,`type` FROM " . TB_PREFIX . "bdata where timestamp <= $time";
+    $q = "SELECT `id`,`wid`,`field`,`level`,`type` FROM bdata where timestamp <= $time";
     $array = $database->query_return($q);
     foreach ($array as $indi) {
-        $q = "UPDATE " . TB_PREFIX . "fdata set f" . $indi['field'] . " = " . $indi['level'] . ", f" . $indi['field'] . "t = " . $indi['type'] . " where vref = " . $indi['wid'];
+        $q = "UPDATE fdata set f" . $indi['field'] . " = " . $indi['level'] . ", f" . $indi['field'] . "t = " . $indi['type'] . " where vref = " . $indi['wid'];
         if ($indi['level'] == 100 && $indi['type'] == 40) {
-            $cfg = $database->query_return("SELECT `winmoment` FROM " . TB_PREFIX . "config");
+            $cfg = $database->query_return("SELECT `winmoment` FROM config");
             if ($cfg[0]['winmoment'] <= 0) {
-                $database->query("UPDATE " . TB_PREFIX . "config set winmoment = " . time());
+                $database->query("UPDATE config set winmoment = " . time());
             }
             $dbs = mysql_connect('localhost', $AppConfig['md']['user'], $AppConfig['md']['password']);
             mysql_select_db($AppConfig['md']['database'], $dbs);
             $wid = $indi['wid'];
-            $user = $database->query_return("SELECT `owner` FROM " . TB_PREFIX . "vdata WHERE wref = '$wid'");
+            $user = $database->query_return("SELECT `owner` FROM vdata WHERE wref = '$wid'");
             $user = $user[0]['owner'];
-            $email = $database->query_return("SELECT `email` FROM " . TB_PREFIX . "users WHERE id = '$user'");
+            $email = $database->query_return("SELECT `email` FROM users WHERE id = '$user'");
             $email = $email[0]['email'];
             mysql_query("INSERT INTO medal (id,userid,categorie,status,email,img) VALUES ('', '" . $user . "', 'winner', '" . sv_ . "', '" . $email . "', 'tw') ");
             mysql_close($dbs);
@@ -57,7 +57,7 @@ function buildComplete()
             if ($indi['type'] == 18) {
                 $owner = $database->getVillageField($indi['wid'], "owner");
                 $max = $bid18[$level]['attri'];
-                $q = "UPDATE " . TB_PREFIX . "alidata set max = $max where leader = $owner";
+                $q = "UPDATE alidata set max = $max where leader = $owner";
                 $database->query($q);
             }
 
@@ -100,12 +100,10 @@ function buildComplete()
                 $database->setVillageField($indi['wid'], "maxcrop", $max);
             }
 
-            $q4 = "UPDATE " . TB_PREFIX . "bdata set loopcon = 0 where loopcon = 1 and wid = " . $indi['wid'];
+            $q4 = "UPDATE bdata set loopcon = 0 where loopcon = 1 and wid = " . $indi['wid'];
             $database->query($q4);
-            $q = "DELETE FROM " . TB_PREFIX . "bdata where id = " . $indi['id'];
+            $q = "DELETE FROM bdata where id = " . $indi['id'];
             $database->query($q);
         }
     }
 }
-
-?>

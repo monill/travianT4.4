@@ -4,7 +4,7 @@
 
 include_once('GameEngine/Data/cp.php');
 
-$q = mysql_query("SELECT `quest` FROM " . TB_PREFIX . "users WHERE id = " . $session->uid);
+$q = mysql_query("SELECT `quest` FROM users WHERE id = " . $session->uid);
 $q = mysql_fetch_assoc($q);
 // if(!isset($_SESSION['qst'])){
 $_SESSION['qst'] = $qst = $q['quest'];
@@ -35,20 +35,19 @@ $_SESSION['finishAll'] = 1;
 if ($_POST['action'] == 'skip' && $_SESSION['qst'] == 0) {
     $qst = 15;
     $plus_time = $time + 86400;
-    mysql_query("UPDATE " . TB_PREFIX . "users SET quest= '" . $qst . "' ,plus = '" . $plus_time . "' WHERE id = " . $session->uid) or die(mysql_error());
+    mysql_query("UPDATE users SET quest= '" . $qst . "' ,plus = '" . $plus_time . "' WHERE id = " . $session->uid) or die(mysql_error());
     $_SESSION['qst'] = $q['quest'] = $qst;
     $time = $_SERVER['REQUEST_TIME'];
 
     $database->modifyGold($session->uid, 10, 1);
-    $goldlog = mysql_query("SELECT id FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
-    mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '10 GOLD ADDED FROM Skip quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
-
+    $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+    mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '10 GOLD ADDED FROM Skip quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
 }
 // echo $_SESSION['qst'];die;
 // echo $_COOKIE['firstTutorialClosed'];
 
 if (isset($qact)) {
-// echo $_SESSION['qst'];die;
+    // echo $_SESSION['qst'];die;
     switch ($qact) {
         case 'questWindowClosed':
             $_SESSION['done'][0] = 1;
@@ -57,7 +56,7 @@ if (isset($qact)) {
             if ($_SESSION['qst'] == 0) {
                 unset($_SESSION['done'], $_COOKIE['firstTutorialClosed']);
                 $qst = 1;
-                // mysql_query("UPDATE ".TB_PREFIX."users SET `quest`=".$qst." WHERE id = ".$session->uid) or die(mysql_error());
+                // mysql_query("UPDATE users SET `quest`=".$qst." WHERE id = ".$session->uid) or die(mysql_error());
                 setcookie("firstTutorialClosed", "false");
             }
             if ($_POST['questTutorialId'] == "Tutorial_02") {
@@ -69,13 +68,13 @@ if (isset($qact)) {
                     // $database->setVillageLevel($_SESSION['wid'], 'f16', 1);
 
                     if ($village->resarray['f5'] < 20) {
-                        $query = "UPDATE " . TB_PREFIX . "fdata set f5 = f5+1 where vref = " . $_SESSION['wid'];
+                        $query = "UPDATE fdata set f5 = f5+1 where vref = " . $_SESSION['wid'];
                     } elseif ($village->resarray['f6'] < 20) {
-                        $query = "UPDATE " . TB_PREFIX . "fdata set f6 = f6+1 where vref = " . $_SESSION['wid'];
+                        $query = "UPDATE fdata set f6 = f6+1 where vref = " . $_SESSION['wid'];
                     } elseif ($village->resarray['f16'] < 20) {
-                        $query = "UPDATE " . TB_PREFIX . "fdata set f16 = f16+1 where vref = " . $_SESSION['wid'];
+                        $query = "UPDATE fdata set f16 = f16+1 where vref = " . $_SESSION['wid'];
                     } elseif ($village->resarray['f18'] < 20) {
-                        $query = "UPDATE " . TB_PREFIX . "fdata set f18 = f18+1 where vref = " . $_SESSION['wid'];
+                        $query = "UPDATE fdata set f18 = f18+1 where vref = " . $_SESSION['wid'];
                     }
 
                     if (isset($query)) {
@@ -135,8 +134,8 @@ if (isset($qact)) {
                     $database->updateUserField($_SESSION['username'], 'fquest', '' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . '', 0);
                     /*Give Reward*/
                     $database->modifyGold($session->uid, 2, 1);
-                    $goldlog = mysql_query("SELECT id FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
-                    mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '2 GOLD ADDED FROM T9 quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
+                    $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+                    mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '2 GOLD ADDED FROM T9 quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
 
                     $qst = 9;
                 } else {
@@ -149,8 +148,8 @@ if (isset($qact)) {
                     $database->updateUserField($_SESSION['username'], 'fquest', '' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . '', 0);
                     /*Give Reward*/
                     $database->modifyGold($session->uid, 10, 1);
-                    $goldlog = mysql_query("SELECT id FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
-                    mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '10 GOLD ADDED FROM T10 quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
+                    $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+                    mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '10 GOLD ADDED FROM T10 quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
 
                     $qst = 10;
                 } else {
@@ -163,11 +162,11 @@ if (isset($qact)) {
                     $database->updateUserField($_SESSION['username'], 'fquest', '' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . '', 0);
                     /*Give Reward*/
 
-                    $query = mysql_query('SELECT `moveid`,`sort_type` FROM ' . TB_PREFIX . 'movement WHERE `sort_type` = 9 AND `from` = ' . $_SESSION['wid'] . ' AND proc=0 LIMIT 1');
+                    $query = mysql_query('SELECT `moveid`,`sort_type` FROM movement WHERE `sort_type` = 9 AND `from` = ' . $_SESSION['wid'] . ' AND proc=0 LIMIT 1');
                     $q = mysql_num_rows($query);
                     if ($q == 1) {
                         $moveid = mysql_fetch_assoc($query);
-                        mysql_query("UPDATE " . TB_PREFIX . "movement SET endtime = 0 WHERE moveid = " . $moveid['moveid']) or die(mysql_error());
+                        mysql_query("UPDATE movement SET endtime = 0 WHERE moveid = " . $moveid['moveid']) or die(mysql_error());
                     }
                     // $database->updateUserField($session->uid,'gold',10,2);
                     $qst = 11;
@@ -180,7 +179,7 @@ if (isset($qact)) {
                     $dataarray[8] = 1;
                     $database->updateUserField($_SESSION['username'], 'fquest', '' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . '', 0);
                     /*Give Reward*/
-                    mysql_query("INSERT INTO " . TB_PREFIX . "heroitems (id,uid,btype,type,num,proc) VALUES ('','" . $session->uid . "','11','106','10','0') ") or die(mysql_error());
+                    mysql_query("INSERT INTO heroitems (id,uid,btype,type,num,proc) VALUES ('','" . $session->uid . "','11','106','10','0') ") or die(mysql_error());
                     $qst = 12;
                 } else {
                     $qst = 12;
@@ -191,7 +190,7 @@ if (isset($qact)) {
                     $dataarray[9] = 1;
                     $database->updateUserField($_SESSION['username'], 'fquest', '' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . '', 0);
                     /*Give Reward*/
-                    mysql_query("UPDATE " . TB_PREFIX . "hero SET experience = experience+20 WHERE uid = " . $session->uid) or die(mysql_error());
+                    mysql_query("UPDATE hero SET experience = experience+20 WHERE uid = " . $session->uid) or die(mysql_error());
                     $qst = 13;
                 } else {
                     $qst = 13;
@@ -214,68 +213,68 @@ if (isset($qact)) {
             break;
         case 'reward':
             if ($_POST['questTutorialId'] == "Battle_01") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[0] == 0) {
-                    mysql_query("UPDATE " . TB_PREFIX . "hero SET `experience` = experience+20 WHERE uid = " . $session->uid) or die(mysql_error());
+                    mysql_query("UPDATE hero SET `experience` = experience+20 WHERE uid = " . $session->uid) or die(mysql_error());
                     $dataarray[0] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_02") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[1] == 0) {
                     $database->modifyResource($session->villages[0], 130 * REWARD_MULTIPLIER, 150 * REWARD_MULTIPLIER, 120 * REWARD_MULTIPLIER, 100 * REWARD_MULTIPLIER, 1);
                     $dataarray[1] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_03") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[2] == 0) {
                     $database->modifyResource($session->villages[0], 110 * REWARD_MULTIPLIER, 140 * REWARD_MULTIPLIER, 160 * REWARD_MULTIPLIER, 30 * REWARD_MULTIPLIER, 1);
                     $dataarray[2] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_04") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[3] == 0) {
                     $database->modifyResource($session->villages[0], 190 * REWARD_MULTIPLIER, 250 * REWARD_MULTIPLIER, 150 * REWARD_MULTIPLIER, 110 * REWARD_MULTIPLIER, 1);
                     $dataarray[3] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_05") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[4] == 0) {
-                    mysql_query("INSERT INTO " . TB_PREFIX . "heroitems (id,uid,btype,type,num,proc) VALUES ('','" . $session->uid . "','9','114','1','0') ") or die(mysql_error());
+                    mysql_query("INSERT INTO heroitems (id,uid,btype,type,num,proc) VALUES ('','" . $session->uid . "','9','114','1','0') ") or die(mysql_error());
                     $dataarray[4] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_06") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[5] == 0) {
                     $database->modifyResource($session->villages[0], 120 * REWARD_MULTIPLIER, 120 * REWARD_MULTIPLIER, 90 * REWARD_MULTIPLIER, 50 * REWARD_MULTIPLIER, 1);
                     $dataarray[5] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                     break;
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_07") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[6] == 0) {
@@ -296,327 +295,327 @@ if (isset($qact)) {
                             $Gtribe = '';
                             break;
                     }
-                    mysql_query("UPDATE " . TB_PREFIX . "units set `'u" . $Gtribe . "1'` = 1 WHERE vref=" . $village->wid);
+                    mysql_query("UPDATE units set `'u" . $Gtribe . "1'` = 1 WHERE vref=" . $village->wid);
                     $dataarray[6] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_08") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[7] == 0) {
-                    // mysql_query("UPDATE ".TB_PREFIX."users set silver = silver+500 where `username`='".$session->username."'");
+                    // mysql_query("UPDATE users set silver = silver+500 where `username`='".$session->username."'");
                     $database->setSilver($session->uid, 500, 1);
                     $dataarray[7] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_09") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[8] == 0) {
                     $database->modifyResource($session->villages[0], 280 * REWARD_MULTIPLIER, 120 * REWARD_MULTIPLIER, 220 * REWARD_MULTIPLIER, 110 * REWARD_MULTIPLIER, 1);
                     $dataarray[8] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_10") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[9] == 0) {
                     $database->modifyResource($session->villages[0], 440 * REWARD_MULTIPLIER, 290 * REWARD_MULTIPLIER, 430 * REWARD_MULTIPLIER, 240 * REWARD_MULTIPLIER, 1);
                     $dataarray[9] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 };
             } elseif ($_POST['questTutorialId'] == "Battle_11") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[10] == 0) {
                     $database->modifyResource($session->villages[0], 210 * REWARD_MULTIPLIER, 170 * REWARD_MULTIPLIER, 245 * REWARD_MULTIPLIER, 115 * REWARD_MULTIPLIER, 1);
                     $dataarray[10] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_12") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[11] == 0) {
                     $database->modifyResource($session->villages[0], 450 * REWARD_MULTIPLIER, 435 * REWARD_MULTIPLIER, 515 * REWARD_MULTIPLIER, 550 * REWARD_MULTIPLIER, 1);
                     $dataarray[11] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_13") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[12] == 0) {
                     $database->modifyResource($session->villages[0], 500 * REWARD_MULTIPLIER, 400 * REWARD_MULTIPLIER, 700 * REWARD_MULTIPLIER, 400 * REWARD_MULTIPLIER, 1);
                     $dataarray[12] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Battle_14") {
-                $query = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_battle']);
                 if ($dataarray[13] == 0) {
-                    mysql_query("INSERT INTO " . TB_PREFIX . "heroitems (id,uid,btype,type,num,proc) VALUES ('','" . $session->uid . "','7','112','10','0') ") or die(mysql_error());
+                    mysql_query("INSERT INTO heroitems (id,uid,btype,type,num,proc) VALUES ('','" . $session->uid . "','7','112','10','0') ") or die(mysql_error());
                     $dataarray[13] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_battle` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_01") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[0] == 0) {
                     // One day +25% bonus on the production of all resources
                     $time = time() + 86400;
-                    mysql_query("UPDATE " . TB_PREFIX . "users set b1 = b1+$time where `username`='" . $session->username . "'");
-                    mysql_query("UPDATE " . TB_PREFIX . "users set b2 = b2+$time where `username`='" . $session->username . "'");
-                    mysql_query("UPDATE " . TB_PREFIX . "users set b3 = b3+$time where `username`='" . $session->username . "'");
-                    mysql_query("UPDATE " . TB_PREFIX . "users set b4 = b4+$time where `username`='" . $session->username . "'");
+                    mysql_query("UPDATE users set b1 = b1+$time where `username`='" . $session->username . "'");
+                    mysql_query("UPDATE users set b2 = b2+$time where `username`='" . $session->username . "'");
+                    mysql_query("UPDATE users set b3 = b3+$time where `username`='" . $session->username . "'");
+                    mysql_query("UPDATE users set b4 = b4+$time where `username`='" . $session->username . "'");
                     $dataarray[0] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_02") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[1] == 0) {
                     $database->modifyResource($session->villages[0], 160 * REWARD_MULTIPLIER, 190 * REWARD_MULTIPLIER, 150 * REWARD_MULTIPLIER, 70 * REWARD_MULTIPLIER, 1);
                     $dataarray[1] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_03") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[2] == 0) {
                     $database->modifyResource($session->villages[0], 250 * REWARD_MULTIPLIER, 290 * REWARD_MULTIPLIER, 100 * REWARD_MULTIPLIER, 130 * REWARD_MULTIPLIER, 1);
                     $dataarray[2] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_04") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[3] == 0) {
                     $database->modifyResource($session->villages[0], 400 * REWARD_MULTIPLIER, 460 * REWARD_MULTIPLIER, 330 * REWARD_MULTIPLIER, 270 * REWARD_MULTIPLIER, 1);
                     $dataarray[3] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_05") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[4] == 0) {
                     $database->modifyResource($session->villages[0], 240 * REWARD_MULTIPLIER, 255 * REWARD_MULTIPLIER, 190 * REWARD_MULTIPLIER, 160 * REWARD_MULTIPLIER, 1);
                     $dataarray[4] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_06") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[5] == 0) {
                     $database->modifyResource($session->villages[0], 600 * REWARD_MULTIPLIER, 0, 0, 0, 1);
                     $dataarray[5] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_07") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[6] == 0) {
                     $database->modifyResource($session->villages[0], 100 * REWARD_MULTIPLIER, 99 * REWARD_MULTIPLIER, 99 * REWARD_MULTIPLIER, 99 * REWARD_MULTIPLIER, 1);
                     $dataarray[6] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_08") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[7] == 0) {
                     $database->modifyResource($session->villages[0], 400 * REWARD_MULTIPLIER, 400 * REWARD_MULTIPLIER, 400 * REWARD_MULTIPLIER, 200 * REWARD_MULTIPLIER, 1);
                     $dataarray[7] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "Economy_09") {
-                $query = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_economy']);
                 if ($dataarray[8] == 0) {
                     $database->modifyResource($session->villages[0], 620 * REWARD_MULTIPLIER, 730 * REWARD_MULTIPLIER, 560 * REWARD_MULTIPLIER, 230 * REWARD_MULTIPLIER, 1);
                     $dataarray[8] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_economy` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_01") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[0] == 0) {
                     $database->modifyResource($session->villages[0], 90 * REWARD_MULTIPLIER, 120 * REWARD_MULTIPLIER, 60 * REWARD_MULTIPLIER, 30 * REWARD_MULTIPLIER, 1);
                     $dataarray[0] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_02") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[1] == 0) {
-                    mysql_query("UPDATE " . TB_PREFIX . "vdata set cp = cp+100 where owner='" . $session->uid . "'");
+                    mysql_query("UPDATE vdata set cp = cp+100 where owner='" . $session->uid . "'");
                     $dataarray[1] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_03") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[2] == 0) {
                     $database->modifyResource($session->villages[0], 170 * REWARD_MULTIPLIER, 100 * REWARD_MULTIPLIER, 130 * REWARD_MULTIPLIER, 70 * REWARD_MULTIPLIER, 1);
                     $dataarray[2] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_04") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[3] == 0) {
                     $database->modifyResource($session->villages[0], 215 * REWARD_MULTIPLIER, 145 * REWARD_MULTIPLIER, 195 * REWARD_MULTIPLIER, 50 * REWARD_MULTIPLIER, 1);
                     $dataarray[3] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_05") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[4] == 0) {
                     $database->modifyResource($session->villages[0], 90 * REWARD_MULTIPLIER, 160 * REWARD_MULTIPLIER, 90 * REWARD_MULTIPLIER, 95 * REWARD_MULTIPLIER, 1);
                     $dataarray[4] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_06") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[5] == 0) {
                     $database->modifyResource($session->villages[0], 280 * REWARD_MULTIPLIER, 315 * REWARD_MULTIPLIER, 200 * REWARD_MULTIPLIER, 145 * REWARD_MULTIPLIER, 1);
                     $dataarray[5] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_07b") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[6] == 0) {
                     $database->modifyGold($session->uid, 20, 1);
-                    $goldlog = mysql_query("SELECT id FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
-                    mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '20 GOLD ADDED FROM w7b quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
+                    $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+                    mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '20 GOLD ADDED FROM w7b quest " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
 
                     $dataarray[6] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_08") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[7] == 0) {
                     $database->modifyResource($session->villages[0], 295 * REWARD_MULTIPLIER, 210 * REWARD_MULTIPLIER, 235 * REWARD_MULTIPLIER, 185 * REWARD_MULTIPLIER, 1);
                     $dataarray[7] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_09") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[8] == 0) {
                     $database->modifyResource($session->villages[0], 300 * REWARD_MULTIPLIER, 200 * REWARD_MULTIPLIER, 250 * REWARD_MULTIPLIER, 280 * REWARD_MULTIPLIER, 1);
                     $dataarray[8] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_10") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[9] == 0) {
                     $database->modifyResource($session->villages[0], 525 * REWARD_MULTIPLIER, 420 * REWARD_MULTIPLIER, 620 * REWARD_MULTIPLIER620, 335 * REWARD_MULTIPLIER, 1);
                     $dataarray[9] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_11") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[10] == 0) {
                     $database->modifyResource($session->villages[0], 650 * REWARD_MULTIPLIER, 800 * REWARD_MULTIPLIER, 740 * REWARD_MULTIPLIER, 530 * REWARD_MULTIPLIER, 1);
                     $dataarray[10] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_12") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[11] == 0) {
                     $database->modifyResource($session->villages[0], 525 * REWARD_MULTIPLIER, 420 * REWARD_MULTIPLIER, 620 * REWARD_MULTIPLIER, 335 * REWARD_MULTIPLIER, 1);
                     $dataarray[11] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_13") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[12] == 0) {
                     $database->modifyResource($session->villages[0], 800 * REWARD_MULTIPLIER, 700 * REWARD_MULTIPLIER, 750 * REWARD_MULTIPLIER, 600 * REWARD_MULTIPLIER, 1);
                     $dataarray[12] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             } elseif ($_POST['questTutorialId'] == "World_14") {
-                $query = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                $query = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                 $query = mysql_fetch_assoc($query);
                 $dataarray = explode(',', $query['quest_world']);
                 if ($dataarray[13] == 0) {
-                    mysql_query("UPDATE " . TB_PREFIX . "users set cp = cp+500 where id=" . $session->uid . "");
+                    mysql_query("UPDATE users set cp = cp+500 where id=" . $session->uid . "");
                     $dataarray[13] = 1;
-                    mysql_query('UPDATE ' . TB_PREFIX . 'users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
+                    mysql_query('UPDATE users set `quest_world` = "' . $dataarray[0] . ',' . $dataarray[1] . ',' . $dataarray[2] . ',' . $dataarray[3] . ',' . $dataarray[4] . ',' . $dataarray[5] . ',' . $dataarray[6] . ',' . $dataarray[7] . ',' . $dataarray[8] . ',' . $dataarray[9] . ',' . $dataarray[10] . ',' . $dataarray[11] . ',' . $dataarray[12] . ',' . $dataarray[13] . ',' . $dataarray[14] . ',' . $dataarray[15] . '" where id =' . $session->uid) or die(mysql_error());
                 }
                 break;
             }
-        // case 'skip':$database->updateUserField($_SESSION['username'],'quest','23',0);$_SESSION['qst']= 23;$gold=$database->getUserField($_SESSION['username'],'gold','username');$gold+=25;$database->updateUserField($_SESSION['username'],'gold',$gold,0);$skiped=true;break;
+            // case 'skip':$database->updateUserField($_SESSION['username'],'quest','23',0);$_SESSION['qst']= 23;$gold=$database->getUserField($_SESSION['username'],'gold','username');$gold+=25;$database->updateUserField($_SESSION['username'],'gold',$gold,0);$skiped=true;break;
     }
 
-// echo $qst.' s';die;
+    // echo $qst.' s';die;
 
     $_SESSION['qst'] = $qst;
-    mysql_query("UPDATE " . TB_PREFIX . "users SET `quest`=" . $_SESSION['qst'] . " WHERE id = " . $session->uid) or die(mysql_error());
+    mysql_query("UPDATE users SET `quest`=" . $_SESSION['qst'] . " WHERE id = " . $session->uid) or die(mysql_error());
 
     $reload = '{
 		response: {"error":false,"errorMsg":null,"reload":true}
@@ -630,23 +629,23 @@ if (isset($qact)) {
 // echo $_POST['questTutorialId'];die;
 
 // echo $_SESSION['qst'].'asdsd';die;
-mysql_query("UPDATE " . TB_PREFIX . "users SET `quest`=" . $_SESSION['qst'] . " WHERE id = " . $session->uid) or die(mysql_error());
+mysql_query("UPDATE users SET `quest`=" . $_SESSION['qst'] . " WHERE id = " . $session->uid) or die(mysql_error());
 
 
 if (isset($qact2)) {
     switch ($qact2) {
-// case 'Tutorial_01':
-        // if ($dataarray[0] == 0 && $_SESSION['fqst'] == 1){
-        // unset($_SESSION['fqst']);
-        // $dataarray[0] = 1;
-        // $database->updateUserField($_SESSION['username'],'fquest',''.$dataarray[0].','.$dataarray[1].','.$dataarray[2].','.$dataarray[3].','.$dataarray[4].','.$dataarray[5].','.$dataarray[6].','.$dataarray[7].','.$dataarray[8].','.$dataarray[9].','.$dataarray[10].'',0);
-        // $qst = 3;
-        // /*Give Reward*/
-        // $database->setVillageLevel($_SESSION['wid'], 'f16', 1);
-        // }
-        // break;
+            // case 'Tutorial_01':
+            // if ($dataarray[0] == 0 && $_SESSION['fqst'] == 1){
+            // unset($_SESSION['fqst']);
+            // $dataarray[0] = 1;
+            // $database->updateUserField($_SESSION['username'],'fquest',''.$dataarray[0].','.$dataarray[1].','.$dataarray[2].','.$dataarray[3].','.$dataarray[4].','.$dataarray[5].','.$dataarray[6].','.$dataarray[7].','.$dataarray[8].','.$dataarray[9].','.$dataarray[10].'',0);
+            // $qst = 3;
+            // /*Give Reward*/
+            // $database->setVillageLevel($_SESSION['wid'], 'f16', 1);
+            // }
+            // break;
         case 'Battle_01':
-            $query = mysql_query('SELECT `moveid`,`sort_type` FROM ' . TB_PREFIX . 'movement WHERE `sort_type` = 9 AND `from` = ' . $_SESSION['wid'] . ' AND proc=1 OR proc=0 LIMIT 2');
+            $query = mysql_query('SELECT `moveid`,`sort_type` FROM movement WHERE `sort_type` = 9 AND `from` = ' . $_SESSION['wid'] . ' AND proc=1 OR proc=0 LIMIT 2');
             $q = mysql_num_rows($query);
             if ($q < 2) {
                 $str = '{
@@ -747,7 +746,7 @@ if (isset($qact2)) {
             echo $str;
             exit;
         case 'Battle_07':
-            $query = mysql_query("SELECT * FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "attacks where " . TB_PREFIX . "movement.from = $village->wid and " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "attacks.id and " . TB_PREFIX . "movement.sort_type = 3 ORDER BY endtime ASC");
+            $query = mysql_query("SELECT * FROM movement, attacks where movement.from = $village->wid and movement.ref = attacks.id and movement.sort_type = 3 ORDER BY endtime ASC");
             if (!$database->mysql_fetch_all($query)) {
                 $str = '{
 	response: {"error":false,"errorMsg":null,"data":{"html":"<div class=\"questWrapper\">\n\t<script type=\"text\/javascript\">\n\t\tTravian.Translation.add({\n\t\t\t\'answers.battle_07_title\': \"Travian Answers\"\n\t\t});\n\t<\/script>\n\t<div class=\"questImage\">\n\t\t\t<img id=\"questLogo\" src=\"img\/x.gif\" class=\"enumerableElementsImage battle_07\" style=\"\" title=\"حمله به village\" alt=\"حمله به village\" \/>\n\t\t<\/div>\n\t<div class=\"questText\">\n\t\t<h2 class=\"questTitle\">\n\t\t\tحمله به village\t\t<\/h2>\n\t\t<div class=\"questDescription\">\n\t\t\t<div id=\"questDescription\" class=\"enumerableElementsDiscription \" style=\"\" title=\"\">\n\t جستجو در نقشه برای یک village تسخیر نشده در این نزدیکی و غارت آن. حیوانات موجود دفاعی هستند که میتوانید با قعرمان آن ها را اسیر و به دهکده خود بیاورید.<\/div>\t\t<\/div>\n\n\t\t<h4>Duty:<\/h4>\n\t\t<div class=\"questTasks\">\n\t\t\t<ul id=\"questTodolist\">\n\t\t\t\t\t\t\t<li class=\"\"><img\n\t\t\t\t\tsrc=\"img\/x.gif\" alt=\"\" title=\"\" \/>\n\t\t\t\t\tباز کردن یک village تسخیر نشده بر روی نقشه و حمله به آن.\t\t\t\t<\/li>\n\t\t\t\t\t\t<\/ul>\n\t\t<\/div>\n\t<\/div>\n\t<div class=\"clear\"><\/div>\n\n\t<div class=\"questButtons\">\n\t\t<button  type=\"submit\" value=\"Overview\" id=\"button5305f11d8d2c7\" class=\"green questButtonOverview\" questButtonOverview=\"1\">\n\t<div class=\"button-container addHoverClick\">\n\t\t<div class=\"button-background\">\n\t\t\t<div class=\"buttonStart\">\n\t\t\t\t<div class=\"buttonEnd\">\n\t\t\t\t\t<div class=\"buttonMiddle\"><\/div>\n\t\t\t\t<\/div>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\t<div class=\"button-content\">Overview<\/div>\n\t<\/div>\n<\/button>\n<script type=\"text\/javascript\">\n\twindow.addEvent(\'domready\', function()\n\t{\n\tif($(\'button5305f11d8d2c7\'))\n\t{\n\t\t$(\'button5305f11d8d2c7\').addEvent(\'click\', function ()\n\t\t{\n\t\t\twindow.fireEvent(\'buttonClicked\', [this, {\"type\":\"submit\",\"value\":\"Overview\",\"name\":\"\",\"id\":\"button5305f11d8d2c7\",\"class\":\"green questButtonOverview\",\"title\":\"\",\"confirm\":\"\",\"onclick\":\"\",\"questButtonOverview\":true}]);\n\t\t});\n\t}\n\t});\n<\/script>\n\t\t<div class=\"clear\"><\/div>\n\t<\/div>\n\n<\/div>","infoIcon":"#","cssClass":"white questInformation Battle_07 quest"}}
@@ -760,7 +759,7 @@ if (isset($qact2)) {
             echo $str;
             exit;
         case 'Battle_08':
-            $q = "SELECT COUNT(`moveid`) FROM " . TB_PREFIX . "movement where " . TB_PREFIX . "movement.from = " . $_SESSION['wid'] . " and sort_type = 9";
+            $q = "SELECT COUNT(`moveid`) FROM movement where movement.from = " . $_SESSION['wid'] . " and sort_type = 9";
             $result = mysql_query($q);
             $num_rows = mysql_fetch_array($result);
             if ($num_rows[0] < 10) {
@@ -775,11 +774,11 @@ if (isset($qact2)) {
             echo $str;
             exit;
         case 'Battle_09':
-            $sql = mysql_query("SELECT COUNT(`id`) FROM " . TB_PREFIX . "auction WHERE finish = 0 and uid = $session->uid ORDER BY time ASC");
+            $sql = mysql_query("SELECT COUNT(`id`) FROM auction WHERE finish = 0 and uid = $session->uid ORDER BY time ASC");
             $query = mysql_fetch_array($sql);
             $query = $query[0];
             // print_r($query);
-            $sql2 = mysql_query("SELECT COUNT(`id`) FROM " . TB_PREFIX . "auction WHERE finish = 0 and owner = $session->uid ORDER BY time ASC");
+            $sql2 = mysql_query("SELECT COUNT(`id`) FROM auction WHERE finish = 0 and owner = $session->uid ORDER BY time ASC");
             $query2 = mysql_fetch_array($sql2);
             $query2 = $query2[0];
             // print_r($query2);
@@ -954,7 +953,7 @@ if (isset($qact2)) {
                 $cropL++;
             }
 
-            if (($ironL < 2) AND ($clayL < 2) AND ($woodL < 2) AND ($cropL < 2)) {
+            if (($ironL < 2) and ($clayL < 2) and ($woodL < 2) and ($cropL < 2)) {
                 $str = '{
 	response: {"error":false,"errorMsg":null,"data":{"html":"<div class=\"questWrapper\">\n\t<script type=\"text\/javascript\">\n\t\tTravian.Translation.add({\n\t\t\t\'answers.economy_02_title\': \"Travian Answers\"\n\t\t});\n\t<\/script>\n\t<div class=\"questImage\">\n\t\t\t<img id=\"questLogo\" src=\"img\/x.gif\" class=\"enumerableElementsImage economy_02\" style=\"\" title=\"منابع بیشتر\" alt=\"منابع بیشتر\" \/>\n\t\t<\/div>\n\t<div class=\"questText\">\n\t\t<h2 class=\"questTitle\">\n\t\t\tمنابع بیشتر\t\t<\/h2>\n\t\t<div class=\"questDescription\">\n\t\t\t<div id=\"questDescription\" class=\"enumerableElementsDiscription \" style=\"\" title=\"\">\n\tLevel all resources up to two levels of resources.<\/div>\t\t<\/div>\n\n\t\t<h4>Duty :<\/h4>\n\t\t<div class=\"questTasks\">\n\t\t\t<ul id=\"questTodolist\">\n\t\t\t\t\t\t\t<li class=\"\"><img\n\t\t\t\t\tsrc=\"img\/x.gif\" alt=\"\" title=\"\" \/>\n\t\t\t\t\tارتقا منابع به سطح یک حداقل دو شاخه از هر منابع\t\t\t\t<\/li>\n\t\t\t\t\t\t<\/ul>\n\t\t<\/div>\n\t<\/div>\n\t<div class=\"clear\"><\/div>\n\n\t<div class=\"questButtons\">\n\t\t<button  type=\"submit\" value=\"Overview\" id=\"button530662001d34d\" class=\"green questButtonOverview\" questButtonOverview=\"1\">\n\t<div class=\"button-container addHoverClick\">\n\t\t<div class=\"button-background\">\n\t\t\t<div class=\"buttonStart\">\n\t\t\t\t<div class=\"buttonEnd\">\n\t\t\t\t\t<div class=\"buttonMiddle\"><\/div>\n\t\t\t\t<\/div>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\t<div class=\"button-content\">Overview<\/div>\n\t<\/div>\n<\/button>\n<script type=\"text\/javascript\">\n\twindow.addEvent(\'domready\', function()\n\t{\n\tif($(\'button530662001d34d\'))\n\t{\n\t\t$(\'button530662001d34d\').addEvent(\'click\', function ()\n\t\t{\n\t\t\twindow.fireEvent(\'buttonClicked\', [this, {\"type\":\"submit\",\"value\":\"Overview\",\"name\":\"\",\"id\":\"button530662001d34d\",\"class\":\"green questButtonOverview\",\"title\":\"\",\"confirm\":\"\",\"onclick\":\"\",\"questButtonOverview\":true}]);\n\t\t});\n\t}\n\t});\n<\/script>\n\t\t<div class=\"clear\"><\/div>\n\t<\/div>\n\n<\/div>","infoIcon":"#","cssClass":"white questInformation Economy_02 quest"}}
 }';
@@ -1109,7 +1108,7 @@ if (isset($qact2)) {
                 $cropL++;
             }
 
-            if (($ironL < 4) AND ($clayL < 4) AND ($woodL < 4) AND ($cropL < 6)) {
+            if (($ironL < 4) and ($clayL < 4) and ($woodL < 4) and ($cropL < 6)) {
                 $str = '{
 	response: {"error":false,"errorMsg":null,"data":{"html":"<div class=\"questWrapper\">\n\t<script type=\"text\/javascript\">\n\t\tTravian.Translation.add({\n\t\t\t\'answers.economy_05_title\': \"Travian Answers\"\n\t\t});\n\t<\/script>\n\t<div class=\"questImage\">\n\t\t\t<img id=\"questLogo\" src=\"img\/x.gif\" class=\"enumerableElementsImage economy_05\" style=\"\" title=\"به 2!\" alt=\"به 2!\" \/>\n\t\t<\/div>\n\t<div class=\"questText\">\n\t\t<h2 class=\"questTitle\">\n\t\t\tبه2!\t\t<\/h2>\n\t\t<div class=\"questDescription\">\n\t\t\t<div id=\"questDescription\" class=\"enumerableElementsDiscription \" style=\"\" title=\"\">\n\tجهت پیشرفت افزایش منابع همه منابع برا به سطح 2 ارتقاع بدهید.<\/div>\t\t<\/div>\n\n\t\t<h4>Duty:<\/h4>\n\t\t<div class=\"questTasks\">\n\t\t\t<ul id=\"questTodolist\">\n\t\t\t\t\t\t\t<li class=\"\"><img\n\t\t\t\t\tsrc=\"img\/x.gif\" alt=\"\" title=\"\" \/>\n\t\t\t\t\tارتقا منابع به سطح 2\t\t\t\t<\/li>\n\t\t\t\t\t\t<\/ul>\n\t\t<\/div>\n\t<\/div>\n\t<div class=\"clear\"><\/div>\n\n\t<div class=\"questButtons\">\n\t\t<button  type=\"submit\" value=\"Overview\" id=\"button5305f0d71d690\" class=\"green questButtonOverview\" questButtonOverview=\"1\">\n\t<div class=\"button-container addHoverClick\">\n\t\t<div class=\"button-background\">\n\t\t\t<div class=\"buttonStart\">\n\t\t\t\t<div class=\"buttonEnd\">\n\t\t\t\t\t<div class=\"buttonMiddle\"><\/div>\n\t\t\t\t<\/div>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\t<div class=\"button-content\">Overview<\/div>\n\t<\/div>\n<\/button>\n<script type=\"text\/javascript\">\n\twindow.addEvent(\'domready\', function()\n\t{\n\tif($(\'button5305f0d71d690\'))\n\t{\n\t\t$(\'button5305f0d71d690\').addEvent(\'click\', function ()\n\t\t{\n\t\t\twindow.fireEvent(\'buttonClicked\', [this, {\"type\":\"submit\",\"value\":\"Overview\",\"name\":\"\",\"id\":\"button5305f0d71d690\",\"class\":\"green questButtonOverview\",\"title\":\"\",\"confirm\":\"\",\"onclick\":\"\",\"questButtonOverview\":true}]);\n\t\t});\n\t}\n\t});\n<\/script>\n\t\t<div class=\"clear\"><\/div>\n\t<\/div>\n\n<\/div>","infoIcon":"#","cssClass":"white questInformation Economy_05 quest"}}
 }';
@@ -1490,7 +1489,6 @@ if (isset($qact2)) {
             }
             break;
     }
-
 }
 
 if ($_COOKIE['highlightsToggle'] == 'true') {
@@ -1611,7 +1609,7 @@ switch ($qst) {
         if ($_SESSION['qstnew'] == 1) {
             $_SESSION['done'] = array(0 => 0, 1 => 0);
         }
-        $q = mysql_fetch_assoc(mysql_query('SELECT `r2` FROM ' . TB_PREFIX . 'hero WHERE uid =' . $session->uid));
+        $q = mysql_fetch_assoc(mysql_query('SELECT `r2` FROM hero WHERE uid =' . $session->uid));
         if ($q['r2'] == 0) {
             $_SESSION['qstnew'] = 0;
             $str = '{
@@ -1645,7 +1643,7 @@ switch ($qst) {
         if ($_SESSION['qstnew'] == 1) {
             $_SESSION['done'] = array(0 => 0, 1 => 0);
         }
-        $q = mysql_query('SELECT * FROM ' . TB_PREFIX . 'fdata WHERE vref =' . $_SESSION['wid']);
+        $q = mysql_query('SELECT * FROM fdata WHERE vref =' . $_SESSION['wid']);
         $t = 0;
         $row = mysql_fetch_assoc($q);
         for ($i = 19; $i <= 40; $i++) {
@@ -1713,7 +1711,7 @@ switch ($qst) {
         if ($_SESSION['qstnew'] == 1) {
             $_SESSION['done'] = array(0 => 0);
         }
-        $q = mysql_query('SELECT `sort_type` FROM ' . TB_PREFIX . 'movement WHERE `sort_type` = 9 AND `from` = ' . $_SESSION['wid'] . ' LIMIT 1') or die(mysql_error());
+        $q = mysql_query('SELECT `sort_type` FROM movement WHERE `sort_type` = 9 AND `from` = ' . $_SESSION['wid'] . ' LIMIT 1') or die(mysql_error());
         $q = mysql_num_rows($q);
         if ($q == 0) {
             $_SESSION['qstnew'] = 0;
@@ -1733,7 +1731,7 @@ switch ($qst) {
         if ($_SESSION['qstnew'] == 1) {
             $_SESSION['done'] = array(0 => 0, 1 => 0);
         }
-        $q = mysql_num_rows(mysql_query('SELECT `id` FROM ' . TB_PREFIX . 'ndata WHERE `viewed` = 0 AND `ntype` = 9 AND `uid` = ' . $session->uid . ' LIMIT 1'));
+        $q = mysql_num_rows(mysql_query('SELECT `id` FROM ndata WHERE `viewed` = 0 AND `ntype` = 9 AND `uid` = ' . $session->uid . ' LIMIT 1'));
         if ($q >= 1) {
             $_SESSION['qstnew'] = 0;
             $str = '{
@@ -1785,21 +1783,21 @@ switch ($qst) {
         // echo $str;die;
         break;
     case 15:
-        $qquery = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+        $qquery = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
         $qquery = mysql_fetch_assoc($qquery);
         $qdataarray = explode(',', $qquery['quest_battle']);
         $totbattle = 0;
         foreach ($qdataarray as $bat) {
             if ($bat > 0) $totbattle++;
         }
-        $qquery2 = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+        $qquery2 = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
         $qquery2 = mysql_fetch_assoc($qquery2);
         $qdataarray2 = explode(',', $qquery2['quest_economy']);
         $toteconomy = 0;
         foreach ($qdataarray2 as $eco) {
             if ($eco > 0) $toteconomy++;
         }
-        $qquery3 = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+        $qquery3 = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
         $qquery3 = mysql_fetch_assoc($qquery3);
         $qdataarray3 = explode(',', $qquery3['quest_world']);
         $totworld = 0;
@@ -1940,4 +1938,4 @@ switch ($qst) {
 }
 echo $str;
 $_SESSION['qst'] = $qst;
-mysql_query("UPDATE " . TB_PREFIX . "users SET `quest`=" . $_SESSION['qst'] . " WHERE id = " . $session->uid) or die(mysql_error());
+mysql_query("UPDATE users SET `quest`=" . $_SESSION['qst'] . " WHERE id = " . $session->uid) or die(mysql_error());

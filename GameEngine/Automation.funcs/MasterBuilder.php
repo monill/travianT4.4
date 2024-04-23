@@ -9,7 +9,7 @@ function MasterBuilder()
     if (!$database->checkConnection()) {
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
-    $q = "SELECT `wid`,`type`,`level`,`field`,`timestamp`,`id` FROM " . TB_PREFIX . "bdata WHERE master = 1 ORDER BY id ASC";
+    $q = "SELECT `wid`,`type`,`level`,`field`,`timestamp`,`id` FROM bdata WHERE master = 1 ORDER BY id ASC";
     $array = $database->query_return($q);
     foreach ($array as $master) {
         $villwood = $database->getVillageField($master['wid'], 'wood');
@@ -45,7 +45,7 @@ function MasterBuilder()
         }
         $usergold = $database->getUserField($owner, 'gold', 0);
         if ($bdata < $inbuild && $buildwood < $villwood && $buildclay < $villclay && $buildiron < $villiron && $buildcrop < $villcrop && $usergold > 0) {
-            //echo "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy";
+            // echo "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy";
             $time = $master['timestamp'] + time();
             if (!empty($bdata1)) {
                 foreach ($bdata1 as $master1) {
@@ -63,5 +63,3 @@ function MasterBuilder()
         }
     }
 }
-
-?>

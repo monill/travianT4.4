@@ -3,7 +3,7 @@
 if ($session->logged_in) {
     $HTTP_REFERER = array_shift(explode('?', $_SERVER['PHP_SELF']));
     $pageref = dirname($HTTP_REFERER);
-    $q = "SELECT `ok` FROM " . TB_PREFIX . "users WHERE id = $session->uid LIMIT 1";
+    $q = "SELECT `ok` FROM users WHERE id = $session->uid LIMIT 1";
     if (mysql_query($q)) {
         $q = mysql_query($q);
         $q = mysql_fetch_assoc($q);

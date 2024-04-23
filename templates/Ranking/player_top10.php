@@ -3,8 +3,8 @@
 for ($i = 1; $i <= 0; $i++) {
     echo "Row " . $i;
 }
-$result = mysql_query("SELECT `id`,`username`,`ap` FROM " . TB_PREFIX . "users WHERE id > 3 ORDER BY ap DESC, id ASC LIMIT 10");
-$result2 = mysql_query("SELECT `id`,`username`,`ap` FROM " . TB_PREFIX . "users WHERE username = '" . $session->username . "' ORDER BY ap DESC, id ASC LIMIT 1");
+$result = mysql_query("SELECT `id`,`username`,`ap` FROM users WHERE id > 3 ORDER BY ap DESC, id ASC LIMIT 10");
+$result2 = mysql_query("SELECT `id`,`username`,`ap` FROM users WHERE username = '" . $session->username . "' ORDER BY ap DESC, id ASC LIMIT 1");
 $attRank = $ranking->getTop10AttRank($session->username);
 $defRank = $ranking->getTop10DefRank($session->username);
 //$clpRank = $ranking->getTop10ClpRank($session->username);
@@ -85,8 +85,8 @@ $rrRank = $ranking->getTop10RobbersRank($session->username);
     for ($i = 1; $i <= 0; $i++) {
         echo "Row " . $i;
     }
-    $result = mysql_query("SELECT `id`,`username`,`dp` FROM " . TB_PREFIX . "users WHERE id > 3 ORDER BY dp DESC, id ASC Limit 10");
-    $result2 = mysql_query("SELECT `id`,`username`,`dp` FROM " . TB_PREFIX . "users WHERE username = '" . $session->username . "' ORDER BY dp DESC, id ASC Limit 1");
+    $result = mysql_query("SELECT `id`,`username`,`dp` FROM users WHERE id > 3 ORDER BY dp DESC, id ASC Limit 10");
+    $result2 = mysql_query("SELECT `id`,`username`,`dp` FROM users WHERE username = '" . $session->username . "' ORDER BY dp DESC, id ASC Limit 1");
     ?>
     <h4 class="round small spacer top top10_defs"><?php echo PF_TOPDEFENDERS; ?></h4>
     <table cellpadding="1" cellspacing="1" id="top10_defs" class="top10 row_table_data">
@@ -191,8 +191,8 @@ $rrRank = $ranking->getTop10RobbersRank($session->username);
     for ($i = 1; $i <= 0; $i++) {
         echo "Row " . $i;
     }
-    $result = mysql_query("SELECT `id`,`username`,`RR` FROM " . TB_PREFIX . "users WHERE id>3 ORDER BY RR DESC, id ASC Limit 10");
-    $result2 = mysql_query("SELECT `id`,`username`,`RR` FROM " . TB_PREFIX . "users WHERE username = '" . $session->username . "' ORDER BY RR DESC, id ASC Limit 1");
+    $result = mysql_query("SELECT `id`,`username`,`RR` FROM users WHERE id>3 ORDER BY RR DESC, id ASC Limit 10");
+    $result2 = mysql_query("SELECT `id`,`username`,`RR` FROM users WHERE username = '" . $session->username . "' ORDER BY RR DESC, id ASC Limit 1");
     ?>
     <h4 class="round small spacer top top10_raiders"><?php echo PF_TOPRAIDERS; ?></h4>
     <table cellpadding="1" cellspacing="1" id="top10_raiders" class="top10 row_table_data">

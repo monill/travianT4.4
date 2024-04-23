@@ -14,8 +14,8 @@ include("templates/html.php");
 
 <div id="content" class="activate">
 
-<?php
-echo '
+    <?php
+    echo '
 <body class="v35 gecko login perspectiveBuildings">
 
 	<div id="background">
@@ -73,84 +73,87 @@ echo '
 							</div>
 							<div class="contentContainer">
 								<div id="content" class="login">';
-?>
+    ?>
 
     <h1 class="titleInHeader"><?php echo REG; ?></h1>
 
-<?php
-if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
+    <?php
+    if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
 
-    if (isset($_GET['e']) && !is_numeric($_GET['e']))
-        $_GET['e'] = 1;
-    if (isset($_GET['e'])) {
-        switch ($_GET['e']) {
-            case 1:
+        if (isset($_GET['e']) && !is_numeric($_GET['e']))
+            $_GET['e'] = 1;
+        if (isset($_GET['e'])) {
+            switch ($_GET['e']) {
+                case 1:
+                    include("templates/activate/delete.php");
+                    break;
+                case 2:
+                    include("templates/activate/activated.php");
+                    break;
+                case 3:
+                    include("templates/activate/cantfind.php");
+                    break;
+            }
+        } else if (isset($_GET['id']) && isset($_GET['c'])) {
+            if (isset($_GET['id']) && !is_numeric($_GET['id']))
+                die('Attempt of sql injection blocked');
+            $c = $database->getActivateField($_GET['id'], "email", 0);
+            if ($_GET['c'] == $generator->encodeStr($c, 5)) {
                 include("templates/activate/delete.php");
-                break;
-            case 2:
-                include("templates/activate/activated.php");
-                break;
-            case 3:
-                include("templates/activate/cantfind.php");
-                break;
-        }
-    } else if (isset($_GET['id']) && isset($_GET['c'])) {
-        if (isset($_GET['id']) && !is_numeric($_GET['id']))
-            die('Attempt of sql injection blocked');
-        $c = $database->getActivateField($_GET['id'], "email", 0);
-        if ($_GET['c'] == $generator->encodeStr($c, 5)) {
-            include("templates/activate/delete.php");
+            } else {
+                include("templates/activate/activate.php");
+            }
         } else {
             include("templates/activate/activate.php");
         }
     } else {
-        include("templates/activate/activate.php");
-    }
-} else {
 
-    if (isset($_GET['token']) && isset($_GET['cv'])) {
+        if (isset($_GET['token']) && isset($_GET['cv'])) {
 
-        if ($_GET['token'] != $_SESSION['token']) {
-            unset($_SESSION['token']);
-            header("Location: login.php");
-            exit;
-        }
-        unset($_SESSION['token']);
-        $_GET['cv'] = filter_var($_GET['cv'], FILTER_SANITIZE_MAGIC_QUOTES);
-        $_SESSION['MYUID'] = $_GET['cv'];
-
-        function generateHash($plainText, $salt = 1) {
-            $salt = substr($salt, 0, 9);
-            return $salt . sha1($salt . $plainText);
-        }
-
-        for ($i = 1; $i <= 50; $i++) {
-            if (generateHash($i) == $_GET['cv']) {
-                $_GET['cv'] = $i;
-                break;
+            if ($_GET['token'] != $_SESSION['token']) {
+                unset($_SESSION['token']);
+                header("Location: login.php");
+                exit;
             }
-        }
+            unset($_SESSION['token']);
+            $_GET['cv'] = filter_var($_GET['cv'], FILTER_SANITIZE_MAGIC_QUOTES);
+            $_SESSION['MYUID'] = $_GET['cv'];
 
-        $_SESSION['MYP'] = 123123;
-        ?>
+            function generateHash($plainText, $salt = 1)
+            {
+                $salt = substr($salt, 0, 9);
+                return $salt . sha1($salt . $plainText);
+            }
+
+            for ($i = 1; $i <= 50; $i++) {
+                if (generateHash($i) == $_GET['cv']) {
+                    $_GET['cv'] = $i;
+                    break;
+                }
+            }
+
+            $_SESSION['MYP'] = 123123;
+    ?>
             <form method="POST" action="activate.php?form=activator">
                 <button type="submit" value="" name="">
-                    <SCRIPT type="text/javascript">document.forms[0].submit();</SCRIPT>
-        <?php
-    }
+                    <SCRIPT type="text/javascript">
+                        document.forms[0].submit();
+                    </SCRIPT>
+                <?php
+            }
 
-    if (isset($_SESSION['MYUID']) && $_GET['form'] == 'activator' && !isset($_GET['step'])) {
-        $_GET['cv'] = filter_var($_GET['cv'], FILTER_SANITIZE_NUMBER_INT);
-        $_GET['cv'] = filter_var($_GET['cv'], FILTER_SANITIZE_MAGIC_QUOTES);
-        $result = mysql_query("SELECT `reg2` FROM " . TB_PREFIX . "users WHERE id='" . $_SESSION['MYUID'] . "' LIMIT 1");
-        $row = mysql_fetch_array($result);
-        $reg2 = $row['reg2'];
+            if (isset($_SESSION['MYUID']) && $_GET['form'] == 'activator' && !isset($_GET['step'])) {
+                $_GET['cv'] = filter_var($_GET['cv'], FILTER_SANITIZE_NUMBER_INT);
+                $_GET['cv'] = filter_var($_GET['cv'], FILTER_SANITIZE_MAGIC_QUOTES);
+                $result = mysql_query("SELECT `reg2` FROM users WHERE id='" . $_SESSION['MYUID'] . "' LIMIT 1");
+                $row = mysql_fetch_array($result);
+                $reg2 = $row['reg2'];
 
-        if ($reg2 != 1 AND $_SESSION['MYUID'] == '') {
-            header("Location: login.php");
-            exit;
-        }
-        ?>
+                if ($reg2 != 1 and $_SESSION['MYUID'] == '') {
+                    header("Location: login.php");
+                    exit;
+                }
+                ?>
                     <div id="vid">
                         <div class="ffBug"></div>
                         <div class="greenbox boxVidInfo">
@@ -174,8 +177,8 @@ if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
                             <div class="boxes-contents cf">
                                 <div class="content">
                                     <form method="POST" action="activate.php?form=activator&step=2">
-                                        <input type="hidden" name="vid" value="3"/>
-                                        <input type="hidden" name="uid" value="<?php echo $_SESSION['MYUID']; ?>"/>
+                                        <input type="hidden" name="vid" value="3" />
+                                        <input type="hidden" name="uid" value="<?php echo $_SESSION['MYUID']; ?>" />
                                         <div class="container">
                                             <div class="vidDescription">Great empires begin with important decisions!
                                                 Are you an attacker who loves to fight? Otherwise, save your time relatively
@@ -243,8 +246,7 @@ if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
                                         </div>
                                         <div class="clear"></div>
                                         <div class="submitButton">
-                                            <button type="submit" value="Choose A tribe" name="submitKind" id="submitKind"
-                                                    class="green ">
+                                            <button type="submit" value="Choose A tribe" name="submitKind" id="submitKind" class="green ">
                                                 <div class="button-container addHoverClick ">
                                                     <div class="button-background">
                                                         <div class="buttonStart">
@@ -257,19 +259,19 @@ if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
                                                 </div>
                                             </button>
                                             <script type="text/javascript">
-                                                window.addEvent('domready', function () {
+                                                window.addEvent('domready', function() {
                                                     if ($('submitKind')) {
-                                                        $('submitKind').addEvent('click', function () {
+                                                        $('submitKind').addEvent('click', function() {
                                                             window.fireEvent('buttonClicked', [this, {
-                                                                    "type": "submit",
-                                                                    "value": "Choose a tribe",
-                                                                    "name": "submitKind",
-                                                                    "id": "submitKind",
-                                                                    "class": "green ",
-                                                                    "title": "",
-                                                                    "confirm": "",
-                                                                    "onclick": ""
-                                                                }]);
+                                                                "type": "submit",
+                                                                "value": "Choose a tribe",
+                                                                "name": "submitKind",
+                                                                "id": "submitKind",
+                                                                "class": "green ",
+                                                                "title": "",
+                                                                "confirm": "",
+                                                                "onclick": ""
+                                                            }]);
                                                         });
                                                     }
                                                 });
@@ -285,29 +287,29 @@ if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
                     </script>
                     <div id="tpixeliframe_loading" style="display: none; z-index: 1000; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; background-color: #000; opacity: 0.4; -moz-opacity: 0.4;"></div>
                     <script type="text/javascript">
-                        var tg_load_handler = function () {
+                        var tg_load_handler = function() {
                             document.getElementById("tpixeliframe_loading").style.display = "none";
                         };
                         tg_load_handler.delay(1000);
-                        window.onload = function () {
+                        window.onload = function() {
                             tg_iframe = document.getElementById("tpixeliframe");
                             tg_iframe.onload = tg_load_handler;
                         };
                         document.getElementById("tpixeliframe_loading").style.display = "block";
                     </script>
-        <?php
+                <?php
             } else if (isset($_GET['step']) && $_GET['step'] == 2) {
                 $_SESSION['MYVID'] = $_POST['vid'];
                 header("Location: activate.php?form=activator&step=1");
                 exit();
-    } else if (isset($_GET['step']) && $_GET['step'] == 1) {
-        ?>
+            } else if (isset($_GET['step']) && $_GET['step'] == 1) {
+                ?>
                     <div id="sector">
                         <form name="snd" method="POST" action="activate.php">
-                            <input type="hidden" name="uid" value="<?php echo $_SESSION['MYUID']; ?>"/>
+                            <input type="hidden" name="uid" value="<?php echo $_SESSION['MYUID']; ?>" />
                             <div class="ffBug"></div>
-                            <input type="hidden" name="vid" value="<?php echo $_SESSION['MYVID']; ?>"/>
-                            <input type="hidden" name="ft" value="a0"/>
+                            <input type="hidden" name="vid" value="<?php echo $_SESSION['MYVID']; ?>" />
+                            <input type="hidden" name="ft" value="a0" />
 
                             <div class="greenbox boxVidInfo">
                                 <div class="greenbox-top"></div>
@@ -363,9 +365,7 @@ if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
                                                 </div>
                                             </div>
                                             <div class="buttonContainer">
-                                                <button type="submit" value="Create village" name="submitSector"
-                                                        id="submitSector"
-                                                        class="green submitSector">
+                                                <button type="submit" value="Create village" name="submitSector" id="submitSector" class="green submitSector">
                                                     <div class="button-container addHoverClick">
                                                         <div class="button-background">
                                                             <div class="buttonStart">
@@ -378,9 +378,9 @@ if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
                                                     </div>
                                                 </button>
                                                 <script type="text/javascript">
-                                                    window.addEvent('domready', function () {
+                                                    window.addEvent('domready', function() {
                                                         if ($('submitSector')) {
-                                                            $('submitSector').addEvent('click', function () {
+                                                            $('submitSector').addEvent('click', function() {
                                                                 window.fireEvent('buttonClicked', [this, {
                                                                     "type": "submit",
                                                                     "value": "Create village",
@@ -416,84 +416,83 @@ if (!isset($_GET['token']) && !isset($_GET['cv']) && !isset($_GET['form'])) {
                     <script type="text/javascript">
                         var sector = new Travian.Game.Sector('nw');
                     </script>
-                <?php
-                }
+            <?php
             }
+        }
             ?>
             <div class="clear">&nbsp;</div>
-            </div>
-            <div class="clear"></div>
-            </div>
-            <div class="contentFooter">&nbsp;</div>
-            </div>
-            <div id="sidebarAfterContent" class="sidebar afterContent">
-                <div id="sidebarBoxNews1" class="sidebarBox sidebarBoxNews">
-                    <div class="sidebarBoxBaseBox">
-                        <div class="baseBox baseBoxTop">
-                            <div class="baseBox baseBoxBottom">
-                                <div class="baseBox baseBoxCenter"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sidebarBoxInnerBox">
-                        <div class="innerBox header noHeader"></div>
-                        <div class="innerBox content">
-                            <?php
-                            if (NEWSBOX1) {
-                                echo '<div class="news news1"><center style="font-family:arial; direction:rtl;"> ';
-                                ?>
-                                <a href="#" class="newsContent newsContentWithLink"
-                                   onclick="$H({data: {cmd: 'News', id: '1'}}).dialog(); return false;">
-                                       <?php
-                                       $t1 = trim(file_get_contents("templates/News/newsbox1.php"));
-                                       echo $t1 . "</a><br>";
-                                       echo '</a></center></div>';
-                                       ?>
-                            </div>
-                            <div class="innerBox footer">
-                            </div>
-                        </div>
-                    </div>
-<?php } ?>
-                <div id="sidebarBoxNews2" class="sidebarBox sidebarBoxNews">
-
-                    <div class="sidebarBoxBaseBox">
-                        <div class="baseBox baseBoxTop">
-                            <div class="baseBox baseBoxBottom">
-                                <div class="baseBox baseBoxCenter"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sidebarBoxInnerBox">
-                        <div class="innerBox header noHeader"></div>
-                        <div class="innerBox content">
-                            <?php
-                            if (NEWSBOX2) {
-                                echo '<div class="news news2"><center style="font-family:arial;direction:rtl;">';
-                                ?>
-                                <a href="#" class="newsContent newsContentWithLink"
-                                   onclick="$H({data: {cmd: 'News', id: '2'}}).dialog(); return false;">
-                                       <?php
-                                       $t2 = trim(file_get_contents("templates/News/newsbox2.php"));
-                                       echo $t2 . "</a><br>";
-                                   }
-                                   ?>
-                        </div>
-                        <div class="innerBox footer"></div>
-                    </div>
+</div>
+<div class="clear"></div>
+</div>
+<div class="contentFooter">&nbsp;</div>
+</div>
+<div id="sidebarAfterContent" class="sidebar afterContent">
+    <div id="sidebarBoxNews1" class="sidebarBox sidebarBoxNews">
+        <div class="sidebarBoxBaseBox">
+            <div class="baseBox baseBoxTop">
+                <div class="baseBox baseBoxBottom">
+                    <div class="baseBox baseBoxCenter"></div>
                 </div>
-
             </div>
-            </div>
-
-            <?php
-            include('templates/footer.php');
-            echo '</div>';
-            ?>
-            <div id="ce"></div>
         </div>
+        <div class="sidebarBoxInnerBox">
+            <div class="innerBox header noHeader"></div>
+            <div class="innerBox content">
+                <?php
+                if (NEWSBOX1) {
+                    echo '<div class="news news1"><center style="font-family:arial; direction:rtl;"> ';
+                ?>
+                    <a href="#" class="newsContent newsContentWithLink" onclick="$H({data: {cmd: 'News', id: '1'}}).dialog(); return false;">
+                        <?php
+                        $t1 = trim(file_get_contents("templates/News/newsbox1.php"));
+                        echo $t1 . "</a><br>";
+                        echo '</a></center></div>';
+                        ?>
+            </div>
+            <div class="innerBox footer">
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<div id="sidebarBoxNews2" class="sidebarBox sidebarBoxNews">
+
+    <div class="sidebarBoxBaseBox">
+        <div class="baseBox baseBoxTop">
+            <div class="baseBox baseBoxBottom">
+                <div class="baseBox baseBoxCenter"></div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebarBoxInnerBox">
+        <div class="innerBox header noHeader"></div>
+        <div class="innerBox content">
+            <?php
+            if (NEWSBOX2) {
+                echo '<div class="news news2"><center style="font-family:arial;direction:rtl;">';
+            ?>
+                <a href="#" class="newsContent newsContentWithLink" onclick="$H({data: {cmd: 'News', id: '2'}}).dialog(); return false;">
+                <?php
+                $t2 = trim(file_get_contents("templates/News/newsbox2.php"));
+                echo $t2 . "</a><br>";
+            }
+                ?>
+        </div>
+        <div class="innerBox footer"></div>
     </div>
 </div>
 
+</div>
+</div>
+
+<?php
+include('templates/footer.php');
+echo '</div>';
+?>
+<div id="ce"></div>
+</div>
+</div>
+</div>
+
 </body>
+
 </html>

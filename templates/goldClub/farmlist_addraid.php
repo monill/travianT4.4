@@ -150,7 +150,7 @@ if (isset($_POST['action']) == 'addSlot' && $_POST['lid']) {
                                 <select onchange="getTargetsByLid();" id="lid" name="lid">
                                     <?php
 
-                                    $sql = mysql_query("SELECT * FROM " . TB_PREFIX . "farmlist WHERE owner = $session->uid ORDER BY name ASC");
+                                    $sql = mysql_query("SELECT * FROM farmlist WHERE owner = $session->uid ORDER BY name ASC");
                                     while ($row = mysql_fetch_array($sql)) {
                                         $lid = $row["id"];
                                         $lname = $row["name"];

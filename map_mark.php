@@ -38,8 +38,8 @@ if (
     }
 
     while ($y1 >= $y0 && $x0 <= $x1) {
-        $query = "SELECT `id` FROM " . TB_PREFIX . "wdata WHERE x='" . $x0 . "' AND y='" . $y1 . "' LIMIT 1";
-        $result = mysql_query($query) OR die(mysql_error());
+        $query = "SELECT `id` FROM wdata WHERE x='" . $x0 . "' AND y='" . $y1 . "' LIMIT 1";
+        $result = mysql_query($query) or die(mysql_error());
         $row2 = mysql_fetch_assoc($result);
         $row = $database->getMInfo($row2['id']);
         $targetalliance = -1;
@@ -72,11 +72,11 @@ if (
             $t = "/assets/images/map/border.gif";
         }
 
-        $war = mysql_fetch_assoc(mysql_query("SELECT `sort_type`,`proc` FROM " . TB_PREFIX . "s1_movement WHERE `from` = '" . $_SESSION['wid'] . "' AND `to` = '" . $row['id'] . "' AND proc=0"));
+        $war = mysql_fetch_assoc(mysql_query("SELECT `sort_type`,`proc` FROM s1_movement WHERE `from` = '" . $_SESSION['wid'] . "' AND `to` = '" . $row['id'] . "' AND proc=0"));
         if ($war['proc'] == 1) {
             $t = "/assets/images/map/borderatwar.gif";
         }
-        $pflagsQ = mysql_query("SELECT `id`,`x`,`y`,`index`,`text`,`dataId` FROM " . TB_PREFIX . "map_marks WHERE x='" . $x0 . "' AND y='" . $y1 . "' AND type = 'player' ORDER BY id ASC LIMIT 1") or die(mysql_error());
+        $pflagsQ = mysql_query("SELECT `id`,`x`,`y`,`index`,`text`,`dataId` FROM map_marks WHERE x='" . $x0 . "' AND y='" . $y1 . "' AND type = 'player' ORDER BY id ASC LIMIT 1") or die(mysql_error());
         if ($row2 = mysql_fetch_assoc($pflagsQ)) {
             switch ($row2['index']) {
                 case 0:
@@ -137,12 +137,12 @@ if (
         $x = ($index % $numberOfTiles) * ($tileWidth + $pxBetweenTiles) + $leftOffSet;
         $y = floor($index / $numberOfTiles) * ($tileWidth + $pxBetweenTiles) + $topOffSet;
 
-        return Array($x, $y);
+        return array($x, $y);
     }
 
     foreach ($srcImagePaths as $index => $srcImagePath) {
         if ($srcImagePath) {
-            list ($x, $y) = indexToCoords($index);
+            list($x, $y) = indexToCoords($index);
             $tileImg = imagecreatefromgif($srcImagePath);
             imagecopy($mapImage, $tileImg, $x, $y, 0, 0, $tileWidth, $tileHeight);
             imagedestroy($tileImg);
@@ -163,7 +163,6 @@ if (
     imagepng($thumbImage, NULL, 9);
     imagedestroy($thumbImage);
     imagedestroy($mapImage);
-
 } else {
 
     $im = imagecreatetruecolor(1, 1);

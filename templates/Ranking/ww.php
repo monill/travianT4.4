@@ -1,11 +1,11 @@
 <?php
 
 if (WW == TRUE) {
-    $result = mysql_query("select " . TB_PREFIX . "users.id, " . TB_PREFIX . "users.username," . TB_PREFIX . "users.alliance, " . TB_PREFIX . "fdata.wwname, " . TB_PREFIX . "fdata.f99, " . TB_PREFIX . "vdata.name, " . TB_PREFIX . "vdata.wref
-                        FROM " . TB_PREFIX . "users
-                        INNER JOIN " . TB_PREFIX . "vdata ON " . TB_PREFIX . "users.id = " . TB_PREFIX . "vdata.owner
-                        INNER JOIN " . TB_PREFIX . "fdata ON " . TB_PREFIX . "fdata.vref = " . TB_PREFIX . "vdata.wref
-                        WHERE " . TB_PREFIX . "fdata.f99t = 40 ORDER BY " . TB_PREFIX . "fdata.f99 Desc Limit 13");
+    $result = mysql_query("select users.id, users.username,users.alliance, fdata.wwname, fdata.f99, vdata.name, vdata.wref
+                        FROM users
+                        INNER JOIN vdata ON users.id = vdata.owner
+                        INNER JOIN fdata ON fdata.vref = vdata.wref
+                        WHERE fdata.f99t = 40 ORDER BY fdata.f99 Desc Limit 13");
 
 ?>
     <h4 class="round"><?php echo B40; ?></h4>

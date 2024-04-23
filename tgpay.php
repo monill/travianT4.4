@@ -139,7 +139,7 @@ $Prices = array(
 
                                         $id = $session->username;
 
-                                        $rest = mysql_query("SELECT * FROM " . TB_PREFIX . "users where `username`='$id' ");
+                                        $rest = mysql_query("SELECT * FROM users where `username`='$id' ");
                                         $row = mysql_fetch_assoc($rest);
                                         $Paymenter = $row['username'];
                                         $Email = $row['email'];
@@ -230,8 +230,8 @@ $Prices = array(
                                                         if (strtolower($Status) == 'success') // Your Peyment Code Only This Event
                                                         {
                                                             $gold = $Prices[$package][1];
-                                                            $query = mysql_query("UPDATE " . TB_PREFIX . "users SET gold = gold + '" . $gold . "' WHERE username = '" . $id . "'");
-                                                            $query2 = mysql_query("UPDATE " . TB_PREFIX . "users SET boughtgold = boughtgold + '" . $gold . "' WHERE username = '" . $id . "'");
+                                                            $query = mysql_query("UPDATE users SET gold = gold + '" . $gold . "' WHERE username = '" . $id . "'");
+                                                            $query2 = mysql_query("UPDATE users SET boughtgold = boughtgold + '" . $gold . "' WHERE username = '" . $id . "'");
 
                                                             echo '<div style="color:green; font-family:tahoma; direction:rtl; text-align:center">Dear User, Payment successfully completed. Your purchase details are as follows: <br><br>
                             purchased package:' . $Prices[$package][0] . '<br><br>
@@ -244,7 +244,7 @@ $Prices = array(
                                                             $sendsms = "Dear user, buy" . $Prices[$package][0] . "Successfully reached number" . $Refnumber . "Done and Number" . $gold . "Coin added to your account.";
                                                             $uid = $row['id'];
 
-                                                            mysql_query("INSERT INTO `" . TB_PREFIX . "mdata` (`target`, `owner`, `topic`, `message`, `viewed`, `archived`, `send`, `time`  ) VALUES( $uid  , 0       , '$subject', '$sendsms', 0   , 0 , 0,  now())");
+                                                            mysql_query("INSERT INTO `mdata` (`target`, `owner`, `topic`, `message`, `viewed`, `archived`, `send`, `time`  ) VALUES( $uid  , 0       , '$subject', '$sendsms', 0   , 0 , 0,  now())");
                                                         } else {
                                                             echo '<br /><br /><br /><br /><br /><div style="color:green; font-family:tahoma; direction:rtl; text-align:center">
 	        			Error processing payment operations, payment result: ';
@@ -272,7 +272,7 @@ $Prices = array(
 
                                     $id = $session->username;
 
-                                    $rest = mysql_query("SELECT * FROM " . TB_PREFIX . "users where `username`='$id' ");
+                                    $rest = mysql_query("SELECT * FROM users where `username`='$id' ");
                                     $row = mysql_fetch_assoc($rest);
                                     $Paymenter = $row['username'];
                                     $Email = $row['email'];
@@ -310,8 +310,8 @@ $Prices = array(
                                             {
 
                                                 $gold = $Prices[$package][1];
-                                                $query = mysql_query("UPDATE " . TB_PREFIX . "users SET gold = gold + '" . $gold . "' WHERE username = '" . $id . "'");
-                                                $query2 = mysql_query("UPDATE " . TB_PREFIX . "users SET boughtgold = boughtgold + '" . $gold . "' WHERE username = '" . $id . "'");
+                                                $query = mysql_query("UPDATE users SET gold = gold + '" . $gold . "' WHERE username = '" . $id . "'");
+                                                $query2 = mysql_query("UPDATE users SET boughtgold = boughtgold + '" . $gold . "' WHERE username = '" . $id . "'");
                                                 echo '<div style="color:green; font-family:tahoma; direction:rtl; text-align:center">
                             Dear User, Payment successfully completed. The details of your purchase are as follows: <br> <br>
                              package purchased: ' . $Prices[$package][0] . '<br> <br>
@@ -324,7 +324,7 @@ $Prices = array(
                                                 $sendsms = "Dear user, buy" . $Prices[$package][0] . "Successfully reached number" . $trans_id . "Done and Number" . $gold . "Coin added to your account.";
                                                 $uid = $row['id'];
 
-                                                mysql_query("INSERT INTO `" . TB_PREFIX . "mdata` (`target`, `owner`, `topic`, `message`, `viewed`, `archived`, `send`, `time`  ) VALUES( $uid  , 0       , '$subject', '$sendsms', 0   , 0 , 0,  now())");
+                                                mysql_query("INSERT INTO `mdata` (`target`, `owner`, `topic`, `message`, `viewed`, `archived`, `send`, `time`  ) VALUES( $uid  , 0       , '$subject', '$sendsms', 0   , 0 , 0,  now())");
                                             } else {
                                                 echo '<br /><br /><br /><br /><br /><div style="color:green; font-family:tahoma; direction:rtl; text-align:center">
 	        			Error processing payment operations, payment result: ';

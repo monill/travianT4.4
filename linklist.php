@@ -9,7 +9,7 @@ if ($session->plus) {
     }
     if (isset($_GET['newdid'])) {
         $_GET['newdid'] = filter_var($_GET['newdid'], FILTER_SANITIZE_NUMBER_INT);
-        $t = mysql_query("SELECT `owner` FROM " . TB_PREFIX . "vdata WHERE wref = " . $_GET['newdid']);
+        $t = mysql_query("SELECT `owner` FROM vdata WHERE wref = " . $_GET['newdid']);
         $row = mysql_fetch_assoc($t);
         if ($row['owner'] == $session->uid) {
             $_SESSION['wid'] = $_GET['newdid'];
@@ -97,7 +97,7 @@ if ($session->plus) {
 
                                         settype($link['nr'], 'int');
                                         $userid = $session->uid;
-                                        $query2 = mysql_query('SELECT * FROM `' . TB_PREFIX . 'links` WHERE `userid` = ' . $session->uid . ' ORDER BY `pos` ASC') or die(mysql_error());
+                                        $query2 = mysql_query('SELECT * FROM `links` WHERE `userid` = ' . $session->uid . ' ORDER BY `pos` ASC') or die(mysql_error());
 
                                         // $row
                                         $max = mysql_num_rows($query2);
@@ -105,17 +105,17 @@ if ($session->plus) {
                                         $i = 0;
                                         while ($row = mysql_fetch_assoc($query2)) {
                                             if ($value['linkname'][$i] == '' || $value['linkziel'][$i] == '') {
-                                                mysql_query('DELETE FROM `' . TB_PREFIX . 'links` WHERE `id` = ' . $row['id']);
+                                                mysql_query('DELETE FROM `links` WHERE `id` = ' . $row['id']);
                                             } else
                                             if ($row['name'] != $value['linkname'][$i] || $row['url'] != $value['linkziel'][$i]) {
-                                                mysql_query('UPDATE `' . TB_PREFIX . 'links` SET `name` = \'' . $value['linkname'][$i] . '\', `url` = \'' . $value['linkziel'][$i] . '\', `pos` = ' . $i . ' WHERE `id` = ' . $row['id']);
+                                                mysql_query('UPDATE `links` SET `name` = \'' . $value['linkname'][$i] . '\', `url` = \'' . $value['linkziel'][$i] . '\', `pos` = ' . $i . ' WHERE `id` = ' . $row['id']);
                                             }
                                             $i++;
                                         }
                                         $counter = 0;
                                         foreach ($value['linkname'][$i] as $newname) {
                                             if ($value['linkziel'][$i][$counter] != '') {
-                                                $query = mysql_query('INSERT INTO `' . TB_PREFIX . 'links` (`userid`, `name`, `url`, `pos`) VALUES (' . $userid . ', \'' . $newname . '\', \'' . $value['linkziel'][$i][$counter] . '\', ' . $max . ')') or die(mysql_error());
+                                                $query = mysql_query('INSERT INTO `links` (`userid`, `name`, `url`, `pos`) VALUES (' . $userid . ', \'' . $newname . '\', \'' . $value['linkziel'][$i][$counter] . '\', ' . $max . ')') or die(mysql_error());
                                             }
                                             $counter++;
                                         }
@@ -123,7 +123,7 @@ if ($session->plus) {
                                 }
 
                                 // Fetch all links
-                                $query = mysql_query('SELECT * FROM `' . TB_PREFIX . 'links` WHERE `userid` = ' . $session->uid . ' ORDER BY `pos` ASC') or die(mysql_error());
+                                $query = mysql_query('SELECT * FROM `links` WHERE `userid` = ' . $session->uid . ' ORDER BY `pos` ASC') or die(mysql_error());
                                 $links = array();
                                 while ($data = mysql_fetch_assoc($query)) {
                                     $links[] = $data;
@@ -147,20 +147,20 @@ if ($session->plus) {
                                                 foreach ($links as $link) {
 
                                             ?>
-                                                <tr>
-                                                    <td class="nr">
-                                                        <input class="text" type="text" name="nr<?php print $link['pos']; ?>" value="<?php print $link['pos']; ?>" size="1" maxlength="3" />
-                                                    </td>
-                                                    <td class="nam">
-                                                        <input class="text" type="text" name="linkname<?php print $link['name']; ?>" value="<?php print $link['name']; ?>" maxlength="30" />
-                                                    </td>
-                                                    <td class="link">
-                                                        <input class="text" type="text" name="linkziel<?php print $link['url']; ?>" value="<?php print $link['url']; ?>" maxlength="255" />
-                                                    </td>
-                                                    <td class="remove">
-                                                        <button type="button" class="removeLine removeElement" onclick="this.up('tr').hide().down('.link input').value = '';" title="delete"></button>
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td class="nr">
+                                                            <input class="text" type="text" name="nr<?php print $link['pos']; ?>" value="<?php print $link['pos']; ?>" size="1" maxlength="3" />
+                                                        </td>
+                                                        <td class="nam">
+                                                            <input class="text" type="text" name="linkname<?php print $link['name']; ?>" value="<?php print $link['name']; ?>" maxlength="30" />
+                                                        </td>
+                                                        <td class="link">
+                                                            <input class="text" type="text" name="linkziel<?php print $link['url']; ?>" value="<?php print $link['url']; ?>" maxlength="255" />
+                                                        </td>
+                                                        <td class="remove">
+                                                            <button type="button" class="removeLine removeElement" onclick="this.up('tr').hide().down('.link input').value = '';" title="delete"></button>
+                                                        </td>
+                                                    </tr>
                                             <?php
                                                     $number++;
                                                 }

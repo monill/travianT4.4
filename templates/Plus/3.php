@@ -1,25 +1,25 @@
 <?php
 
 // $winner = $database->hasWinner();if($winner){header("Location: winner.php");}
-$MyGold = mysql_query("SELECT * FROM " . TB_PREFIX . "users WHERE `username`='" . $session->username . "'") or die(mysql_error());
+$MyGold = mysql_query("SELECT * FROM users WHERE `username`='" . $session->username . "'") or die(mysql_error());
 $golds = mysql_fetch_array($MyGold);
 
 if ($golds['b1'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b1 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b1 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 
 if ($golds['b2'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b2 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b2 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 if ($golds['b3'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b3 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b3 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 
 if ($golds['b4'] <= time()) {
-    mysql_query("UPDATE " . TB_PREFIX . "users set b4 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+    mysql_query("UPDATE users set b4 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
 }
 
-$MyGold = mysql_query("SELECT * FROM " . TB_PREFIX . "users WHERE `username`='" . $session->username . "'") or die(mysql_error());
+$MyGold = mysql_query("SELECT * FROM users WHERE `username`='" . $session->username . "'") or die(mysql_error());
 $golds = mysql_fetch_array($MyGold);
 
 $today = date("mdHi");
@@ -95,25 +95,25 @@ if (mysql_num_rows($MyGold)) {
         <tr>
             <td class="desc">
                 <img src="/assets/images/icon/def.gif">&nbsp;+<b>25</b>%<b> Defensive power<b><br>
-                <?php
-                $tl_b4 = $golds['def'];
-                if ($tl_b4 < $date2) {
-                    print " ";
-                } else {
-                    $holdtotmin4 = (($tl_b4 - $date2) / 60);
-                    $holdtothr4 = (($tl_b4 - $date2) / 3600);
-                    $holdtotday4 = round(($tl_b4 - $date2) / 86400, 1);
-                    $holdhr4 = intval($holdtothr4 - ($holdtotday4 * 24));
-                    $holdmr4 = intval($holdtotmin4 - (($holdhr4 * 60) + ($holdtotday4 * 1440)));
-                }
+                        <?php
+                        $tl_b4 = $golds['def'];
+                        if ($tl_b4 < $date2) {
+                            print " ";
+                        } else {
+                            $holdtotmin4 = (($tl_b4 - $date2) / 60);
+                            $holdtothr4 = (($tl_b4 - $date2) / 3600);
+                            $holdtotday4 = round(($tl_b4 - $date2) / 86400, 1);
+                            $holdhr4 = intval($holdtothr4 - ($holdtotday4 * 24));
+                            $holdmr4 = intval($holdtotmin4 - (($holdhr4 * 60) + ($holdtotday4 * 1440)));
+                        }
 
-                if ($tl_b4 < $date2) {
-                    print " ";
-                } else {
+                        if ($tl_b4 < $date2) {
+                            print " ";
+                        } else {
 
-                    echo " <b>" . $holdtotday4 . "</b> Until Day " . date('H:i', $golds['def']) . "";
-                }
-                ?>
+                            echo " <b>" . $holdtotday4 . "</b> Until Day " . date('H:i', $golds['def']) . "";
+                        }
+                        ?>
 
             </td>
             <td class="dur"><?php if ($plusConfig['def']['duration'] >= 86400) {

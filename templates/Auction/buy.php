@@ -144,7 +144,7 @@
     </div>
 
     <?php
-    $prefix = "" . TB_PREFIX . "auction";
+    $prefix = "auction";
     if (isset($_GET['filter'])) {
         $mmm = "AND btype=" . $_GET['filter'];
     } else {

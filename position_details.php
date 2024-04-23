@@ -8,7 +8,7 @@ $start = $generator->pageLoadTimeStart();
 if (isset($_GET['newdid'])) {
     $_GET['newdid'] = filter_var($_GET['newdid'], FILTER_SANITIZE_NUMBER_INT);
     $_GET['newdid'] = filter_var($_GET['newdid'], FILTER_SANITIZE_MAGIC_QUOTES);
-    $t = mysql_query("SELECT `owner` FROM " . TB_PREFIX . "vdata WHERE wref = '" . $_GET['newdid'] . "'");
+    $t = mysql_query("SELECT `owner` FROM vdata WHERE wref = '" . $_GET['newdid'] . "'");
     $row = mysql_fetch_assoc($t);
     if ($row['owner'] == $session->uid) {
         $_SESSION['wid'] = $_GET['newdid'];
@@ -160,9 +160,9 @@ if ($pageref == 'karte.php') {
                                                         "<span class=\"a arrow disabled\">" . AT_RAID . ' ' . $otext . ' ' . AT_BUILDRALLYPOINTTORAID . "</span>" :
                                                         "<a class=\"a arrow\" href=\"a2b.php?z=" . $d . "&o\">" . AT_RAID . ' ' . $otext . "</a>" : "$test";
                                                 } else if ($basearray['occupied'] == 1 && $basearray['oasistype'] == 0 && $basearray['wref'] != $_SESSION['wid']) {
-                                                    $query1 = mysql_query('SELECT * FROM `' . TB_PREFIX . 'vdata` WHERE `wref` = ' . $d . '');
+                                                    $query1 = mysql_query('SELECT * FROM `vdata` WHERE `wref` = ' . $d . '');
                                                     $data1 = mysql_fetch_assoc($query1);
-                                                    $query2 = mysql_query('SELECT * FROM `' . TB_PREFIX . 'users` WHERE `id` = ' . $data1['owner'] . '');
+                                                    $query2 = mysql_query('SELECT * FROM `users` WHERE `id` = ' . $data1['owner'] . '');
                                                     $data2 = mysql_fetch_assoc($query2);
 
                                                     if ($database->checkBan($data2['id'])) {
@@ -449,20 +449,20 @@ if ($pageref == 'karte.php') {
                                                         <th><?php echo TRIBE; ?></th>
                                                         <td>
                                                             <?php
-                                                                switch ($uinfo['tribe']) {
-                                                                    case 1:
-                                                                        echo TRIBE1;
-                                                                        break;
-                                                                    case 2:
-                                                                        echo TRIBE2;
-                                                                        break;
-                                                                    case 3:
-                                                                        echo TRIBE3;
-                                                                        break;
-                                                                    case 5:
-                                                                        echo TRIBE5;
-                                                                        break;
-                                                                }
+                                                            switch ($uinfo['tribe']) {
+                                                                case 1:
+                                                                    echo TRIBE1;
+                                                                    break;
+                                                                case 2:
+                                                                    echo TRIBE2;
+                                                                    break;
+                                                                case 3:
+                                                                    echo TRIBE3;
+                                                                    break;
+                                                                case 5:
+                                                                    echo TRIBE5;
+                                                                    break;
+                                                            }
                                                             ?>
                                                         </td>
                                                     </tr>
@@ -504,7 +504,7 @@ if ($pageref == 'karte.php') {
                                                     $limit = "ntype!=8 and ntype!=9 and ntype!=10 and ntype!=11 and ntype!=12 and ntype!=13 and ntype!=14";
                                                 }
 
-                                                $result = mysql_query("SELECT `data`,`ntype`,`time`,`id` FROM " . TB_PREFIX . "ndata WHERE $limit AND uid = " . $session->uid . " AND toWref = " . $d . " ORDER BY time DESC Limit 5");
+                                                $result = mysql_query("SELECT `data`,`ntype`,`time`,`id` FROM ndata WHERE $limit AND uid = " . $session->uid . " AND toWref = " . $d . " ORDER BY time DESC Limit 5");
 
                                                 while ($row = mysql_fetch_array($result)) {
                                                     $dataarray = explode(",", $row['data']);

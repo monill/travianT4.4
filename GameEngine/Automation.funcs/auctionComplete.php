@@ -8,7 +8,7 @@ function auctionComplete()
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
     $time = time();
-    $q = "SELECT `owner`,`uid`,`silver`,`btype`,`type`,`maxsilver`,`silver`,`num`,`id` FROM " . TB_PREFIX . "auction where finish = 0 and time <= $time LIMIT 100";
+    $q = "SELECT `owner`,`uid`,`silver`,`btype`,`type`,`maxsilver`,`silver`,`num`,`id` FROM auction where finish = 0 and time <= $time LIMIT 100";
     $dataarray = $database->query_return($q);
     foreach ($dataarray as $data) {
         $ownerID = $data['owner'];
@@ -27,15 +27,13 @@ function auctionComplete()
                 $database->addHeroItem($biderID, $data['btype'], $data['type'], $data['num']);
             }
             $database->setSilver($biderID, $silverdiff, 1);
-            $q = 'UPDATE ' . TB_PREFIX . 'users SET bidsilver=bidsilver-' . $silverdiff . ' WHERE id=' . $biderID;
+            $q = 'UPDATE users SET bidsilver=bidsilver-' . $silverdiff . ' WHERE id=' . $biderID;
             mysql_query($q);
         }
         $database->setSilver($ownerID, $silver, 1);
-        $q = 'UPDATE ' . TB_PREFIX . 'users SET ausilver=ausilver+' . $silver . ' WHERE id=' . $ownerID;
+        $q = 'UPDATE users SET ausilver=ausilver+' . $silver . ' WHERE id=' . $ownerID;
         mysql_query($q);
-        $q = "UPDATE " . TB_PREFIX . "auction set finish=1 where id = " . $data['id'];
+        $q = "UPDATE auction set finish=1 where id = " . $data['id'];
         $database->query($q);
     }
 }
-
-?>

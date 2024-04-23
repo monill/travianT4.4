@@ -27,7 +27,7 @@ if ($session->access != BANNED) {
         <h4 class="round"><?php echo AL_EDITANSWER; ?></h4>
         <table class="transparent" id="new_post">
             <?php
-            $q = "SELECT * FROM " . TB_PREFIX . "forum_poll where id = " . $_GET['idt'] . "";
+            $q = "SELECT * FROM forum_poll where id = " . $_GET['idt'] . "";
             if (mysql_query($q)) {
                 $q = mysql_query($q);
                 $q = mysql_fetch_assoc($q);

@@ -10,7 +10,7 @@ function updateResource()
     global $database;
     //Villages
     $time = $_SERVER['REQUEST_TIME'];
-    $q = 'SELECT `wref` FROM ' . TB_PREFIX . 'vdata WHERE (woodp=0 AND clayp=0 AND ironp=0 AND cropp=0) OR ' .
+    $q = 'SELECT `wref` FROM vdata WHERE (woodp=0 AND clayp=0 AND ironp=0 AND cropp=0) OR ' .
         '(woodp<>0 AND (3600/woodp)<=(' . $time . '-lastupdate)) OR ' .
         '(clayp<>0 AND (3600/clayp)<=(' . $time . '-lastupdate)) OR ' .
         '(ironp<>0 AND (3600/ironp)<=(' . $time . '-lastupdate)) OR ' .
@@ -38,7 +38,7 @@ function updateOResource($wref)
 {
     global $database;
     $woodp = $clayp = $ironp = $cropp = 1;
-    $q = 'SELECT * FROM ' . TB_PREFIX . 'odata WHERE wref=' . $wref;
+    $q = 'SELECT * FROM odata WHERE wref=' . $wref;
     $queryResult = mysql_query($q);
     $row = mysql_fetch_assoc($queryResult);
 
@@ -104,11 +104,11 @@ function updateOResource($wref)
 
 function updateVResource($wref)
 {
-    global $database, $technology, $bid1, $bid2, $bid3, $bid4, $bid5, $bid6, $bid7, $bid8, $bid9//, $session
-           ;
+    global $database, $technology, $bid1, $bid2, $bid3, $bid4, $bid5, $bid6, $bid7, $bid8, $bid9 //, $session
+    ;
     $woodp = $sawmill = $clayp = $brick = $ironp = $ifound = $cropp = $grain = $bake = 0;
     $ocrop = $oclay = $owood = $oiron = 0;
-    $q = 'SELECT * FROM ' . TB_PREFIX . 'vdata,' . TB_PREFIX . 'fdata WHERE ' . TB_PREFIX . 'vdata.wref=' . $wref . ' AND ' . TB_PREFIX . 'vdata.wref=' . TB_PREFIX . 'fdata.vref LIMIT 50';
+    $q = 'SELECT * FROM vdata,fdata WHERE vdata.wref=' . $wref . ' AND vdata.wref=fdata.vref LIMIT 50';
     $queryResult = mysql_query($q);
     $row = mysql_fetch_assoc($queryResult);
 
@@ -199,7 +199,7 @@ function updateVResource($wref)
     }
 
     $exwoodp = $exclayp = $exironp = $excropp = $owoodp = $oclayp = $oironp = $ocropp = $bwoodp = $bclayp =
-    $bironp = $bcropp = $hwoodp = $hclayp = $hironp = $hcropp = $hproduct = 0;
+        $bironp = $bcropp = $hwoodp = $hclayp = $hironp = $hcropp = $hproduct = 0;
 
     if ($sawmill > 0) $exwoodp += $woodp / 100 * $bid5[$sawmill]['attri'];
     if ($owood > 0) $owoodp += $woodp * $owood * 0.25;
@@ -493,11 +493,11 @@ function fixResource($wref)
 {
     global $bid10, $bid11, $bid38, $bid39;
 
-    $q = 'SELECT `maxstore`,`maxcrop`,`wood`,`clay`,`iron`,`crop`,`extra_maxstore`,`extra_maxcrop` FROM ' . TB_PREFIX . 'vdata WHERE ' . TB_PREFIX . 'vdata.wref=' . $wref . ' LIMIT 50';
+    $q = 'SELECT `maxstore`,`maxcrop`,`wood`,`clay`,`iron`,`crop`,`extra_maxstore`,`extra_maxcrop` FROM vdata WHERE vdata.wref=' . $wref . ' LIMIT 50';
     $queryResult = mysql_query($q);
     if ($queryResult) {
         $row = mysql_fetch_assoc($queryResult);
-        $fq = 'SELECT * FROM ' . TB_PREFIX . 'fdata WHERE vref=' . $wref . ' LIMIT 50';
+        $fq = 'SELECT * FROM fdata WHERE vref=' . $wref . ' LIMIT 50';
         $fqueryResult = mysql_query($fq);
         if ($fqueryResult) {
             $frow = mysql_fetch_assoc($fqueryResult);
@@ -516,14 +516,14 @@ function fixResource($wref)
                 $maxstore += $row['extra_maxstore'];
                 $maxcrop += $row['extra_maxcrop'];
                 if ($maxstore != $row['maxstore']) {
-                    $q = 'UPDATE ' . TB_PREFIX . 'vdata SET `maxstore`=' . $maxstore . ' WHERE `wref`=' . $wref;
+                    $q = 'UPDATE vdata SET `maxstore`=' . $maxstore . ' WHERE `wref`=' . $wref;
                     mysql_query($q);
                 }
                 if (STORAGE_BASE > $maxcrop) {
                     $maxcrop = STORAGE_BASE;
                 }
                 if ($maxcrop != $row['maxcrop']) {
-                    $q = 'UPDATE ' . TB_PREFIX . 'vdata SET `maxcrop`=' . $maxcrop . ' WHERE `wref`=' . $wref;
+                    $q = 'UPDATE vdata SET `maxcrop`=' . $maxcrop . ' WHERE `wref`=' . $wref;
                     mysql_query($q);
                 }
             }
@@ -552,7 +552,7 @@ function fixResource($wref)
 
         if ($q != '') {
             $q = substr($q, 0, strlen($q) - 2);
-            $q = 'UPDATE ' . TB_PREFIX . 'vdata SET ' . $q . ' WHERE `wref`=' . $wref;
+            $q = 'UPDATE vdata SET ' . $q . ' WHERE `wref`=' . $wref;
             mysql_query($q);
         }
     }
@@ -560,7 +560,7 @@ function fixResource($wref)
 
 function fixOResource($wref)
 {
-    $q = 'SELECT `maxstore`,`maxcrop`,`wood`,`clay`,`iron`,`crop` FROM ' . TB_PREFIX . 'odata WHERE ' . TB_PREFIX . 'odata.wref=' . $wref . ' LIMIT 50';
+    $q = 'SELECT `maxstore`,`maxcrop`,`wood`,`clay`,`iron`,`crop` FROM odata WHERE odata.wref=' . $wref . ' LIMIT 50';
     $queryResult = mysql_query($q);
     $row = mysql_fetch_assoc($queryResult);
 
@@ -574,11 +574,11 @@ function fixOResource($wref)
 
     if ($q != '') {
         $q = substr($q, 0, strlen($q) - 2);
-        $q = 'UPDATE ' . TB_PREFIX . 'odata SET ' . $q . ' WHERE `wref`=' . $wref;
+        $q = 'UPDATE odata SET ' . $q . ' WHERE `wref`=' . $wref;
         mysql_query($q);
     }
 
-    $q = 'SELECT `maxstore`,`maxcrop`,`wood`,`clay`,`iron`,`crop` FROM ' . TB_PREFIX . 'odata WHERE ' . TB_PREFIX . 'odata.wref=' . $wref . ' LIMIT 50';
+    $q = 'SELECT `maxstore`,`maxcrop`,`wood`,`clay`,`iron`,`crop` FROM odata WHERE odata.wref=' . $wref . ' LIMIT 50';
     $queryResult = mysql_query($q);
     $row = mysql_fetch_assoc($queryResult);
     $q = '';
@@ -605,9 +605,7 @@ function fixOResource($wref)
 
     if ($q != '') {
         $q = substr($q, 0, strlen($q) - 2);
-        $q = 'UPDATE ' . TB_PREFIX . 'odata SET ' . $q . ' WHERE `wref`=' . $wref;
+        $q = 'UPDATE odata SET ' . $q . ' WHERE `wref`=' . $wref;
         mysql_query($q);
     }
 }
-
-?>

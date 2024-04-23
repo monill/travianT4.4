@@ -1,6 +1,6 @@
 <?php
 
-$query = mysql_query("SELECT id FROM " . TB_PREFIX . "users WHERE username = 'Farm' LIMIT 1");
+$query = mysql_query("SELECT id FROM users WHERE username = 'Farm' LIMIT 1");
 $result = mysql_fetch_assoc($query);
 
 if (!$result) {
@@ -30,7 +30,7 @@ if (!$result) {
     $database->setreg2($uid);
 
     for ($count = 1; $count <= 18; $count++) {
-        mysql_query("UPDATE " . TB_PREFIX . "fdata SET f" . $id . " =20 WHERE vref = " . $wid . "");
+        mysql_query("UPDATE fdata SET f" . $id . " =20 WHERE vref = " . $wid . "");
     }
     for ($i = 1; $i <= 1; $i++) {
         $wid = $wid + 1;
@@ -47,7 +47,7 @@ function addVillage($wid, $uid, $name, $capital, $i)
     $crop = 780 * (SPEED / 10);
     $maxstore = 800 * (SPEED / 10);
     $maxcrop = 800 * (SPEED / 10);
-    $q = "INSERT IGNORE into " . TB_PREFIX . "vdata (wref, owner, name, capital, pop, cp, celebration, wood, clay, iron, maxstore, crop, maxcrop, lastupdate, created) values
+    $q = "INSERT IGNORE into vdata (wref, owner, name, capital, pop, cp, celebration, wood, clay, iron, maxstore, crop, maxcrop, lastupdate, created) values
         ('$wid', '$uid', '$vname', '$capital', " . rand(2, 10) . ", 1, 0, '$wood', '$clay', '$iron', '$maxstore', '$crop', '$maxcrop', '$time', '$time')";
     return mysql_query($q) or die(mysql_error());
 }
@@ -57,7 +57,7 @@ if ($_POST['no'] > 0) {
     $no = $_POST['no'];
     $lvl = $_POST['lvl'];
     $no2 = $no + 10;
-    $sql = "SELECT * FROM " . TB_PREFIX . "odata WHERE conqured = 0 ORDER BY rand() DESC LIMIT " . $no;
+    $sql = "SELECT * FROM odata WHERE conqured = 0 ORDER BY rand() DESC LIMIT " . $no;
     $result = mysql_query($sql) or die(mysql_error());
     $row = array();
     while ($row2 = mysql_fetch_array($result)) {
@@ -82,7 +82,7 @@ if ($_POST['no'] > 0) {
 
             $wid = $o['wref'];
             $status = 0;
-            $query = mysql_query("SELECT id FROM " . TB_PREFIX . "users WHERE username = 'Farm' LIMIT 1");
+            $query = mysql_query("SELECT id FROM users WHERE username = 'Farm' LIMIT 1");
             $result = mysql_fetch_assoc($query);
             $uid = $result['id'];
 
@@ -93,26 +93,26 @@ if ($_POST['no'] > 0) {
                 //$database->addUnits($wid);
                 $database->addTech($wid);
                 $database->addABTech($wid);
-                //mysql_query("INSERT INTO " . TB_PREFIX . "fdata(vref) VALUES('".$wid."')"); // this is the fix :|
+                //mysql_query("INSERT INTO fdata(vref) VALUES('".$wid."')"); // this is the fix :|
                 for ($count = 1; $count <= 18; $count++) {
-                    mysql_query("UPDATE " . TB_PREFIX . "fdata SET f" . $count . " =20 WHERE vref = " . $wid . "");
+                    mysql_query("UPDATE fdata SET f" . $count . " =20 WHERE vref = " . $wid . "");
                 }
-                //mysql_query("UPDATE " . TB_PREFIX . "units SET u41 = " . (rand(3000, 6000) * SPEED) . ", u42 = " . (rand(4500, 6000) * SPEED) . ", u43 = 10000, u44 = " . (rand(635, 1575) * SPEED) . ", u45 = " . (rand(3600, 5700) * SPEED) . ", u46 = " . (rand(4500, 6000) * SPEED) . ", u47 = " . (rand(1500, 2700) * SPEED) . ", u48 = " . (rand(300, 900) * SPEED) . " , u49 = 0, u50 = 9 WHERE vref = " . $wid . "");
-                //mysql_query("UPDATE " . TB_PREFIX . "fdata SET f22t = 27, f22 = 10, f28t = 25, f28 = 10, f19t = 23, f19 = 10, f99t = 40, f26 = 0, f26t = 0, f21 = 1, f21t = 15, f39 = 1, f39t = 16 WHERE vref = " . $wid . "");
-                mysql_query("UPDATE " . TB_PREFIX . "vdata SET pop = '" . $pop . "' WHERE wref = '$wid'");
-                mysql_query("UPDATE " . TB_PREFIX . "vdata SET name = 'Farm Village' WHERE wref = '$wid'");
-                mysql_query("UPDATE " . TB_PREFIX . "vdata SET capital = 1 WHERE wref = '$wid'");
-                //mysql_query("UPDATE " . TB_PREFIX . "vdata SET natar = 0 WHERE wref = '$wid'");
-                //mysql_query("UPDATE " . TB_PREFIX . "units SET u31 = 0, u32 = 0, u33 = 0, u34 = 0, u35 = 0, u36 = 0, u37 = 0, u38 = 0, u39 = 0, u40 = 0, u41 = 0, u42 = 0, u43 = 0, u44 = 0, u45 = 0, u46 = 0, u47 = 0, u48 = 0, u49 = 0, u50 = 0 WHERE vref = " . $wid . "");
-                //mysql_query("INSERT INTO " . TB_PREFIX . "fdata(vref) VALUES('".$wid."')"); // this is the fix :|
-                //mysql_query("UPDATE " . TB_PREFIX . "fdata SET f21 = 1, f21t = 15 WHERE vref = " . $wid . "");
+                //mysql_query("UPDATE units SET u41 = " . (rand(3000, 6000) * SPEED) . ", u42 = " . (rand(4500, 6000) * SPEED) . ", u43 = 10000, u44 = " . (rand(635, 1575) * SPEED) . ", u45 = " . (rand(3600, 5700) * SPEED) . ", u46 = " . (rand(4500, 6000) * SPEED) . ", u47 = " . (rand(1500, 2700) * SPEED) . ", u48 = " . (rand(300, 900) * SPEED) . " , u49 = 0, u50 = 9 WHERE vref = " . $wid . "");
+                //mysql_query("UPDATE fdata SET f22t = 27, f22 = 10, f28t = 25, f28 = 10, f19t = 23, f19 = 10, f99t = 40, f26 = 0, f26t = 0, f21 = 1, f21t = 15, f39 = 1, f39t = 16 WHERE vref = " . $wid . "");
+                mysql_query("UPDATE vdata SET pop = '" . $pop . "' WHERE wref = '$wid'");
+                mysql_query("UPDATE vdata SET name = 'Farm Village' WHERE wref = '$wid'");
+                mysql_query("UPDATE vdata SET capital = 1 WHERE wref = '$wid'");
+                //mysql_query("UPDATE vdata SET natar = 0 WHERE wref = '$wid'");
+                //mysql_query("UPDATE units SET u31 = 0, u32 = 0, u33 = 0, u34 = 0, u35 = 0, u36 = 0, u37 = 0, u38 = 0, u39 = 0, u40 = 0, u41 = 0, u42 = 0, u43 = 0, u44 = 0, u45 = 0, u46 = 0, u47 = 0, u48 = 0, u49 = 0, u50 = 0 WHERE vref = " . $wid . "");
+                //mysql_query("INSERT INTO fdata(vref) VALUES('".$wid."')"); // this is the fix :|
+                //mysql_query("UPDATE fdata SET f21 = 1, f21t = 15 WHERE vref = " . $wid . "");
             }
 
             $lvl = 1; // should be removed later?
-            mysql_query("UPDATE " . TB_PREFIX . "wdata SET fieldtype = '" . $lvl . "' WHERE id = " . $o['wref']);
-            mysql_query("UPDATE " . TB_PREFIX . "wdata SET oasistype = '0' WHERE id = " . $o['wref']);
-            mysql_query("UPDATE " . TB_PREFIX . "wdata SET image = 't0' WHERE id = " . $o['wref']);
-            mysql_query("UPDATE " . TB_PREFIX . "wdata SET occupied = '1' WHERE id = " . $o['wref']);
+            mysql_query("UPDATE wdata SET fieldtype = '" . $lvl . "' WHERE id = " . $o['wref']);
+            mysql_query("UPDATE wdata SET oasistype = '0' WHERE id = " . $o['wref']);
+            mysql_query("UPDATE wdata SET image = 't0' WHERE id = " . $o['wref']);
+            mysql_query("UPDATE wdata SET occupied = '1' WHERE id = " . $o['wref']);
 
             if ($_POST['prod'] > 800) {
                 $prod = $_POST['prod'];
@@ -124,17 +124,17 @@ if ($_POST['no'] > 0) {
             } else {
                 $maxs = 800;
             };
-            mysql_query("UPDATE " . TB_PREFIX . "vdata SET woodp = $prod , clayp = $prod , ironp = $prod , cropp = $prod WHERE wref = " . $wid);
-            mysql_query("UPDATE " . TB_PREFIX . "vdata SET wood = $prod , clay = $prod , iron = $prod , crop = $prod WHERE wref = " . $wid);
-            mysql_query("UPDATE " . TB_PREFIX . "vdata SET maxstore = $maxs , maxcrop = $maxs WHERE wref = " . $wid);
-            mysql_query("DELETE FROM " . TB_PREFIX . "odata WHERE wref = " . $oasis['wref']);
+            mysql_query("UPDATE vdata SET woodp = $prod , clayp = $prod , ironp = $prod , cropp = $prod WHERE wref = " . $wid);
+            mysql_query("UPDATE vdata SET wood = $prod , clay = $prod , iron = $prod , crop = $prod WHERE wref = " . $wid);
+            mysql_query("UPDATE vdata SET maxstore = $maxs , maxcrop = $maxs WHERE wref = " . $wid);
+            mysql_query("DELETE FROM odata WHERE wref = " . $oasis['wref']);
             ///////////////////////
             $row[$rndo] = (string)"";
             array_push($villages, $wid);
         }
         echo "تعداد <b>" . $_POST['no'] . "</b> Village with Product Level <b>" . $_POST['lvl'] . "</b> and population <b>" . $pop . "</b> Added to map. <br> Villages:";
         foreach ($villages as $wid) {
-            $result = mysql_query("SELECT * FROM " . TB_PREFIX . "wdata WHERE id = " . $wid);
+            $result = mysql_query("SELECT * FROM wdata WHERE id = " . $wid);
             $row = mysql_fetch_array($result);
             echo '<a href="karte.php?x=' . $row['x'] . '&y=' . $row['y'] . '">' . $wid . '</a>, ';
         }

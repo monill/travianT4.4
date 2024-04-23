@@ -50,7 +50,7 @@ if ($session->access != BANNED) {
     <table cellpadding="1" cellspacing="1" id="posts">
         <thead>
             <?php
-            $q = "SELECT * FROM " . TB_PREFIX . "forum_poll where id = " . $_GET['tid'] . "";
+            $q = "SELECT * FROM forum_poll where id = " . $_GET['tid'] . "";
             if (mysql_query($q)) {
                 $q = mysql_query($q);
                 $q = mysql_fetch_assoc($q);

@@ -199,7 +199,7 @@ class Technology
         global $village, $$unit;
         $unitarray = $$unit;
         $res = array();
-        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM " . TB_PREFIX . "vdata WHERE wref = " . $village->wid)) or die(mysql_error());
+        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM vdata WHERE wref = " . $village->wid)) or die(mysql_error());
         if ($res['wood'] > $res['maxstore']) {
             $res['wood'] = $res['maxstore'];
         }
@@ -236,7 +236,7 @@ class Technology
     {
         global $village, $u199, $bid36, $building, $technology;
         $res = array();
-        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM " . TB_PREFIX . "vdata WHERE wref = " . $village->wid));
+        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM vdata WHERE wref = " . $village->wid));
         if ($res['wood'] > $res['maxstore']) {
             $res['wood'] = $res['maxstore'];
         }
@@ -598,7 +598,7 @@ class Technology
     {
         global $village, $u199, $bid36, $building, $technology;
         $res = array();
-        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM " . TB_PREFIX . "vdata WHERE wref = " . $village->wid));
+        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM vdata WHERE wref = " . $village->wid));
         if ($res['wood'] > $res['maxstore']) {
             $res['wood'] = $res['maxstore'];
         }
@@ -643,7 +643,7 @@ class Technology
         global $village, $$unit;
         $unitarray = $$unit;
         $res = array();
-        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM " . TB_PREFIX . "vdata WHERE wref = " . $village->wid)) or die(mysql_error());
+        $res = mysql_fetch_assoc(mysql_query("SELECT maxstore, maxcrop, wood, clay, iron, crop FROM vdata WHERE wref = " . $village->wid)) or die(mysql_error());
         if ($res['wood'] > $res['maxstore']) {
             $res['wood'] = $res['maxstore'];
         }
@@ -979,7 +979,7 @@ class Technology
     public function finishTech()
     {
         global $database, $village;
-        $q = "UPDATE " . TB_PREFIX . "research SET timestamp=" . (time() - 1) . " WHERE vref = " . $village->wid;
+        $q = "UPDATE research SET timestamp=" . (time() - 1) . " WHERE vref = " . $village->wid;
         $database->query($q);
     }
 
@@ -1014,11 +1014,7 @@ class Technology
         if ($fail == 0) {
             $database->deleteReinf($id);
         }
-
     }
-
 }
 
 $technology = new Technology;
-
-?>

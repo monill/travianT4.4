@@ -4,19 +4,19 @@
         var key = e.keyCode || e.which;
 
         if (
-            // numbers   
+            // numbers
             key >= 48 && key <= 57 ||
 
             // english keypad
             key >= 97 && key <= 122 ||
             key >= 65 && key <= 90 ||
 
-            // farsi keypad    
+            // farsi keypad
             key == 1570 || key == 1575 || key == 1576 || key == 1662 || key == 1578 || key == 1579 || key == 1688 || key ==
             1670 || key == 1705 || key == 1711 || key == 1740 || key == 1574 || (key >= 1580 && key <= 1594) || (key >=
                 1601 && key <= 1608) || (key >= 1632 && key <= 1641) ||
 
-            // symbol keypad	
+            // symbol keypad
             key == 95 || key == 38 || key == 35 || key == 36 || key == 64 || key == 37 || key == 39 || key == 46 || key ==
             45 || key == 8 || key == 9 || key == 13 || key == 42) {
             // input is VALID
@@ -32,7 +32,7 @@
         var key = e.keyCode || e.which;
 
         if (!e.altKey && !e.ctrlKey &&
-            // numbers   
+            // numbers
             key >= 0 && key <= 2000) {
             // input is VALID
         } else {
@@ -48,7 +48,7 @@
         var key = e.keyCode || e.which;
 
         if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
-            // numbers   
+            // numbers
             key >= 48 && key <= 57 ||
             // Numeric keypad
             key >= 96 && key <= 105 ||
@@ -274,7 +274,7 @@ $varmedal = $database->getProfileMedal($session->uid); ?>
         </thead>
         <tbody>
             <?php
-            $prefix = "" . TB_PREFIX . "vdata";
+            $prefix = "vdata";
             $sql = mysql_query("SELECT * FROM $prefix WHERE owner = $session->uid ORDER BY pop DESC");
             $name = 0;
 
@@ -291,7 +291,7 @@ $varmedal = $database->getProfileMedal($session->uid); ?>
                 }
                 echo "</td>";
                 echo "<td class=\"oases\">";
-                $prefix = "" . TB_PREFIX . "odata";
+                $prefix = "odata";
                 $sql2 = mysql_query("SELECT * FROM $prefix WHERE owner = " . $session->uid . " AND conqured = " .
                     $row['wref'] . "");
                 while ($row2 = mysql_fetch_array($sql2)) {
@@ -329,7 +329,7 @@ $varmedal = $database->getProfileMedal($session->uid); ?>
                 }
                 echo "</td>";
                 echo "<td class=\"inhabitants\"> " . $row['pop'] . " </td>";
-                $prefix = "" . TB_PREFIX . "wdata";
+                $prefix = "wdata";
                 $sql2 = mysql_query("SELECT * FROM $prefix WHERE id = " . $row['wref'] . "");
                 $coords = mysql_fetch_array($sql2);
                 echo "<td class=\"coords\"><a href=\"karte.php?x=" . $coords['y'] . " &y=" . $coords['x'] . " \"><span

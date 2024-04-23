@@ -1,14 +1,16 @@
 <?php
 
 // print_r($_POST);die;
-class Alliance {
+class Alliance
+{
 
     public $gotInvite = FALSE;
     public $inviteArray = array();
     public $allianceArray = array();
     public $userPermArray = array();
 
-    public function procAlliance($get) {
+    public function procAlliance($get)
+    {
         global $session, $database;
 
         if ($session->alliance != 0) {
@@ -46,8 +48,9 @@ class Alliance {
 
     /**
      * Function to reject an invitation
-    */
-    private function rejectInvite($get) {
+     */
+    private function rejectInvite($get)
+    {
         global $database, $session;
         foreach ($this->inviteArray as $invite) {
             if ($invite['id'] == $get['d']) {
@@ -60,8 +63,9 @@ class Alliance {
 
     /**
      * Function to accept an invitation
-    */
-    private function acceptInvite($get) {
+     */
+    private function acceptInvite($get)
+    {
         global $form, $database, $session;
         if ($session->access != BANNED) {
             foreach ($this->inviteArray as $invite) {
@@ -84,7 +88,8 @@ class Alliance {
             if ($accept_error == 1) {
                 $form->addError("error", sprintf(AL_REP6, $max));
 
-                function StrRegister1($TextVar) {
+                function StrRegister1($TextVar)
+                {
                     $bug = array('', '!', '\'', '/', '"', '*', '=', '^', '&', '<', '>', '?');
 
                     return @str_replace($bug, '', $TextVar);
@@ -106,8 +111,9 @@ class Alliance {
 
     /**
      * Function to del an invitation
-    */
-    private function delInvite($get) {
+     */
+    private function delInvite($get)
+    {
         global $database, $session;
         $inviteArray = $database->getAliInvitations($session->alliance);
         foreach ($inviteArray as $invite) {
@@ -120,7 +126,8 @@ class Alliance {
         //header("Location: build.php?id=".$get['id']);exit;
     }
 
-    public function procAlliForm($post) {
+    public function procAlliForm($post)
+    {
         global $building, $database, $session;
         $this->userPermArray = $database->getAlliPermissions($session->uid, $session->alliance);
         if (isset($post['ft'])) {
@@ -173,9 +180,10 @@ class Alliance {
 
     /**
      * Function to create an alliance
-    */
+     */
 
-    private function createAlliance($post) {
+    private function createAlliance($post)
+    {
         global $form, $database, $session, $bid18, $village;
         if (!isset($post['ally1']) || $post['ally1'] == "") {
             $form->addError("error", AL_ATAGEMPTY);
@@ -207,7 +215,8 @@ class Alliance {
         }
     }
 
-    private function changediplomacy($post) {
+    private function changediplomacy($post)
+    {
         global $database, $session, $form;
 
         $aName = $database->RemoveXSS($post['a_name']);
@@ -247,10 +256,11 @@ class Alliance {
         }
     }
 
-    /** 
+    /**
      * Function to change the user permissions
-    */
-    private function changeUserPermissions($post) {
+     */
+    private function changeUserPermissions($post)
+    {
         global $database, $session, $form;
         if ($this->userPermArray['opt1'] == 0) {
             $form->addError("error", AL_NOPERM);
@@ -269,8 +279,9 @@ class Alliance {
 
     /**
      * Function to kick a user from alliance
-    */
-    private function kickAlliUser($post) {
+     */
+    private function kickAlliUser($post)
+    {
         global $database, $session, $form;
         if ($session->access != BANNED) {
             $UserData = $database->getUser($post['a_name'], 0);
@@ -305,9 +316,10 @@ class Alliance {
 
     /**
      * Function to process of sending invitations
-    */
+     */
 
-    public function sendInvite($post) {
+    public function sendInvite($post)
+    {
         global $form, $database, $session;
 
         $UserData = $database->getUser($post['a_name'], 0);
@@ -350,9 +362,10 @@ class Alliance {
 
     /**
      * Function to create/change the alliance description
-    */
+     */
 
-    private function updateAlliProfile($post) {
+    private function updateAlliProfile($post)
+    {
         global $database, $session, $form;
         if ($this->userPermArray['opt3'] == 0) {
             $form->addError("error", AL_NOPERM);
@@ -370,8 +383,9 @@ class Alliance {
 
     /**
      * Function to quit from alliance
-    */
-    private function quitally($post) {
+     */
+    private function quitally($post)
+    {
         global $database, $session, $form;
         if (!isset($post['pw']) || $post['pw'] == "") {
             $form->addError("error", US_PWEMPTY);
@@ -381,7 +395,7 @@ class Alliance {
             if ($database->isAllianceOwner($session->uid)) {
                 $allmembers = $database->getAllMember($session->alliance);
                 $newleader = $allmembers[1];
-                $q = "UPDATE " . TB_PREFIX . "alidata set leader = " . $newleader['id'] . " where id = " . $session->alliance . "";
+                $q = "UPDATE alidata set leader = " . $newleader['id'] . " where id = " . $session->alliance . "";
                 $database->query($q);
                 $database->updateAlliPermissions($newleader['id'], $session->alliance, 'Interim Leader', 1, 1, 1, 1, 1, 1, 1, 1);
             }
@@ -394,7 +408,8 @@ class Alliance {
         }
     }
 
-    function generateHash($plainText, $salt = 1) {
+    function generateHash($plainText, $salt = 1)
+    {
         $salt = substr($salt, 0, 9);
 
         return $salt . md5($salt . $plainText);
@@ -402,8 +417,9 @@ class Alliance {
 
     /**
      * Function to change the alliance name
-    */
-    private function changeAliName($post) {
+     */
+    private function changeAliName($post)
+    {
         global $form, $database, $session;
         if (!$database->isAllianceOwner($session->uid)) {
             $form->addError("error", AL_REP22);
@@ -438,8 +454,6 @@ class Alliance {
             $database->insertAlliNotice($session->alliance, '<a href="spieler.php?uid=' . $session->uid . '">' . addslashes($session->username) . '</a> ' . AL_REP23 . '.');
         }
     }
-
 }
 
 $alliance = new Alliance;
-?>

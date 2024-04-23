@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="speechBubbleContent">
-                        <?php echo mysql_num_rows(mysql_query('SELECT `id` FROM ' . TB_PREFIX . 'adventure WHERE end = 0 and uid = ' . $session->uid)); ?>
+                        <?php echo mysql_num_rows(mysql_query('SELECT `id` FROM adventure WHERE end = 0 and uid = ' . $session->uid)); ?>
                     </div>
                 </div>
                 <div class="clear"></div>

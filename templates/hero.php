@@ -101,7 +101,7 @@
                         }
 
                         foreach ($session->villages as $myvill) {
-                            $q1 = "SELECT SUM(hero) from " . TB_PREFIX . "enforcement where `from` = '" . $myvill . "'"; // check if hero is send as reinforcement
+                            $q1 = "SELECT SUM(hero) from enforcement where `from` = '" . $myvill . "'"; // check if hero is send as reinforcement
                             $result1 = mysql_query($q1, $database->connection) or die(mysql_error());
                             $he1 = mysql_fetch_array($result1);
                             $hero += $he1[0];
@@ -109,7 +109,7 @@
                                 $reason = HERO_SENDASREINF;
                                 break;
                             }
-                            $q2 = "SELECT SUM(hero) from " . TB_PREFIX . "units where `vref` = '" . $myvill . "'"; // check if hero is on my account (all villages)
+                            $q2 = "SELECT SUM(hero) from units where `vref` = '" . $myvill . "'"; // check if hero is on my account (all villages)
                             $result2 = mysql_query($q2, $database->connection) or die(mysql_error());
                             $he2 = mysql_fetch_array($result2);
                             $hero += $he2[0];
@@ -117,7 +117,7 @@
                                 $reason = HERO_INYOURACCF;
                                 break;
                             }
-                            $q3 = "SELECT SUM(hero) from " . TB_PREFIX . "trapped where `from` = '" . $myvill . "'"; // check if hero is prisoner
+                            $q3 = "SELECT SUM(hero) from trapped where `from` = '" . $myvill . "'"; // check if hero is prisoner
                             $result3 = mysql_query($q3, $database->connection) or die(mysql_error());
                             $he3 = mysql_fetch_array($result3);
                             $hero += $he3[0];
@@ -144,7 +144,7 @@
                             }
                         }
                         if ($yes and !$hero && $reason == '') {
-                            $q = "UPDATE " . TB_PREFIX . "hero set `dead` = '1' where uid = '" . $session->uid . "'";
+                            $q = "UPDATE hero set `dead` = '1' where uid = '" . $session->uid . "'";
                             mysql_query($q, $database->connection) or die(mysql_error());
                         }
                     }

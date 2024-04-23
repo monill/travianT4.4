@@ -1,11 +1,13 @@
 <?php
 
-class Market {
+class Market
+{
 
     public $onsale, $onmarket, $sending, $recieving, $return = array();
     public $maxcarry, $merchant, $used;
 
-    public function procMarket($post) {
+    public function procMarket($post)
+    {
         global $database, $session;
         if ($session->is_sitter == 1) {
             $setting = $database->getUsersetting($session->uid);
@@ -38,7 +40,8 @@ class Market {
         }
     }
 
-    private function loadMarket() {
+    private function loadMarket()
+    {
         global $session, $building, $bid28, $bid17, $database, $village;
         $this->recieving = $database->getMovement(0, $village->wid, 1);
         $this->sending = $database->getMovement(0, $village->wid, 0);
@@ -54,7 +57,8 @@ class Market {
         }
     }
 
-    private function loadOnsale() {
+    private function loadOnsale()
+    {
         global $database, $village, $session, $multisort, $generator;
         $displayarray = $database->getMarket($village->wid, 1);
         $holderarray = array();
@@ -69,7 +73,8 @@ class Market {
         $this->onsale = $multisort->sorte($holderarray, "'duration'", true, 2);
     }
 
-    private function sendResource($post) {
+    private function sendResource($post)
+    {
         // print_r($post);die;
         global $database, $village, $session, $generator, $logging;
         $wtrans = (isset($post['r1']) && $post['r1'] != "") ? $post['r1'] : 0;
@@ -90,7 +95,7 @@ class Market {
         $availableClay = $database->getClayAvailable($village->wid);
         $availableIron = $database->getIronAvailable($village->wid);
         $availableCrop = $database->getCropAvailable($village->wid);
-        if ($availableWood >= $post['r1'] AND $availableClay >= $post['r2'] AND $availableIron >= $post['r3'] AND $availableCrop >= $post['r4']) {
+        if ($availableWood >= $post['r1'] and $availableClay >= $post['r2'] and $availableIron >= $post['r3'] and $availableCrop >= $post['r4']) {
 
             $resource = array($wtrans, $ctrans, $itrans, $crtrans);
             $reqMerc = ceil((array_sum($resource) - 0.1) / $this->maxcarry);
@@ -112,7 +117,7 @@ class Market {
                     $timetaken = $generator->procDistanceTime($village->coor, $coor, $session->tribe, 0);
                     $reference = $database->sendResource($resource[0], $resource[1], $resource[2], $resource[3], $reqMerc);
                     $idi = mysql_insert_id();
-                    mysql_query("UPDATE `" . TB_PREFIX . "send` set `send`='" . $post['send3'] . "' WHERE id = $idi") or die(mysql_error());
+                    mysql_query("UPDATE `send` set `send`='" . $post['send3'] . "' WHERE id = $idi") or die(mysql_error());
                     $database->modifyResource($village->wid, $resource[0], $resource[1], $resource[2], $resource[3], 0);
                     $database->addMovement(0, $village->wid, $id, $reference, $resdata, time() + $timetaken);
                     $logging->addMarketLog($village->wid, 1, array($resource[0], $resource[1], $resource[2], $resource[3], $id));
@@ -123,11 +128,13 @@ class Market {
         }
     }
 
-    public function merchantAvail() {
+    public function merchantAvail()
+    {
         return $this->merchant - $this->used;
     }
 
-    private function addOffer($post) {
+    private function addOffer($post)
+    {
         global $database, $village, $session;
         $post['rid1'] = intval($post['rid1']);
         if ($post['rid1'] > 4)
@@ -157,7 +164,7 @@ class Market {
         $availableClay = $database->getClayAvailable($village->wid);
         $availableIron = $database->getIronAvailable($village->wid);
         $availableCrop = $database->getCropAvailable($village->wid);
-        $resAvailability = ($wood == 0 or $availableWood >= $wood) and ( $clay == 0 or $availableClay >= $clay) and ( $iron == 0 or $availableIron >= $iron) and ( $iron == 0 or $availableCrop >= $crop) and ( ($wood + $clay + $iron + $crop) > 0);
+        $resAvailability = ($wood == 0 or $availableWood >= $wood) and ($clay == 0 or $availableClay >= $clay) and ($iron == 0 or $availableIron >= $iron) and ($iron == 0 or $availableCrop >= $crop) and (($wood + $clay + $iron + $crop) > 0);
 
         if ($resAvailability) {
             $reqMerc = 1;
@@ -182,7 +189,8 @@ class Market {
         }
     }
 
-    private function tradeResource($post) {
+    private function tradeResource($post)
+    {
         global $session, $database, $village;
         if ($session->userinfo['gold'] >= 3) {
             //kijken of ze niet meer gs invoeren dan ze hebben
@@ -201,7 +209,7 @@ class Market {
             $database->setVillageField($village->wid, "clay", $mArray['clay']);
             $database->setVillageField($village->wid, "iron", $mArray['iron']);
             $database->setVillageField($village->wid, "crop", $mArray['crop']);
-            $database->query("UPDATE " . TB_PREFIX . "users set gold = gold-3,usedgold=usedgold+3 where `username`='" . $session->username . "'");
+            $database->query("UPDATE users set gold = gold-3,usedgold=usedgold+3 where `username`='" . $session->username . "'");
             header("Location: build.php?id=" . $post['id'] . "&t=3&c");
             exit;
         } else {
@@ -210,7 +218,8 @@ class Market {
         }
     }
 
-    public function procRemove($get) {
+    public function procRemove($get)
+    {
         global $database, $village, $session;
         if (isset($get['t']) && $get['t'] == 1) {
             $this->filterNeed($get);
@@ -230,7 +239,8 @@ class Market {
         }
     }
 
-    private function filterNeed($get) {
+    private function filterNeed($get)
+    {
         if (isset($get['v']) || isset($get['s']) || isset($get['b'])) {
             $holder = $holder2 = array();
             if (isset($get['v']) && $get['v'] == "1:1") {
@@ -265,7 +275,8 @@ class Market {
         }
     }
 
-    private function acceptOffer($get) {
+    private function acceptOffer($get)
+    {
         global $database, $village, $session, $logging, $generator;
         $infoarray = $database->getMarketInfo($get['g']);
         $reqMerc = 1;
@@ -303,8 +314,6 @@ class Market {
         header("Location: build.php?id=" . $get['id'] . "&t=" . $get['t']);
         exit;
     }
-
 }
 
 $market = new Market;
-?>

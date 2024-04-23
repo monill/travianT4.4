@@ -9,9 +9,9 @@ function updateHero()
     if (!$database->checkConnection()) {
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
-    
+
     $time = $_SERVER['REQUEST_TIME'];
-    $q = "SELECT `dead`,`health`,`autoregen`,`itemautoregen`,`heroid`,`level`,`experience` FROM " . TB_PREFIX . "hero";
+    $q = "SELECT `dead`,`health`,`autoregen`,`itemautoregen`,`heroid`,`level`,`experience` FROM hero";
     $harray = $database->query_return($q);
     if (!empty($harray)) {
         foreach ($harray as $hero) {
@@ -19,8 +19,10 @@ function updateHero()
                 $updatediff = $time - $hero['lastupdate'];
                 $updatepart = $updatediff / 86400;
                 $health = round((($hero['autoregen'] * HEROATTRSPEED) + ($hero['itemautoregen'] * ITEMATTRSPEED))
-                //* $updatepart
-                , 1);
+                    //* $updatepart
+                    ,
+                    1
+                );
                 $health += $hero['health'];
                 if ($health > 100) $health = 100;
                 $database->modifyHero(0, $hero['heroid'], "health", $health, 0);
@@ -49,14 +51,12 @@ function updateHero()
             }
         }
     }
-    $q2 = "UPDATE " . TB_PREFIX . "units SET hero = 1 WHERE hero > 1";
+    $q2 = "UPDATE units SET hero = 1 WHERE hero > 1";
     $database->query($q2);
-    $q2 = "UPDATE " . TB_PREFIX . "enforcement SET hero = 1 WHERE hero > 1";
+    $q2 = "UPDATE enforcement SET hero = 1 WHERE hero > 1";
     $database->query($q2);
-    $q2 = "UPDATE " . TB_PREFIX . "trapped SET hero = 1 WHERE hero > 1";
+    $q2 = "UPDATE trapped SET hero = 1 WHERE hero > 1";
     $database->query($q2);
-    $q2 = "UPDATE " . TB_PREFIX . "attacks SET t11 = 1 WHERE t11 > 1";
+    $q2 = "UPDATE attacks SET t11 = 1 WHERE t11 > 1";
     $database->query($q2);
 }
-
-?>

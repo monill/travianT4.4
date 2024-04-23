@@ -4,7 +4,7 @@ if ($session->uid > 2 && $session->uid != 4) die('Hacking attemp!');
 include('templates/html.php');
 
 if (!isset($_GET['action'])) {
-    $prefix = '' . TB_PREFIX . 'mdata';
+    $prefix = 'mdata';
     $sql = mysql_query("SELECT `id` FROM $prefix ORDER BY time DESC");
     $query = mysql_num_rows($sql); // Get the number of queries from the database
 
@@ -153,8 +153,8 @@ if (!isset($_GET['action'])) {
                 $Tcolor = 'black';
             }
             $date = $generator->procMtime($time);
-            $fromplayername = mysql_fetch_array(mysql_query("SELECT `username` FROM " . TB_PREFIX . "users WHERE id = $fromplayername LIMIT 1"));
-            $toplayername = mysql_fetch_array(mysql_query("SELECT `username` FROM " . TB_PREFIX . "users WHERE id = $toplayername LIMIT 1"));
+            $fromplayername = mysql_fetch_array(mysql_query("SELECT `username` FROM users WHERE id = $fromplayername LIMIT 1"));
+            $toplayername = mysql_fetch_array(mysql_query("SELECT `username` FROM users WHERE id = $toplayername LIMIT 1"));
             $msgbody = preg_replace('/\[message\]/', '', $msgbody);
             $msgbody = preg_replace('/\[\/message\]/', '', $msgbody);
             if ($isreaded == 0) {
@@ -182,7 +182,7 @@ if (!isset($_GET['action'])) {
         echo '</table>';
     } elseif (isset($_GET['action']) && $_GET['action'] == 'edit') {
         $did = filter_var($_GET['did'], FILTER_SANITIZE_NUMBER_INT);
-        $prefix = '' . TB_PREFIX . 'mdata';
+        $prefix = 'mdata';
         $sqlz = mysql_query("SELECT * FROM $prefix WHERE id = $did LIMIT 1");
         $rowss2 = mysql_fetch_array($sqlz);
         $ids = $rowss2['id'];
@@ -221,7 +221,7 @@ if (!isset($_GET['action'])) {
                     $to = filter_var($_POST['to'], FILTER_SANITIZE_NUMBER_INT);
                     $msgtitle = filter_var($_POST['msgtitle'], FILTER_SANITIZE_MAGIC_QUOTES);
                     $msgbody = filter_var($_POST['msgbody'], FILTER_SANITIZE_MAGIC_QUOTES);
-                    mysql_query("UPDATE " . TB_PREFIX . "mdata set target = " . $to . ", owner = " . $from . ", topic = '" . $msgtitle . "' , message = '" . $msgbody . "' WHERE id = " . $id . "") or die(mysql_error());
+                    mysql_query("UPDATE mdata set target = " . $to . ", owner = " . $from . ", topic = '" . $msgtitle . "' , message = '" . $msgbody . "' WHERE id = " . $id . "") or die(mysql_error());
                     header('Location: MMssg.php');
                     exit();
                 }
@@ -237,7 +237,7 @@ if (!isset($_GET['action'])) {
         if (isset($_GET['action']) && $_GET['action'] = 'del' && isset($_GET['did'])) {
         $id = filter_var($_GET['did'], FILTER_SANITIZE_NUMBER_INT);
 
-        mysql_query("UPDATE " . TB_PREFIX . "mdata set deltarget = 1, delowner = 1 WHERE id = " . $id . "") or die(mysql_error());
+        mysql_query("UPDATE mdata set deltarget = 1, delowner = 1 WHERE id = " . $id . "") or die(mysql_error());
         header('Location: MMssg.php');
         exit();
     }

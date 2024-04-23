@@ -30,21 +30,21 @@ class adminModel
 
     function login($username, $password)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "users where username = '$username' and access >= " . MULTIHUNTER;
+        $q = "SELECT * FROM users where username = '$username' and access >= " . MULTIHUNTER;
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if ($dbarray['password'] == md5($password)) {
-            mysql_query("Insert into " . TB_PREFIX . "admin_log values (0," . $dbarray['id'] . ",'$username logged in (IP: <b>" . $_SERVER['REMOTE_ADDR'] . "</b>)'," . time() . ")");
+            mysql_query("Insert into admin_log values (0," . $dbarray['id'] . ",'$username logged in (IP: <b>" . $_SERVER['REMOTE_ADDR'] . "</b>)'," . time() . ")");
             return true;
         } else {
-            mysql_query("Insert into " . TB_PREFIX . "admin_log values (0,'X','<font color=\'red\'><b>IP: " . $_SERVER['REMOTE_ADDR'] . " tried to log in with username <u> $username</u> but access was denied!</font></b>'," . time() . ")");
+            mysql_query("Insert into admin_log values (0,'X','<font color=\'red\'><b>IP: " . $_SERVER['REMOTE_ADDR'] . " tried to log in with username <u> $username</u> but access was denied!</font></b>'," . time() . ")");
             return false;
         }
     }
 
     function saveGold($req)
     {
-        $q = "UPDATE " . TB_PREFIX . "users SET "
+        $q = "UPDATE users SET "
             . "`gold`=" . $req['gold'] . ",`boughtgold`=" . $req['boughtgold']
             . ",`giftgold`=" . $req['giftgold'] . ",`transferedgold`=" . $req['transferedgold'] . ",`seggold`=" . $req['seggold'] . ",`usedgold`=" . $req['usedgold']
             . " WHERE `id`=" . $req['uid'];
@@ -62,7 +62,7 @@ class adminModel
 
     function saveSilver($req)
     {
-        $q = "UPDATE " . TB_PREFIX . "users SET "
+        $q = "UPDATE users SET "
             . "`silver`=" . $req['silver'] . ",`giftsilver`=" . $req['giftsilver']
             . ",`gessilver`=" . $req['gessilver'] . ",`sisilver`=" . $req['sisilver'] . ",`bisilver`=" . $req['bisilver']
             . " WHERE `id`=" . $req['uid'];
@@ -74,17 +74,17 @@ class adminModel
         global $database;
         $varray = $database->getProfileVillages($uid);
         foreach ($varray as $vil) {
-            $q = "UPDATE " . TB_PREFIX . "units SET hero = 0 WHERE `vref`=" . $vil['wref'];
+            $q = "UPDATE units SET hero = 0 WHERE `vref`=" . $vil['wref'];
             $database->query($q);
-            $q = "UPDATE " . TB_PREFIX . "enforcement SET hero = 0 WHERE `from`=" . $vil['wref'];
+            $q = "UPDATE enforcement SET hero = 0 WHERE `from`=" . $vil['wref'];
             $database->query($q);
-            $q = "UPDATE " . TB_PREFIX . "trapped SET hero = 0 WHERE `from`=" . $vil['wref'];
+            $q = "UPDATE trapped SET hero = 0 WHERE `from`=" . $vil['wref'];
             $database->query($q);
-            $q = "UPDATE " . TB_PREFIX . "attacks SET t11 = 0  WHERE `from`" . $vil['wref'];
+            $q = "UPDATE attacks SET t11 = 0  WHERE `from`" . $vil['wref'];
             $database->query($q);
         }
         $heroData = $database->getHero($uid);
-        $q = "UPDATE " . TB_PREFIX . "units SET hero = 1 WHERE `vref`=" . $heroData['wref'];
+        $q = "UPDATE units SET hero = 1 WHERE `vref`=" . $heroData['wref'];
         $database->query($q);
         $database->modifyHero($uid, 0, 'health', 100, 0);
     }
@@ -157,28 +157,28 @@ class adminModel
         $u50 = $req['u50'];
 
         if ($user['tribe'] == 1) {
-            $q = "UPDATE " . TB_PREFIX . "units SET u1 = $u1, u2 = $u2, u3 = $u3, u4 = $u4, u5 = $u5, u6 = $u6, u7 = $u7, u8 = $u8, u9 = $u9, u10 = $u10 WHERE vref = $id";
+            $q = "UPDATE units SET u1 = $u1, u2 = $u2, u3 = $u3, u4 = $u4, u5 = $u5, u6 = $u6, u7 = $u7, u8 = $u8, u9 = $u9, u10 = $u10 WHERE vref = $id";
             mysql_query($q);
         } else if ($user['tribe'] == 2) {
-            $q = "UPDATE " . TB_PREFIX . "units SET u11 = '$u11', u12 = '$u12', u13 = '$u13', u14 = '$u14', u15 = '$u15', u16 = '$u16', u17 = '$u17', u18 = '$u18', u19 = '$u19', u20 = '$u20' WHERE vref = $id";
+            $q = "UPDATE units SET u11 = '$u11', u12 = '$u12', u13 = '$u13', u14 = '$u14', u15 = '$u15', u16 = '$u16', u17 = '$u17', u18 = '$u18', u19 = '$u19', u20 = '$u20' WHERE vref = $id";
             mysql_query($q);
         } else if ($user['tribe'] == 3) {
-            $q = "UPDATE " . TB_PREFIX . "units SET u21 = '$u21', u22 = '$u22', u23 = '$u23', u24 = '$u24', u25 = '$u25', u26 = '$u26', u27 = '$u27', u28 = '$u28', u29 = '$u29', u30 = '$u30' WHERE vref = $id";
+            $q = "UPDATE units SET u21 = '$u21', u22 = '$u22', u23 = '$u23', u24 = '$u24', u25 = '$u25', u26 = '$u26', u27 = '$u27', u28 = '$u28', u29 = '$u29', u30 = '$u30' WHERE vref = $id";
             mysql_query($q);
         } else if ($user['tribe'] == 4) {
-            $q = "UPDATE " . TB_PREFIX . "units SET u31 = '$u31', u32 = '$u32', u33 = '$u33', u34 = '$u34', u35 = '$u35', u36 = '$u36', u37 = '$u37', u38 = '$u38', u39 = '$u39', u40 = '$u40' WHERE vref = $id";
+            $q = "UPDATE units SET u31 = '$u31', u32 = '$u32', u33 = '$u33', u34 = '$u34', u35 = '$u35', u36 = '$u36', u37 = '$u37', u38 = '$u38', u39 = '$u39', u40 = '$u40' WHERE vref = $id";
             mysql_query($q);
         } else if ($user['tribe'] == 5) {
-            $q = "UPDATE " . TB_PREFIX . "units SET u41 = '$u41', u42 = '$u42', u43 = '$u43', u44 = '$u44', u45 = '$u45', u46 = '$u46', u47 = '$u47', u48 = '$u48', u49 = '$u49', u50 = '$u50' WHERE vref = $id";
+            $q = "UPDATE units SET u41 = '$u41', u42 = '$u42', u43 = '$u43', u44 = '$u44', u45 = '$u45', u46 = '$u46', u47 = '$u47', u48 = '$u48', u49 = '$u49', u50 = '$u50' WHERE vref = $id";
             mysql_query($q);
         }
 
-        mysql_query("Insert into " . TB_PREFIX . "admin_log values (0," . $_SESSION['id'] . ",'Changed troop anmount in village <a href=\'index.php?p=village&did=$id\'>" . $village['name'] . "</a> '," . time() . ")");
+        mysql_query("Insert into admin_log values (0," . $_SESSION['id'] . ",'Changed troop anmount in village <a href=\'index.php?p=village&did=$id\'>" . $village['name'] . "</a> '," . time() . ")");
     }
 
     function editGoldClub($uid, $v)
     {
-        $q = "UPDATE " . TB_PREFIX . "users SET `goldclub`=$v WHERE `id`=" . $uid;
+        $q = "UPDATE users SET `goldclub`=$v WHERE `id`=" . $uid;
         $this->query($q);
     }
 
@@ -209,7 +209,7 @@ class adminModel
         if ($building) {
             $popTot += $this->buildingPOP($building, $lvl);
         }
-        $q = "UPDATE " . TB_PREFIX . "vdata set pop = $popTot where wref = $vid";
+        $q = "UPDATE vdata set pop = $popTot where wref = $vid";
         mysql_query($q, $this->connection);
     }
 
@@ -233,7 +233,7 @@ class adminModel
         $status = $database->getVillageState($wid);
         $status = 0;
         if ($status == 0) {
-            mysql_query("Insert into " . TB_PREFIX . "admin_log values (0," . $_SESSION['id'] . ",'Added new village <b><a href=\'index.php?p=village&did=$wid\'>$wid</a></b> to user <b><a href=\'index.php?p=player&uid=$uid\'>$uid</a></b>'," . time() . ")");
+            mysql_query("Insert into admin_log values (0," . $_SESSION['id'] . ",'Added new village <b><a href=\'index.php?p=village&did=$wid\'>$wid</a></b> to user <b><a href=\'index.php?p=player&uid=$uid\'>$uid</a></b>'," . time() . ")");
             $database->setFieldTaken($wid);
             $database->addVillage($wid, $uid, '���� ����', '0');
             $database->addResourceFields($wid, $database->getVillageType($wid));
@@ -245,7 +245,7 @@ class adminModel
 
     function getWref($x, $y)
     {
-        $q = "SELECT id FROM " . TB_PREFIX . "wdata where x = $x and y = $y";
+        $q = "SELECT id FROM wdata where x = $x and y = $y";
         $result = mysql_query($q, $this->connection);
         $r = mysql_fetch_array($result);
         return $r['id'];
@@ -280,17 +280,17 @@ class adminModel
             }
             if ($post['clean_ware']) {
                 $time = time();
-                $q = "UPDATE " . TB_PREFIX . "vdata SET `wood` = '0', `clay` = '0', `iron` = '0', `crop` = '0', `lastupdate` = '$time' WHERE wref = $vid;";
+                $q = "UPDATE vdata SET `wood` = '0', `clay` = '0', `iron` = '0', `crop` = '0', `lastupdate` = '$time' WHERE wref = $vid;";
                 mysql_query($q, $this->connection);
             }
         }
-        mysql_query("Insert into " . TB_PREFIX . "admin_log values (0," . $_SESSION['id'] . ",'Punished user: <a href=\'index.php?p=player&uid=" . $post['uid'] . "\'>" . $post['uid'] . "</a> with <b>-" . $post['punish'] . "%</b> population'," . time() . ")");
+        mysql_query("Insert into admin_log values (0," . $_SESSION['id'] . ",'Punished user: <a href=\'index.php?p=player&uid=" . $post['uid'] . "\'>" . $post['uid'] . "</a> with <b>-" . $post['punish'] . "%</b> population'," . time() . ")");
     }
 
     function punishBuilding($vid, $proc, $pop)
     {
         global $database;
-        $q = "UPDATE " . TB_PREFIX . "vdata set pop = $pop where wref = $vid;";
+        $q = "UPDATE vdata set pop = $pop where wref = $vid;";
         mysql_query($q, $this->connection);
         $fdata = $database->getResourceLevel($vid);
         for ($i = 1; $i <= 40; $i++) {
@@ -301,7 +301,7 @@ class adminModel
                 } else {
                     $zm = floor($zm);
                 }
-                $q = "UPDATE " . TB_PREFIX . "fdata SET `f$i` = '$zm' WHERE `vref` = $vid;";
+                $q = "UPDATE fdata SET `f$i` = '$zm' WHERE `vref` = $vid;";
                 mysql_query($q, $this->connection);
             }
         }
@@ -316,7 +316,7 @@ class adminModel
 
     function delUnits2($vid, $unit)
     {
-        $q = "UPDATE " . TB_PREFIX . "units SET `u$unit` = '0' WHERE `vref` = $vid;";
+        $q = "UPDATE units SET `u$unit` = '0' WHERE `vref` = $vid;";
         mysql_query($q, $this->connection);
     }
 
@@ -330,15 +330,15 @@ class adminModel
                 $this->delVillage($villages[$i]['wref']);
             }
             $name = $database->getUserField($uid, "username", 0);
-            mysql_query("Insert into " . TB_PREFIX . "admin_log values (0,$ID,'Deleted user <a>$name</a>'," . time() . ")");
-            $q = "DELETE FROM " . TB_PREFIX . "users WHERE `id` = $uid;";
+            mysql_query("Insert into admin_log values (0,$ID,'Deleted user <a>$name</a>'," . time() . ")");
+            $q = "DELETE FROM users WHERE `id` = $uid;";
             mysql_query($q, $this->connection);
         }
     }
 
     function checkPass($password, $uid)
     {
-        $q = "SELECT password FROM " . TB_PREFIX . "users where id = '$uid' and access = " . ADMIN;
+        $q = "SELECT password FROM users where id = '$uid' and access = " . ADMIN;
         $result = mysql_query($q, $this->connection);
         $dbarray = mysql_fetch_array($result);
         if ($dbarray['password'] == md5($password)) {
@@ -350,25 +350,25 @@ class adminModel
 
     function delVillage($wref)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "vdata WHERE `wref` = $wref and capital = 1;";
+        $q = "SELECT * FROM vdata WHERE `wref` = $wref and capital = 1;";
         $result = mysql_query($q, $this->connection);
         if (mysql_num_rows($result) > 0) {
-            mysql_query("Insert into " . TB_PREFIX . "admin_log values (0," . $_SESSION['id'] . ",'Deleted village <b>$wref</b>'," . time() . ")");
-            $q = "DELETE FROM " . TB_PREFIX . "vdata WHERE `wref` = $wref and capital = 1;";
+            mysql_query("Insert into admin_log values (0," . $_SESSION['id'] . ",'Deleted village <b>$wref</b>'," . time() . ")");
+            $q = "DELETE FROM vdata WHERE `wref` = $wref and capital = 1;";
             mysql_query($q, $this->connection);
-            $q = "DELETE FROM " . TB_PREFIX . "units WHERE `vref` = $wref;";
+            $q = "DELETE FROM units WHERE `vref` = $wref;";
             mysql_query($q, $this->connection);
-            $q = "DELETE FROM " . TB_PREFIX . "bdata WHERE `wid` = $wref;";
+            $q = "DELETE FROM bdata WHERE `wid` = $wref;";
             mysql_query($q, $this->connection);
-            $q = "DELETE FROM " . TB_PREFIX . "abdata WHERE `wid` = $wref;";
+            $q = "DELETE FROM abdata WHERE `wid` = $wref;";
             mysql_query($q, $this->connection);
-            $q = "DELETE FROM " . TB_PREFIX . "fdata WHERE `vref` = $wref;";
+            $q = "DELETE FROM fdata WHERE `vref` = $wref;";
             mysql_query($q, $this->connection);
-            $q = "DELETE FROM " . TB_PREFIX . "training WHERE `vref` = $wref;";
+            $q = "DELETE FROM training WHERE `vref` = $wref;";
             mysql_query($q, $this->connection);
-            $q = "DELETE FROM " . TB_PREFIX . "movement WHERE `from` = $wref;";
+            $q = "DELETE FROM movement WHERE `from` = $wref;";
             mysql_query($q, $this->connection);
-            $q = "UPDATE " . TB_PREFIX . "wdata SET `occupied` = '0' WHERE `id` = $wref;";
+            $q = "UPDATE wdata SET `occupied` = '0' WHERE `id` = $wref;";
             mysql_query($q, $this->connection);
         }
     }
@@ -376,7 +376,7 @@ class adminModel
     function getUserActive()
     {
         $time = time() - (60 * 5);
-        $q = "SELECT * FROM " . TB_PREFIX . "users where timestamp > $time and username != 'support'";
+        $q = "SELECT * FROM users where timestamp > $time and username != 'support'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -398,7 +398,7 @@ class adminModel
 
     function getAllUsers()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "users where username != 'support'";
+        $q = "SELECT * FROM users where username != 'support'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
@@ -407,10 +407,10 @@ class adminModel
     {
         global $database;
         $name = $database->getUserField($uid, "username", 0);
-        mysql_query("Insert into " . TB_PREFIX . "admin_log values (0," . $_SESSION['id'] . ",'Unbanned user <a href=\'index.php?p=player&uid=$uid\'>$name</a>'," . time() . ")");
-        $q = "UPDATE " . TB_PREFIX . "users SET `access` = '" . USER . "' WHERE `id` = $uid;";
+        mysql_query("Insert into admin_log values (0," . $_SESSION['id'] . ",'Unbanned user <a href=\'index.php?p=player&uid=$uid\'>$name</a>'," . time() . ")");
+        $q = "UPDATE users SET `access` = '" . USER . "' WHERE `id` = $uid;";
         mysql_query($q, $this->connection);
-        $q = "UPDATE " . TB_PREFIX . "banlist SET `active` = '0' WHERE `uid` = $uid;";
+        $q = "UPDATE banlist SET `active` = '0' WHERE `uid` = $uid;";
         mysql_query($q, $this->connection);
     }
 
@@ -418,60 +418,60 @@ class adminModel
     {
         global $database;
         $name = $database->getUserField($uid, "username", 0);
-        mysql_query("Insert into " . TB_PREFIX . "admin_log values (0," . $_SESSION['id'] . ",'Banned user <a href=\'index.php?p=player&uid=$uid\'>$name</a>'," . time() . ")");
-        $q = "UPDATE " . TB_PREFIX . "users SET `access` = '0' WHERE `id` = $uid;";
+        mysql_query("Insert into admin_log values (0," . $_SESSION['id'] . ",'Banned user <a href=\'index.php?p=player&uid=$uid\'>$name</a>'," . time() . ")");
+        $q = "UPDATE users SET `access` = '0' WHERE `id` = $uid;";
         mysql_query($q, $this->connection);
         $time = time();
         $admin = $_SESSION['id'];
-        $q = "INSERT INTO " . TB_PREFIX . "banlist (`uid`, `name`, `reason`, `time`, `end`, `admin`, `active`) VALUES ($uid, '$name' , '$reason', '$time', '$end', '$admin', '1');";
+        $q = "INSERT INTO banlist (`uid`, `name`, `reason`, `time`, `end`, `admin`, `active`) VALUES ($uid, '$name' , '$reason', '$time', '$end', '$admin', '1');";
         mysql_query($q, $this->connection);
     }
 
     function search_player($player)
     {
-        $q = "SELECT id,username FROM " . TB_PREFIX . "users WHERE `username` LIKE '%$player%' and username != 'support'";
+        $q = "SELECT id,username FROM users WHERE `username` LIKE '%$player%' and username != 'support'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function search_email($email)
     {
-        $q = "SELECT id,email FROM " . TB_PREFIX . "users WHERE `email` LIKE '%$email%' and username != 'support'";
+        $q = "SELECT id,email FROM users WHERE `email` LIKE '%$email%' and username != 'support'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function search_village($village)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "vdata WHERE `name` LIKE '%$village%' or `wref` LIKE '%$village%'";
+        $q = "SELECT * FROM vdata WHERE `name` LIKE '%$village%' or `wref` LIKE '%$village%'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function search_alliance($alliance)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "alidata WHERE `name` LIKE '%$alliance%' or `tag` LIKE '%$alliance%' or `id` LIKE '%$alliance%'";
+        $q = "SELECT * FROM alidata WHERE `name` LIKE '%$alliance%' or `tag` LIKE '%$alliance%' or `id` LIKE '%$alliance%'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function search_ip($ip)
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "login_log WHERE `ip` LIKE '%$ip%'";
+        $q = "SELECT * FROM login_log WHERE `ip` LIKE '%$ip%'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function search_banned()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "banlist where active = '1'";
+        $q = "SELECT * FROM banlist where active = '1'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
     function del_banned()
     {
-        $q = "SELECT * FROM " . TB_PREFIX . "banlist";
+        $q = "SELECT * FROM banlist";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }

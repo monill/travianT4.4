@@ -1,5 +1,5 @@
 <?php
-$q = mysql_query("SELECT `quest` FROM " . TB_PREFIX . "users WHERE id = " . $session->uid);
+$q = mysql_query("SELECT `quest` FROM users WHERE id = " . $session->uid);
 $q = mysql_fetch_assoc($q);
 
 if ($session->uid > 4 && $q['quest'] != 99) {
@@ -117,21 +117,21 @@ if ($session->uid > 4 && $q['quest'] != 99) {
 
                     } elseif ($_SESSION['qst'] >= 15) {
 
-                        $qquery = mysql_query("SELECT `quest_battle` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                        $qquery = mysql_query("SELECT `quest_battle` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                         $qquery = mysql_fetch_assoc($qquery);
                         $qdataarray = explode(',', $qquery['quest_battle']);
                         $totbattle = 0;
                         foreach ($qdataarray as $bat) {
                             if ($bat > 0) $totbattle++;
                         }
-                        $qquery2 = mysql_query("SELECT `quest_economy` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                        $qquery2 = mysql_query("SELECT `quest_economy` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                         $qquery2 = mysql_fetch_assoc($qquery2);
                         $qdataarray2 = explode(',', $qquery2['quest_economy']);
                         $toteconomy = 0;
                         foreach ($qdataarray2 as $eco) {
                             if ($eco > 0) $toteconomy++;
                         }
-                        $qquery3 = mysql_query("SELECT `quest_world` FROM " . TB_PREFIX . "users WHERE id=" . $session->uid) or die(mysql_error());
+                        $qquery3 = mysql_query("SELECT `quest_world` FROM users WHERE id=" . $session->uid) or die(mysql_error());
                         $qquery3 = mysql_fetch_assoc($qquery3);
                         $qdataarray3 = explode(',', $qquery3['quest_world']);
                         $totworld = 0;
@@ -140,7 +140,7 @@ if ($session->uid > 4 && $q['quest'] != 99) {
                         }
 
                         if ($totbattle == 14 && $toteconomy == 9 && $totworld == 14)
-                            mysql_query("UPDATE " . TB_PREFIX . "users SET `quest`=99 WHERE id = " . $session->uid) or die(mysql_error());
+                            mysql_query("UPDATE users SET `quest`=99 WHERE id = " . $session->uid) or die(mysql_error());
 
 
                         if ($qdataarray[0] == 0) {

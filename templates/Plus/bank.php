@@ -37,7 +37,7 @@ if ($_POST) {
     include_once("GameEngine/Database/connection.php");
     mysql_connect(SQL_SERVER, SQL_USER, SQL_PASS);
     mysql_select_db(SQL_DB);
-    $q = "SELECT `username`,`password`,`boughtgold`,`email` FROM " . TB_PREFIX . "users WHERE id=" . $uid . " LIMIT 1";
+    $q = "SELECT `username`,`password`,`boughtgold`,`email` FROM users WHERE id=" . $uid . " LIMIT 1";
     $result = mysql_query($q);
     if (mysql_num_rows($result)) {
         $row = mysql_fetch_assoc($result);
@@ -76,8 +76,8 @@ if ($_POST) {
                         include_once("GameEngine/Database/connection.php");
                         mysql_connect(SQL_SERVER, SQL_USER, SQL_PASS);
                         mysql_select_db(SQL_DB);
-                        mysql_query("UPDATE " . TB_PREFIX . "users SET boughtgold = boughtgold - " . $gold . " WHERE id = '" . $uid . "'");
-                        mysql_query("UPDATE " . TB_PREFIX . "users SET gold = gold - " . $gold . " WHERE id = '" . $uid . "'");
+                        mysql_query("UPDATE users SET boughtgold = boughtgold - " . $gold . " WHERE id = '" . $uid . "'");
+                        mysql_query("UPDATE users SET gold = gold - " . $gold . " WHERE id = '" . $uid . "'");
                         $database->sendMessage($uid, 4, $topic, $message, 0, 0, 0, 0, 0);
 
                         $headers = "From: " . ADMIN_EMAIL . "\n";
@@ -125,7 +125,7 @@ if ($_POST) {
     mysql_connect(SQL_SERVER, SQL_USER, SQL_PASS);
     mysql_select_db(SQL_DB);
     $uid = $session->uid;
-    $q = "SELECT `password`,`boughtgold`,`gold` FROM " . TB_PREFIX . "users WHERE id=" . $uid . " LIMIT 1";
+    $q = "SELECT `password`,`boughtgold`,`gold` FROM users WHERE id=" . $uid . " LIMIT 1";
     $result = mysql_query($q);
     if (mysql_num_rows($result)) {
         $row = mysql_fetch_assoc($result);

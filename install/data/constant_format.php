@@ -16,7 +16,7 @@ if (file_exists(dirname(__FILE__) . '/Database/connection.php')) {
 }
 mysql_connect(SQL_SERVER, SQL_USER, SQL_PASS);
 mysql_select_db(SQL_DB);
-$sql = mysql_query("SELECT * FROM " . TB_PREFIX . "config");
+$sql = mysql_query("SELECT * FROM config");
 $result = mysql_fetch_array($sql);
 
 define('DEVEL_MODE', '0');

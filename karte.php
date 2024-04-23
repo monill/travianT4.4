@@ -6,7 +6,7 @@ $start = $generator->pageLoadTimeStart();
 if (isset($_GET['newdid'])) {
     $_GET['newdid'] = filter_var($_GET['newdid'], FILTER_SANITIZE_NUMBER_INT);
 
-    $t = mysql_query("SELECT `owner` FROM " . TB_PREFIX . "vdata WHERE wref = " . $_GET['newdid'] . " LIMIT 1");
+    $t = mysql_query("SELECT `owner` FROM vdata WHERE wref = " . $_GET['newdid'] . " LIMIT 1");
     $row = mysql_fetch_assoc($t);
     if ($row['owner'] == $session->uid) {
         $_SESSION['wid'] = $_GET['newdid'];

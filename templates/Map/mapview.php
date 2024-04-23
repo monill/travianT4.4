@@ -8,7 +8,7 @@ if (isset($_GET['x']) && isset($_GET['y'])) {
 } else {
     $coorproc = $database->getCoor($village->wid);
 }
-$sql = mysql_query("SELECT `id`,`wref`,`dif` FROM " . TB_PREFIX . "adventure WHERE end = 0 and uid = " . $session->uid . " ORDER BY time ASC");
+$sql = mysql_query("SELECT `id`,`wref`,`dif` FROM adventure WHERE end = 0 and uid = " . $session->uid . " ORDER BY time ASC");
 $query = mysql_num_rows($sql);
 include('templates/Auction/alt.php');
 $adv = array();
@@ -599,7 +599,7 @@ if ($query != 0) {
                                     echo $adventure;
                                 }
 
-                                $pflagsQ = mysql_query("SELECT `id`,`x`,`y`,`index`,`text`,`dataId` FROM " . TB_PREFIX . "map_marks WHERE uid = " . $session->uid . " AND type !='player' ORDER BY id ASC") or die(mysql_error());
+                                $pflagsQ = mysql_query("SELECT `id`,`x`,`y`,`index`,`text`,`dataId` FROM map_marks WHERE uid = " . $session->uid . " AND type !='player' ORDER BY id ASC") or die(mysql_error());
                                 while ($row = mysql_fetch_assoc($pflagsQ)) {
                                     echo '{"x":' . $row['x'] .
                                         ',"y":' . $row['y'] .
@@ -619,12 +619,7 @@ if ($query != 0) {
                                 data: [
                                     <?php
 
-                                    $pflagsQ = mysql_query(
-                                        "SELECT `id`,`uid`,`x`,`y`,`index`,`text` FROM "
-                                            . TB_PREFIX .
-                                            "map_marks WHERE uid = " . $session->uid .
-                                            " AND type = 'player' ORDER BY id ASC"
-                                    ) or die(mysql_error());
+                                    $pflagsQ = mysql_query("SELECT `id`,`uid`,`x`,`y`,`index`,`text` FROM map_marks WHERE uid = " . $session->uid . " AND type = 'player' ORDER BY id ASC") or die(mysql_error());
                                     while ($rows = mysql_fetch_assoc($pflagsQ)) {
                                         echo '{"color":"' . $rows['index'] .
                                             '","text":"' . $rows['text'] .
@@ -632,13 +627,7 @@ if ($query != 0) {
                                             '","layer":"player","dataId":"' . $rows['id'] .
                                             '"},';
                                     }
-                                    $flagsQ = mysql_query(
-                                        "SELECT `id`,`x`,`y`,`index`,`text` FROM " . TB_PREFIX
-                                            .
-                                            "map_marks WHERE uid = " . $session->uid .
-                                            " AND type !='player' ORDER BY id ASC"
-                                    ) or die(mysql_error());
-
+                                    $flagsQ = mysql_query("SELECT `id`,`x`,`y`,`index`,`text` FROM map_marks WHERE uid = " . $session->uid . " AND type !='player' ORDER BY id ASC") or die(mysql_error());
                                     while ($row = mysql_fetch_assoc($flagsQ)) {
                                         echo '{"index":"' . $row['index'] .
                                             '","text":"' . $row['text'] .

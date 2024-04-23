@@ -1,4 +1,5 @@
 <?php
+
 if (isset($_GET['x']) && isset($_GET['y'])) {
     $coorproc['x'] = $_GET['x'];
     $coorproc['y'] = $_GET['y'];
@@ -8,7 +9,7 @@ if (isset($_GET['x']) && isset($_GET['y'])) {
 } else {
     $coorproc = $database->getCoor($village->wid);
 }
-$sql = mysql_query("SELECT `id`,`wref`,`dif` FROM " . TB_PREFIX . "adventure WHERE end = 0 and uid = " . $session->uid . " ORDER BY time ASC");
+$sql = mysql_query("SELECT `id`,`wref`,`dif` FROM adventure WHERE end = 0 and uid = " . $session->uid . " ORDER BY time ASC");
 $query = mysql_num_rows($sql);
 include('templates/Auction/alt.php');
 $adv = array();
@@ -26,6 +27,7 @@ if ($query != 0) {
     }
 }
 ?>
+
 <div id="content" class="map">
     <h1 class="titleInHeader">Map</h1>
 
@@ -322,11 +324,10 @@ if ($query != 0) {
         </div>
     </div>
 
-
     <script type="text/javascript">
         Travian.Translation.add({
             'k.spieler': '<?php echo AL_PLAYER; ?>',
-            'k.einwohner': '<?php echo POPUALTION; ?>',
+            'k.einwohner': '<?php echo POPULATION; ?>',
             'k.allianz': '<?php echo AL_ALLIANCE; ?>',
             'k.volk': '<?php echo TRIBE; ?>',
             'k.dt': '<?php echo VL_VILLAGE; ?>',
@@ -418,30 +419,19 @@ if ($query != 0) {
             var containerViewSize = {
                 width: 543,
                 height: 401
-            }; <
-            ?
-            php
-            if ($_GET['fullscreen'] == 1) {
-                ?
-                >
+            };
+            <?php if ($_GET['fullscreen'] == 1) { ?>
                 var resizeTimer;
                 window.addEvent('resize', function() {
                     clearTimeout(resizeTimer); //firefox fix for resize event
                     resizeTimer = (function() {
                         window.location.reload();
                     }).delay(50);
-                }); <
-                ?
-                php
-            } ? >
+                });
+            <?php } ?>
             var fnDelayMe = function() {
 
-                <
-                ?
-                php
-                if ($_GET['fullscreen'] == 1) {
-                    ?
-                    >
+                <?php if ($_GET['fullscreen'] == 1) { ?>
                     if ($('betaBox')) {
                         $('betaBox').dispose();
                     }
@@ -458,10 +448,8 @@ if ($query != 0) {
                         top: fullScreenSize.top,
                         width: containerViewSize.width,
                         height: containerViewSize.height
-                    }); <
-                    ?
-                    php
-                } ? >
+                    });
+                <?php } ?>
                 var fnInit = function() {
                     Travian.Game.Map.Options.Rulers.steps = Object.merge({},
                         Travian.Game.Map.Options.Rulers.steps, {
@@ -605,19 +593,13 @@ if ($query != 0) {
                         },
 
                         data: {
-                            "elements": [ <
-                                ?
-                                php
+                            "elements": [
+                                <?php
                                 foreach($adv as $adventure) {
                                     echo $adventure;
                                 }
 
-                                $pflagsQ = mysql_query(
-                                    "SELECT `id`,`x`,`y`,`index`,`text`,`dataId` FROM "
-                                    .TB_PREFIX.
-                                    "map_marks WHERE uid = ".$session - > uid.
-                                    " AND type !='player' ORDER BY id ASC") or die(
-                                    mysql_error());
+                                $pflagsQ = mysql_query("SELECT `id`,`x`,`y`,`index`,`text`,`dataId` FROM map_marks WHERE uid = " . $session->uid . " AND type !='player' ORDER BY id ASC") or die(mysql_error());
                                 while ($row = mysql_fetch_assoc($pflagsQ)) {
                                     echo '{"x":'.$row['x'].
                                     ',"y":'.$row['y'].
@@ -626,23 +608,17 @@ if ($query != 0) {
                                     '","kid": "1","plus": "0","type": "flag","layer": "player","dataId": "'
                                     .$row['dataId'].
                                     '"}]},';
-                                } ?
-                                >
+                                }
+                                ?>
                             ],
                             "blocks": {}
                         },
 
                         mapMarks: {
                             player: {
-                                data: [ <
-                                    ?
-                                    php
-                                    $pflagsQ = mysql_query(
-                                        "SELECT `id`,`uid`,`x`,`y`,`index`,`text` FROM "
-                                        .TB_PREFIX.
-                                        "map_marks WHERE uid = ".$session - > uid.
-                                        " AND type = 'player' ORDER BY id ASC") or die(
-                                        mysql_error());
+                                data: [
+                                    <?php
+                                    $pflagsQ = mysql_query("SELECT `id`,`uid`,`x`,`y`,`index`,`text` FROM map_marks WHERE uid = ".$session->uid." AND type = 'player' ORDER BY id ASC") or die(mysql_error());
                                     while ($rows = mysql_fetch_assoc($pflagsQ)) {
                                         echo '{"color":"'.$rows['index'].
                                         '","text":"'.$rows['text'].
@@ -650,13 +626,7 @@ if ($query != 0) {
                                         '","layer":"player","dataId":"'.$rows['id'].
                                         '"},';
                                     }
-                                    $flagsQ = mysql_query(
-                                        "SELECT `id`,`x`,`y`,`index`,`text` FROM ".TB_PREFIX
-                                        .
-                                        "map_marks WHERE uid = ".$session - > uid.
-                                        " AND type !='player' ORDER BY id ASC") or die(
-                                        mysql_error());
-
+                                    $flagsQ = mysql_query("SELECT `id`,`x`,`y`,`index`,`text` FROM map_marks WHERE uid = ".$session->uid." AND type !='player' ORDER BY id ASC") or die(mysql_error());
                                     while ($row = mysql_fetch_assoc($flagsQ)) {
                                         echo '{"index":"'.$row['index'].
                                         '","text":"'.$row['text'].
@@ -665,8 +635,8 @@ if ($query != 0) {
                                         '","x":'.$row['x'].
                                         ',"y":'.$row['y'].
                                         '},';
-                                    } ?
-                                    >
+                                    }
+                                    ?>
                                 ],
 
                                 layers: {

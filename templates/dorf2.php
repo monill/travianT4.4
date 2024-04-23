@@ -87,7 +87,7 @@
         }
         if ($village->resarray['f' . $t] > 20) {
             $ids = 'f' . $t;
-            mysql_query("UPDATE " . TB_PREFIX . "fdata SET $ids = 20 WHERE vref=" . $village->wid);
+            mysql_query("UPDATE fdata SET $ids = 20 WHERE vref=" . $village->wid);
         }
     ?>
 

@@ -9,10 +9,10 @@ function sendAdventuresComplete()
     if (!$database->checkConnection()) {
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
-    $q2 = "DELETE FROM " . TB_PREFIX . "adventure WHERE end = 1";
+    $q2 = "DELETE FROM adventure WHERE end = 1";
     $database->query($q2);
     $time = time();
-    $q = "SELECT `to`,`from`,`endtime`,`moveid` FROM " . TB_PREFIX . "movement where proc = 0 and sort_type = 9 and endtime <= $time LIMIT 100";
+    $q = "SELECT `to`,`from`,`endtime`,`moveid` FROM movement where proc = 0 and sort_type = 9 and endtime <= $time LIMIT 100";
     $dataarray = $database->query_return($q);
     foreach ($dataarray as $data) {
         $fromMInfo = $database->getMInfo($data['from']);
@@ -205,8 +205,6 @@ function sendAdventuresComplete()
         }
         $database->setMovementProc($data['moveid']);
     }
-    $q2 = "UPDATE " . TB_PREFIX . "adventure SET end = 1 WHERE time <= " . time();
+    $q2 = "UPDATE adventure SET end = 1 WHERE time <= " . time();
     $database->query($q2);
 }
-
-?>

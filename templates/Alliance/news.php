@@ -480,7 +480,7 @@ echo "<h1 class=\"titleInHeader\">" . $allianceinfo['tag'] . " - " . $alliancein
             <h4 class="chartHeadline">
                 <?php
 
-                $sql = mysql_query("SELECT `id` FROM " . TB_PREFIX . "forum_topic WHERE alliance = " . $session->alliance . " LIMIT 20");
+                $sql = mysql_query("SELECT `id` FROM forum_topic WHERE alliance = " . $session->alliance . " LIMIT 20");
                 $query = mysql_num_rows($sql);
 
                 if (isset($_GET['page'])) {
@@ -597,10 +597,10 @@ echo "<h1 class=\"titleInHeader\">" . $allianceinfo['tag'] . " - " . $alliancein
                 $limit = 'LIMIT ' . ($page - 1) * $itemsPerPage . ',' . $itemsPerPage;
 
                 if ($query != 0) {
-                    $q = "SELECT `post`,`topic` FROM " . TB_PREFIX . "forum_post order by id DESC $limit";
+                    $q = "SELECT `post`,`topic` FROM forum_post order by id DESC $limit";
                     $Posts = $database->query_return($q);
                     foreach ($Posts as $ps) {
-                        $q2 = "SELECT * FROM " . TB_PREFIX . "forum_topic WHERE `id`= " . $ps['topic'] . " && `alliance` = " . $session->alliance . "";
+                        $q2 = "SELECT * FROM forum_topic WHERE `id`= " . $ps['topic'] . " && `alliance` = " . $session->alliance . "";
                         $z = mysql_query($q2);
                         $z = mysql_fetch_array($z);
                         if ($z) {

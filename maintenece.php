@@ -47,7 +47,7 @@ include('templates/html.php');
                             <center>
                                 <br><br>
                                 <?php
-                                $q = mysql_query("SELECT * FROM " . TB_PREFIX . "maintenece");
+                                $q = mysql_query("SELECT * FROM maintenece");
                                 $conf = mysql_fetch_assoc($q);
 
                                 if ($conf['active'] != 1) {
@@ -102,7 +102,7 @@ include('templates/html.php');
                                 echo "</font></a></p>";
                                 if (isset($_GET['refresh'])) {
                                     if (time() > $conf['time']) {
-                                        mysql_query("UPDATE " . TB_PREFIX . "maintenece set active=0,time=0,reason=''") or die(mysql_error());
+                                        mysql_query("UPDATE maintenece set active=0,time=0,reason=''") or die(mysql_error());
                                         echo "<SCRIPT language='JavaScript'>window.location='dorf1.php';</SCRIPT>";
                                     } else {
                                         echo "<center><font color=red size = 3.5><b>" . BD_NOTFINISH . "</b></font></center>";

@@ -1,5 +1,5 @@
 <?php
-$prefix = "" . TB_PREFIX . "mdata";
+$prefix = "mdata";
 $sql = mysql_query("SELECT * FROM $prefix WHERE owner = $session->uid AND archived = 0 AND delowner = 0 ORDER BY time DESC");
 $query = mysql_num_rows($sql);
 

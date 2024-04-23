@@ -114,7 +114,7 @@ $da14name = $to['name'];
                 </div>
                 <div id="message">
                     <?php
-                    $result = mysql_query('SELECT `nopicn` ' . TB_PREFIX . 'users_setting WHERE id = ' . $session->uid . ' LIMIT 1');
+                    $result = mysql_query('SELECT `nopicn` users_setting WHERE id = ' . $session->uid . ' LIMIT 1');
                     $query = mysql_fetch_assoc($result);
                     if ($query['nopicn'] == 0) {
                     ?>

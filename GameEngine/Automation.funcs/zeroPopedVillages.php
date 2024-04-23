@@ -6,24 +6,24 @@ function zeroPopedVillages()
     if (!$database->checkConnection()) {
         throw new Exception(__FILE__ . ' cant connect to database.');
     }
-    $q = "SELECT * FROM " . TB_PREFIX . "vdata WHERE pop <= 0 AND owner > 4 AND natar = 0 LIMIT 5";
+    $q = "SELECT * FROM vdata WHERE pop <= 0 AND owner > 4 AND natar = 0 LIMIT 5";
     $array = $database->query_return($q);
     if (!empty($array)) {
         foreach ($array as $zp) {
             if ($zp['capital'] == 1) {
                 //delete bdata, research, training, market, artefacts, demolition
-                //$q = "DELETE FROM " . TB_PREFIX . "bdata WHERE wid=" . ($zp['wref']);
+                //$q = "DELETE FROM bdata WHERE wid=" . ($zp['wref']);
                 //$database->query($q);
-                //$q = "DELETE FROM " . TB_PREFIX . "research WHERE vref=" . ($zp['wref']);
+                //$q = "DELETE FROM research WHERE vref=" . ($zp['wref']);
                 //$database->query($q);
-                //$q = "DELETE FROM " . TB_PREFIX . "training WHERE vref=" . ($zp['wref']);
+                //$q = "DELETE FROM training WHERE vref=" . ($zp['wref']);
                 //$database->query($q);
-                //$q = "DELETE FROM " . TB_PREFIX . "market WHERE vref=" . ($zp['wref']);
+                //$q = "DELETE FROM market WHERE vref=" . ($zp['wref']);
                 //$database->query($q);
 
                 //-------------
 
-                $q = "DELETE FROM " . TB_PREFIX . "demolition WHERE vref=" . ($zp['wref']);
+                $q = "DELETE FROM demolition WHERE vref=" . ($zp['wref']);
                 $database->query($q);
                 //$ownerVillages = $database->getArrayMemberVillage($zp['owner']);
                 // if(!empty($ownerVillages)){
@@ -33,58 +33,58 @@ function zeroPopedVillages()
                 // $bigestV = $ownerVillages[1];
                 // }
                 // if (!empty($bigestV) && $bigestV['capital']!=1){
-                // $q = "UPDATE ".TB_PREFIX."vdata SET capital=1 WHERE wref=".($bigestV['wref']); $database->query($q);
+                // $q = "UPDATE vdata SET capital=1 WHERE wref=".($bigestV['wref']); $database->query($q);
                 // }
                 // }
             } else {
                 //delete fdata, abdata, bdata, research, tdata, training, vdata, market, artefacts, demolition, farm list and raidlist
-                $q = "DELETE FROM " . TB_PREFIX . "demolition WHERE vref=" . ($zp['wref']);
+                $q = "DELETE FROM demolition WHERE vref=" . ($zp['wref']);
                 $database->query($q);
-                $q = "DELETE FROM " . TB_PREFIX . "vdata WHERE wref=" . ($zp['wref']);
+                $q = "DELETE FROM vdata WHERE wref=" . ($zp['wref']);
                 $database->query($q);
-                $q = "DELETE FROM " . TB_PREFIX . "bdata WHERE wid=" . ($zp['wref']);
+                $q = "DELETE FROM bdata WHERE wid=" . ($zp['wref']);
                 $database->query($q);
-                $q = "DELETE FROM " . TB_PREFIX . "fdata WHERE vref=" . ($zp['wref']);
+                $q = "DELETE FROM fdata WHERE vref=" . ($zp['wref']);
                 $database->query($q);
-                $q = "DELETE FROM " . TB_PREFIX . "abdata WHERE vref=" . ($zp['wref']);
+                $q = "DELETE FROM abdata WHERE vref=" . ($zp['wref']);
                 $database->query($q);
-                $q = "DELETE FROM " . TB_PREFIX . "tdata WHERE vref=" . ($zp['wref']);
+                $q = "DELETE FROM tdata WHERE vref=" . ($zp['wref']);
                 $database->query($q);
-                $q = "DELETE FROM " . TB_PREFIX . "training WHERE vref=" . ($zp['wref']);
+                $q = "DELETE FROM training WHERE vref=" . ($zp['wref']);
                 $database->query($q);
                 //update wdata for capture release
-                $q = "UPDATE " . TB_PREFIX . "wdata SET occupied=0 WHERE id=" . ($zp['wref']);
+                $q = "UPDATE wdata SET occupied=0 WHERE id=" . ($zp['wref']);
                 $database->query($q);
                 //release exp, and change expandedfrom
-                $q = "SELECT * FROM " . TB_PREFIX . "vdata WHERE wref=" . ($zp['expandedfrom']);
+                $q = "SELECT * FROM vdata WHERE wref=" . ($zp['expandedfrom']);
                 $expfrom = $database->query_return($q);
                 if (!empty($expfrom)) {
                     for ($i = 1; $i <= 3; $i++) {
                         if ($expfrom[0]['exp' . $i] == $zp['wref']) {
-                            $q = "UPDATE " . TB_PREFIX . "vdata SET exp" . $i . "=0 WHERE wref=" . ($expfrom[0]['wref']);
+                            $q = "UPDATE vdata SET exp" . $i . "=0 WHERE wref=" . ($expfrom[0]['wref']);
                             $database->query($q);
                         }
                     }
                 }
-                $q = "UPDATE " . TB_PREFIX . "vdata SET expandedfrom=0 WHERE expandedfrom=" . ($zp['wref']);
+                $q = "UPDATE vdata SET expandedfrom=0 WHERE expandedfrom=" . ($zp['wref']);
                 $database->query($q);
 
                 //send kill home troops, kill sent reinf
-                //$q = "DELETE FROM " . TB_PREFIX . "units WHERE vref=" . ($zp['wref']);
+                //$q = "DELETE FROM units WHERE vref=" . ($zp['wref']);
                 //$database->query($q);
-                $q = "DELETE FROM " . TB_PREFIX . "enforcement WHERE `from`=" . ($zp['wref']);
+                $q = "DELETE FROM enforcement WHERE `from`=" . ($zp['wref']);
                 $database->query($q);
 
-                $q = "SELECT * FROM " . TB_PREFIX . "farmlist WHERE wref=" . ($zp['wref']);
+                $q = "SELECT * FROM farmlist WHERE wref=" . ($zp['wref']);
                 $flist = $database->query_return($q);
                 if (!empty($flist)) {
                     foreach ($flist as $fl) {
-                        $q = "DELETE FROM " . TB_PREFIX . "raidlist WHERE lid=" . ($fl['id']);
+                        $q = "DELETE FROM raidlist WHERE lid=" . ($fl['id']);
                         $database->query($q);
                     }
                 }
 
-                $q = "DELETE FROM " . TB_PREFIX . "farmlist WHERE wref=" . ($zp['wref']);
+                $q = "DELETE FROM farmlist WHERE wref=" . ($zp['wref']);
                 $database->query($q);
 
                 //die hero set hero dead
@@ -98,60 +98,60 @@ function zeroPopedVillages()
                             $bigestV = $ownerVillages[1];
                         }
                         if (!empty($bigestV)) {
-                            $q = "UPDATE " . TB_PREFIX . "hero SET `health`=0,`dead`=1,`wref`=" . $bigestV['wref'] . " WHERE `uid`=" . ($zpHero['uid']);
+                            $q = "UPDATE hero SET `health`=0,`dead`=1,`wref`=" . $bigestV['wref'] . " WHERE `uid`=" . ($zpHero['uid']);
                             $database->query($q);
                         }
                     }
                 }
 
                 //release oases odata/wdata
-                $q = "SELECT * FROM " . TB_PREFIX . "odata WHERE conqured=" . ($zp['wref']);
+                $q = "SELECT * FROM odata WHERE conqured=" . ($zp['wref']);
                 $olist = $database->query_return($q);
                 if (!empty($olist)) {
                     foreach ($olist as $o) {
-                        $q = "UPDATE " . TB_PREFIX . "wdata SET occupied=0 WHERE id=" . ($o['wref']);
+                        $q = "UPDATE wdata SET occupied=0 WHERE id=" . ($o['wref']);
                         $database->query($q);
                     }
                 }
-                $q = "UPDATE " . TB_PREFIX . "odata SET conqured=0,owner=3 WHERE conqured=" . ($zp['wref']);
+                $q = "UPDATE odata SET conqured=0,owner=3 WHERE conqured=" . ($zp['wref']);
                 $database->query($q);
 
-                $q = "SELECT `vref` FROM " . TB_PREFIX . "artefacts WHERE owner = 2 LIMIT 1";
+                $q = "SELECT `vref` FROM artefacts WHERE owner = 2 LIMIT 1";
                 $get = $database->query($q);
                 $get = mysql_fetch_assoc($get);
 
                 $newvill = $get['vref'];
 
-                $q = "UPDATE " . TB_PREFIX . "artefacts SET owner = 2,vref = $newvill, conquered = 0, lastupdate = 0 WHERE vref=" . ($zp['wref']);
+                $q = "UPDATE artefacts SET owner = 2,vref = $newvill, conquered = 0, lastupdate = 0 WHERE vref=" . ($zp['wref']);
                 $database->query($q);
             }
             /*
                             //delete movement,attack
-                            $q = "SELECT * FROM " . TB_PREFIX . "attacks WHERE vref=" . ($zp['wref']);
+                            $q = "SELECT * FROM attacks WHERE vref=" . ($zp['wref']);
                             $attacks = $database->query_return($q);
                             if (!empty($attacks)) {
                                 foreach ($attacks as $a) {
-                                    $q = "DELETE FROM " . TB_PREFIX . "movement WHERE ref=" . ($a['id']);
+                                    $q = "DELETE FROM movement WHERE ref=" . ($a['id']);
                                     $database->query($q);
                                 }
                             }
-                            $q = "DELETE FROM " . TB_PREFIX . "attacks WHERE vref=" . ($zp['wref']);
+                            $q = "DELETE FROM attacks WHERE vref=" . ($zp['wref']);
                             $database->query($q);
             */
             //delete movement,send
-            /*$q = "SELECT * FROM " . TB_PREFIX . "send, " . TB_PREFIX . "movement WHERE " . TB_PREFIX . "send.id = " . TB_PREFIX . "movement.ref AND " . TB_PREFIX . "movement.proc = 0 AND ((" . TB_PREFIX . "movement.from = " . $zp['wref'] . " AND sort_type = 0) OR (" . TB_PREFIX . "movement.to = " . $zp['wref'] . " AND sort_type = 1))";
+            /*$q = "SELECT * FROM send, movement WHERE send.id = movement.ref AND movement.proc = 0 AND ((movement.from = " . $zp['wref'] . " AND sort_type = 0) OR (movement.to = " . $zp['wref'] . " AND sort_type = 1))";
             $sent = $database->query_return($q);
             if (!empty($sent)) {
                 foreach ($sent as $s) {
-                    $q = "DELETE FROM " . TB_PREFIX . "movement WHERE moveid=" . ($s['moveid']);
+                    $q = "DELETE FROM movement WHERE moveid=" . ($s['moveid']);
                     $database->query($q);
-                    $q = "DELETE FROM " . TB_PREFIX . "send WHERE id=" . ($s['id']);
+                    $q = "DELETE FROM send WHERE id=" . ($s['id']);
                     $database->query($q);
                 }
             }*/
 
             //send back trapped
-            $q = "SELECT * FROM " . TB_PREFIX . "trapped WHERE vref=" . ($zp['wref']);
+            $q = "SELECT * FROM trapped WHERE vref=" . ($zp['wref']);
             $trappeds = $database->query_return($q);
             if (!empty($trappeds)) {
                 foreach ($trappeds as $trp) {
@@ -198,11 +198,11 @@ function zeroPopedVillages()
                 }
             }
 
-            $q = "DELETE FROM " . TB_PREFIX . "trapped WHERE vref=" . ($zp['wref']);
+            $q = "DELETE FROM trapped WHERE vref=" . ($zp['wref']);
             $database->query($q);
 
             //send back reinf
-            /*$q = "SELECT * FROM " . TB_PREFIX . "enforcement WHERE vref=" . ($zp['wref']);
+            /*$q = "SELECT * FROM enforcement WHERE vref=" . ($zp['wref']);
             $enforces = $database->query_return($q);
             if (!empty($enforces)) {
                 foreach ($enforces as $enf) {
@@ -247,7 +247,7 @@ function zeroPopedVillages()
                     $database->addMovement(4, $zp['wref'], $to['wref'], $attRef, '', $returntime);
                 }
             }
-            $q = "DELETE FROM " . TB_PREFIX . "enforcement WHERE vref=" . ($zp['wref']);
+            $q = "DELETE FROM enforcement WHERE vref=" . ($zp['wref']);
             $database->query($q);
             */
             //$owner = $zp['owner'];

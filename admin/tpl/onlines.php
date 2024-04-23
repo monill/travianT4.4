@@ -25,7 +25,7 @@ $active = $this->model->getUserActive();
     </tr>
     <?php
     $time = time() - (60 * 5);
-    $sql = mysql_query("SELECT * FROM " . TB_PREFIX . "users where timestamp > $time and id > 3 ORDER BY username ASC $limit");
+    $sql = mysql_query("SELECT * FROM users where timestamp > $time and id > 3 ORDER BY username ASC $limit");
     $query = mysql_num_rows($sql);
     if (isset($_GET['page'])) { // Get page number
         $page = preg_replace('#[^0-9]#i', '', $_GET['page']); // Filter everything except numbers
@@ -135,12 +135,12 @@ $active = $this->model->getUserActive();
 
     $limit = 'LIMIT ' . ($page - 1) * $itemsPerPage . ',' . $itemsPerPage;
     $time = time() - (60 * 5);
-    $sql2 = mysql_query("SELECT * FROM " . TB_PREFIX . "users where timestamp > $time and id > 3 ORDER BY username ASC $limit");
+    $sql2 = mysql_query("SELECT * FROM users where timestamp > $time and id > 3 ORDER BY username ASC $limit");
 
     if ($query > 0) {
         while ($row = mysql_fetch_array($sql2)) {
             $uid = $row['id'];
-            $sql3 = mysql_query("SELECT * FROM " . TB_PREFIX . "vdata where owner = $uid");
+            $sql3 = mysql_query("SELECT * FROM vdata where owner = $uid");
             $vil = $database->mysql_fetch_all($sql3);
             $totalpop = 0;
 

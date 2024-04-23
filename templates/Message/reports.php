@@ -1,7 +1,8 @@
 ﻿<?php
+
 if ($session->uid == 4) {
     if (!isset($_GET['report'])) {
-        $prefix = TB_PREFIX . "msg_reports";
+        $prefix = "msg_reports";
         $sql = mysql_query("SELECT `id` FROM $prefix WHERE delet = 0 ORDER BY time DESC");
         $query = mysql_num_rows($sql);
 
@@ -115,8 +116,8 @@ if ($session->uid == 4) {
     <?php
     } else {
 
-        mysql_query("UPDATE " . TB_PREFIX . "msg_reports SET viewed = 1 WHERE id=" . $_GET['report']) or die(mysql_error());
-        $query = mysql_query("SELECT * FROM " . TB_PREFIX . "msg_reports WHERE `delet` = 0 AND id=" . $_GET['report']) or die(mysql_error());
+        mysql_query("UPDATE msg_reports SET viewed = 1 WHERE id=" . $_GET['report']) or die(mysql_error());
+        $query = mysql_query("SELECT * FROM msg_reports WHERE `delet` = 0 AND id=" . $_GET['report']) or die(mysql_error());
         $row = mysql_fetch_assoc($query);
         $id = $row["id"];
         $msg_id = $row["msg_id"];
@@ -124,7 +125,7 @@ if ($session->uid == 4) {
         $reason = $row["reason"];
         $time = $row["time"];
 
-        $query2 = mysql_query("SELECT * FROM " . TB_PREFIX . "mdata WHERE id=" . $msg_id) or die(mysql_error());
+        $query2 = mysql_query("SELECT * FROM mdata WHERE id=" . $msg_id) or die(mysql_error());
         $row2 = mysql_fetch_assoc($query2);
     ?>
         <div id="messageNavigation">
@@ -161,7 +162,7 @@ if ($session->uid == 4) {
 
                         <div class="separator"></div>
 
-                        <?php 
+                        <?php
                         $msg = "<b> فرستاده شده توسط : </b> <a href=\"spieler.php?uid=" . $row2['owner'] . "\"> " . $database->getUserField($row2['owner'], 'username', 0) . "</a>
 
 		<b> متن پیام : </b> ' " . $row2['message'] . " '"; ?>

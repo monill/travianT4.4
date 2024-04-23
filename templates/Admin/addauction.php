@@ -73,7 +73,7 @@ if (isset($_POST['submitted']) && $_POST['submitted'] == "yes") {
     } else {
         $mtime = 60 * 60;
     }*/
-    mysql_query("UPDATE " . TB_PREFIX . "autoauction SET active = 0") or die(mysql_error());
+    mysql_query("UPDATE autoauction SET active = 0") or die(mysql_error());
     for ($y = 1; $y < 16; $y++) {
         if (isset($_POST[$y . "_c"]) && !$_POST[$y . "_c"] == "") {
             if (isset($_POST[$y . "_n"]) && is_numeric($_POST[$y . "_n"]) && $_POST[$y . "_n"] > 0) {
@@ -83,7 +83,7 @@ if (isset($_POST['submitted']) && $_POST['submitted'] == "yes") {
                 $item_time = $_POST[$y . "_t"];
                 $qty = $item_qty;
 
-                mysql_query("UPDATE " . TB_PREFIX . "autoauction SET active = 1, number = '" . $item_qty . "', time = '" . $item_time . "' WHERE id = " . $item_id) or die(mysql_error());
+                mysql_query("UPDATE autoauction SET active = 1, number = '" . $item_qty . "', time = '" . $item_time . "' WHERE id = " . $item_id) or die(mysql_error());
             }
         }
     }
@@ -102,7 +102,7 @@ if (isset($_POST['submitted']) && $_POST['submitted'] == "yes") {
         </tr>
 
         <?php
-        $res = mysql_query("SELECT * FROM " . TB_PREFIX . "autoauction");
+        $res = mysql_query("SELECT * FROM autoauction");
         $rows[0] = '';
         while ($array = mysql_fetch_assoc($res)) {
             $rows[] = $array;

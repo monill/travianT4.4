@@ -3,16 +3,16 @@
 include_once(dirname(__FILE__) . "/../Database.php");
 include_once(dirname(__FILE__) . "/../Ranking.php");
 
-$row = mysql_fetch_assoc(mysql_query('SELECT `stats_lasttime`, `stats_time` FROM ' . TB_PREFIX . 'config'));
+$row = mysql_fetch_assoc(mysql_query('SELECT `stats_lasttime`, `stats_time` FROM config'));
 $stats_lasttime = $row['stats_lasttime'];
 $stats_time = $row['stats_time'];
 $TimerM = $stats_time + $stats_lasttime;
 
 if ($_SERVER['REQUEST_TIME'] > $TimerM) {
     global $database, $ranking;
-    $res = mysql_query("SELECT `wref`, `owner`, `wood`, `clay`, `iron`, `crop`, `pop` FROM " . TB_PREFIX . "vdata WHERE owner > 4 AND natar != 1");
+    $res = mysql_query("SELECT `wref`, `owner`, `wood`, `clay`, `iron`, `crop`, `pop` FROM vdata WHERE owner > 4 AND natar != 1");
     while ($user = mysql_fetch_assoc($res)) {
-        $q = mysql_query("SELECT `id`, `timestamp`, `tribe`, `plus` FROM " . TB_PREFIX . "users WHERE id = '" . $user['owner'] . "'") or die(mysql_error());
+        $q = mysql_query("SELECT `id`, `timestamp`, `tribe`, `plus` FROM users WHERE id = '" . $user['owner'] . "'") or die(mysql_error());
         $t = mysql_fetch_assoc($q);
         $time = $_SERVER['REQUEST_TIME'];
         if (($time - $t['timestamp']) < (3600 * 24) && $t['plus'] > $time) {
@@ -48,8 +48,8 @@ if ($_SERVER['REQUEST_TIME'] > $TimerM) {
                 }
             }
             $myrank = $ranking->getUserRank($t['id']);
-            mysql_query("INSERT INTO " . TB_PREFIX . "stats values ('','$owner','$amount','$rein','$tot','$pop','$myrank','$time')") or die(mysql_error());
+            mysql_query("INSERT INTO stats values ('','$owner','$amount','$rein','$tot','$pop','$myrank','$time')") or die(mysql_error());
         }
     }
-    mysql_query("UPDATE " . TB_PREFIX . "config SET `stats_lasttime` = '" . $time . "' ") or die(mysql_error());
+    mysql_query("UPDATE config SET `stats_lasttime` = '" . $time . "' ") or die(mysql_error());
 }

@@ -105,7 +105,7 @@ include("templates/html.php");
                                 if ($aucData['owner'] == $session->uid && !(($usedtime > (AUCTIONTIME / 10)) || ($bids != 0)))
                                     $database->delAuction($_GET['abort']);
                             }
-                            $sql = mysql_query("SELECT * FROM " . TB_PREFIX . "auction WHERE finish = 0 and owner = '" . $session->uid . "'");
+                            $sql = mysql_query("SELECT * FROM auction WHERE finish = 0 and owner = '" . $session->uid . "'");
                             $query = mysql_num_rows($sql);
                             if (isset($_GET['action']) && $_GET['action'] == 'sell' && isset($_POST['a']) && $_POST['a'] == 'e45') {
                                 $_POST['amount'] = intval($_POST['amount']);
@@ -143,7 +143,7 @@ include("templates/html.php");
                                                 } else {
                                                     $database->addBid($_POST['a'], $session->uid, $getBidData['silver'] + 1, $_POST['maxBid'], $newtime);
                                                     $database->setSilver($session->uid, $_POST['maxBid'], 0);
-                                                    $q = 'UPDATE ' . TB_PREFIX . 'users SET bisilver=bisilver+' . $_POST['maxBid'] . ' WHERE id=' . $session->uid;
+                                                    $q = 'UPDATE users SET bisilver=bisilver+' . $_POST['maxBid'] . ' WHERE id=' . $session->uid;
                                                     mysql_query($q);
                                                 }
                                             } elseif ($getBidData['uid'] == $session->uid) {
@@ -154,12 +154,12 @@ include("templates/html.php");
                                                     $database->editBid($_POST['a'], $_POST['maxBid']);
                                                     if ($maxsilverchange > 0) {
                                                         $database->setSilver($session->uid, $maxsilverchange, 0);
-                                                        $q = 'UPDATE ' . TB_PREFIX . 'users SET bisilver=bisilver+' . $maxsilverchange . ' WHERE id=' . $session->uid;
+                                                        $q = 'UPDATE users SET bisilver=bisilver+' . $maxsilverchange . ' WHERE id=' . $session->uid;
                                                         mysql_query($q);
                                                     } elseif ($maxsilverchange < 0) {
                                                         $maxsilverchange *= -1;
                                                         $database->setSilver($session->uid, $maxsilverchange, 1);
-                                                        $q = 'UPDATE ' . TB_PREFIX . 'users SET bisilver=bisilver-' . $maxsilverchange . ' WHERE id=' . $session->uid;
+                                                        $q = 'UPDATE users SET bisilver=bisilver-' . $maxsilverchange . ' WHERE id=' . $session->uid;
                                                         mysql_query($q);
                                                     }
                                                 }
@@ -172,11 +172,11 @@ include("templates/html.php");
                                                         $bidError = 4;
                                                     } else {
                                                         $database->setSilver($getBidData['uid'], $getBidData['maxsilver'], 1);
-                                                        $q = 'UPDATE ' . TB_PREFIX . 'users SET bisilver=bisilver-' . $getBidData['maxsilver'] . ' WHERE id=' . $getBidData['uid'];
+                                                        $q = 'UPDATE users SET bisilver=bisilver-' . $getBidData['maxsilver'] . ' WHERE id=' . $getBidData['uid'];
                                                         mysql_query($q);
                                                         $database->addBid($_POST['a'], $session->uid, $getBidData['maxsilver'] + 1, $_POST['maxBid'], $newtime);
                                                         $database->setSilver($session->uid, $_POST['maxBid'], 0);
-                                                        $q = 'UPDATE ' . TB_PREFIX . 'users SET bisilver=bisilver+' . $_POST['maxBid'] . ' WHERE id=' . $session->uid;
+                                                        $q = 'UPDATE users SET bisilver=bisilver+' . $_POST['maxBid'] . ' WHERE id=' . $session->uid;
                                                         mysql_query($q);
                                                     }
                                                 }

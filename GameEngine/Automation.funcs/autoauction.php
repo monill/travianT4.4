@@ -4,7 +4,7 @@ include_once(dirname(__FILE__) . "/../Database.php");
 function autoauction()
 {
     $t = $_SERVER['REQUEST_TIME'];
-    $q = 'SELECT `time`,`lasttime`,`id`,`number` FROM ' . TB_PREFIX . 'autoauction WHERE active = 1';
+    $q = 'SELECT `time`,`lasttime`,`id`,`number` FROM autoauction WHERE active = 1';
     $result = mysql_query($q);
 
     while ($row = mysql_fetch_assoc($result)) {
@@ -16,7 +16,6 @@ function autoauction()
             $item_qty = $row['number'];
 
             $item_time = $row['time'] * 180;
-
 
             switch ($btype) {
                 case 1:
@@ -64,11 +63,9 @@ function autoauction()
                 case 15:
                     $type = 111;
                     break;
-
             }
 
             addAuctionNew(4, $btype, $type, $item_qty, $item_time);
-
         }
     }
 }
@@ -77,20 +74,18 @@ function addAuctionNew($owner, $btype, $type, $amount, $mtime)
 {
     global $database;
     $time = time() + $mtime;
-    $q = "INSERT INTO " . TB_PREFIX . "heroitems (`uid`, `btype`, `type`, `num`, `proc`) VALUES ('$owner', '$btype', '$type', '$amount', 1)";
+    $q = "INSERT INTO heroitems (`uid`, `btype`, `type`, `num`, `proc`) VALUES ('$owner', '$btype', '$type', '$amount', 1)";
     mysql_query($q, $database->connection);
     $item_id = mysql_insert_id($database->connection);
 
     if ($btype == 7 || $btype == 8 || $btype == 9 || $btype == 10 || $btype == 11 || $btype == 13 || $btype == 14) {
         $silver = $amount;
-        $q = "INSERT INTO " . TB_PREFIX . "auction (`owner`, `itemid`, `btype`, `type`, `num`, `uid`, `bids`, `silver`, `time`, `finish`) VALUES ('$owner', '$item_id', '$btype', '$type', '$amount', 0, 0, '$silver', '$time', 0)";
+        $q = "INSERT INTO auction (`owner`, `itemid`, `btype`, `type`, `num`, `uid`, `bids`, `silver`, `time`, `finish`) VALUES ('$owner', '$item_id', '$btype', '$type', '$amount', 0, 0, '$silver', '$time', 0)";
         mysql_query($q);
     } else {
         $silver = 100;
-        $q = "INSERT INTO " . TB_PREFIX . "auction (`owner`, `itemid`, `btype`, `type`, `num`, `uid`, `bids`, `silver`, `time`, `finish`) VALUES ('$owner', '$item_id', '$btype', '$type', '$amount', 0, 0, '$silver', '$time', 0)";
+        $q = "INSERT INTO auction (`owner`, `itemid`, `btype`, `type`, `num`, `uid`, `bids`, `silver`, `time`, `finish`) VALUES ('$owner', '$item_id', '$btype', '$type', '$amount', 0, 0, '$silver', '$time', 0)";
         mysql_query($q);
     }
-    mysql_query("UPDATE " . TB_PREFIX . "autoauction SET lasttime = " . time() . " WHERE id =" . $btype) or die(mysql_error());
+    mysql_query("UPDATE autoauction SET lasttime = " . time() . " WHERE id =" . $btype) or die(mysql_error());
 }
-
-?>

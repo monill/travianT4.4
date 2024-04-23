@@ -168,7 +168,7 @@ if ($_GET['uid'] == 2) {
             }
             echo "</td><td class=\"oases\">";
 
-            $prefix = TB_PREFIX . "odata";
+            $prefix = "odata";
             $uid = $_GET['uid'];
             $wref = $vil['wref'];
             $sql2 = mysql_query("SELECT * FROM $prefix WHERE owner = $uid AND conqured = $wref");

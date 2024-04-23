@@ -10,7 +10,7 @@ include_once("Automation.funcs/updateResource.php");
 if (!isset($security_system) && $security_system != 1) die("<b>Error:</b> Security Setting Must Be Enabled To Run Script!...");
 
 // Time Zone //
-$q = mysql_query("SELECT `timezone` FROM " . TB_PREFIX . "users WHERE id = $session->uid LIMIT 1");
+$q = mysql_query("SELECT `timezone` FROM users WHERE id = $session->uid LIMIT 1");
 $q = mysql_fetch_array($q);
 switch ($q['timezone']) {
     case 0:
@@ -262,10 +262,7 @@ class Village
 
         return $technology->getUnits($database->getUnit($vid), $database->getEnforceVillage($vid, 0));
     }
-
 }
 
 $village = new Village;
 $building = new Building;
-
-?>

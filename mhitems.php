@@ -7,7 +7,7 @@ if ($session->uid != 4) die("Hacking attempt!");
 
 if (isset($_GET['item'])) {
     if ($_GET['item'] == 'add') {
-        $res = mysql_query("DELETE FROM " . TB_PREFIX . "heroitems where `uid`=4") or die(mysql_error());
+        $res = mysql_query("DELETE FROM heroitems where `uid`=4") or die(mysql_error());
         $num = 100000;
         $btype = 1;
         for ($type = 1; $type <= 15; $type++) {
@@ -71,7 +71,7 @@ if (isset($_GET['item'])) {
         }
         echo 'added';
     } elseif ($_GET['item'] == 'remove') {
-        $res = mysql_query("DELETE FROM " . TB_PREFIX . "heroitems where `uid`=4") or die(mysql_error());
+        $res = mysql_query("DELETE FROM heroitems where `uid`=4") or die(mysql_error());
         echo 'removed';
     }
 } elseif (isset($_GET['au'])) {
@@ -187,7 +187,7 @@ if (isset($_GET['item'])) {
             $database->addHeroItem(4, $btype, $nntype, $num);
         }
     }
-    $result = mysql_query("SELECT * FROM " . TB_PREFIX . "heroitems WHERE uid=4 AND proc=0") or die(mysql_error());
+    $result = mysql_query("SELECT * FROM heroitems WHERE uid=4 AND proc=0") or die(mysql_error());
     while ($row = mysql_fetch_assoc($result)) {
         $database->addAuction(4, $row['id'], $row['btype'], $row['type'], $row['num']);
     }

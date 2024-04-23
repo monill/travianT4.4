@@ -30,24 +30,21 @@ if (!$basearray['occupied'] && $basearray['oasistype'] && !$basearray['fieldtype
     $s1 = 'oasis';
     $s2 = 'oasis-' . $basearray['oasistype'];
     $texts = "&#1570;&#1576;&#1575;&#1583;&#1740; &#1578;&#1587;&#1582;&#1740;&#1585; &#1606;&#1588;&#1583;&#1607;";
-
 } elseif ($basearray['occupied'] && $basearray['oasistype'] && !$basearray['fieldtype']) {
 
     $s1 = 'oasis';
     $s2 = 'oasis-' . $basearray['oasistype'];
     $texts = "&#1570;&#1576;&#1575;&#1583;&#1740; &#1578;&#1587;&#1582;&#1740;&#1585; &#1588;&#1583;&#1607;";
-
 } elseif ($basearray['occupied'] && !$basearray['oasistype'] && $basearray['fieldtype']) {
 
     $s1 = 'village';
     $s2 = 'village-' . $basearray['fieldtype'];
     $texts = $basearray['name'];
-
 } else if (!$basearray['occupied'] && !$basearray['oasistype'] && !$basearray['fieldtype']) {
 
     $s1 = 'landscape';
     $tile_split = explode('_', $basearray['image']);
-//echo $tile_split[0];
+    //echo $tile_split[0];
     if ($tile_split[0] == 'lake') {
         $matn = 'crop';
     } elseif ($tile_split[0] == 'hill') {
@@ -122,18 +119,15 @@ if ($blockAll == 0) {
 
         // $otext = ($basearray['occupied'] == 1)? $html .= '&#1570;&#1576;&#1575;&#1583;&#1740;' : $html .= '&#1578;&#1587;&#1582;&#1740;&#1585; &#1606;&#1588;&#1583;&#1607;';
 
-        if ($village->unitarray['u' . $session->tribe . '0'] >= 3 AND $enough_cp) {
+        if ($village->unitarray['u' . $session->tribe . '0'] >= 3 and $enough_cp) {
 
             $test = '<a href=\"a2b.php?id=' . $d . '&s=1\" class=\"a arrow\" >Found New village</a>';
-
-        } elseif ($village->unitarray['u' . $session->tribe . '0'] >= 3 AND !$enough_cp) {
+        } elseif ($village->unitarray['u' . $session->tribe . '0'] >= 3 and !$enough_cp) {
 
             $test = '<span class=\"a arrow disabled\" title=\"(' . $cps . '/' . $need_cps . ' culture points)\">Found New village</span>';
-
         } else {
 
             $test = '<span class=\"a arrow disabled\">Found New village.</span>';
-
         }
 
         $html .= ($basearray['fieldtype'] == 0) ? ($village->resarray['f39'] == 0) ? ($basearray['owner'] == $session->uid) ?
@@ -160,42 +154,37 @@ if ($blockAll == 0) {
 
 	<input type=\"hidden\" name=\"type\" value=\"addfarm\">';
 
-    $t = $database->getAInfo($database->getVillageID($data2['id']));
+            $t = $database->getAInfo($database->getVillageID($data2['id']));
 
-    $html .= '<input type=\"hidden\" name=\"x\" value=\"' . $t["x"] . '\">
+            $html .= '<input type=\"hidden\" name=\"x\" value=\"' . $t["x"] . '\">
 
 	<input type=\"hidden\" name=\"y\" value=\"' . $t["y"] . '\">
 
 	<button class=\"a arrow\" type=\"submit\" value=\"create\" value=\"reportButton repeat\" class=\"icon\" title=\"Add to farmlist\"\">اضافه کرده به فارم لیست</button>
 
 	</form></div>';
-
         }
-
     } else if ($basearray['occupied'] == 1 && $basearray['oasistype'] == 0 && $basearray['wref'] != $_SESSION['wid']) {
 
         $html .= '<div class=\"option\">';
 
-        $query1 = mysql_query('SELECT `owner` FROM `' . TB_PREFIX . 'vdata` WHERE `wref` = ' . $d . '');
+        $query1 = mysql_query('SELECT `owner` FROM `vdata` WHERE `wref` = ' . $d . '');
 
         $data1 = mysql_fetch_assoc($query1);
 
-        $query2 = mysql_query('SELECT `id`,`protect`,`username` FROM `' . TB_PREFIX . 'users` WHERE `id` = ' . $data1['owner'] . ' LIMIT 1');
+        $query2 = mysql_query('SELECT `id`,`protect`,`username` FROM `users` WHERE `id` = ' . $data1['owner'] . ' LIMIT 1');
 
         $data2 = mysql_fetch_assoc($query2);
 
         if ($database->checkBan($data2['id'])) {
 
             $html .= '<span class=\"a arrow disabled\" title=\"This Player Has been Banned\">&#1604;&#1588;&#1705;&#1585;&#1705;&#1588;&#1740;</span>';
-
         } else if ($data2['protect'] < time() || $data2['id'] == $session->uid) {
 
             $html .= $village->resarray['f39'] ? '<a href=\"a2b.php?z=' . $d . '\" class=\"a arrow\" >&#1604;&#1588;&#1705;&#1585;&#1705;&#1588;&#1740;</a>' : "<span class=\"a arrow disabled\" title=\"(Build Rally point)\">&#1604;&#1588;&#1705;&#1585; &#1705;&#1588;&#1740;</span>";
-
         } else {
 
             $html .= '<span class=\"a arrow disabled\" title=\"(Player is under beginner\'s protection)\">&#1604;&#1588;&#1705;&#1585;&#1705;&#1588;&#1740;</span>';
-
         }
 
         $html .= '</div><div class=\"option\">';
@@ -218,18 +207,16 @@ if ($blockAll == 0) {
 
 	<input type=\"hidden\" name=\"type\" value=\"addfarm\">';
 
-    $t = $database->getAInfo($database->getVillageID($data2['id']));
+            $t = $database->getAInfo($database->getVillageID($data2['id']));
 
-    $html .= '<input type=\"hidden\" name=\"x\" value=\"' . $t["x"] . '\">
+            $html .= '<input type=\"hidden\" name=\"x\" value=\"' . $t["x"] . '\">
 
 	<input type=\"hidden\" name=\"y\" value=\"' . $t["y"] . '\">
 
 	<button class=\"a arrow\" type=\"submit\" value=\"create\" value=\"reportButton repeat\" class=\"icon\" title=\"Add to farmlist\">اضافه کرده به فارم لیست</button>
 
 	</form></div>';
-
         }
-
     } else if ($basearray['occupied'] == 1 && $basearray['oasistype'] != 0 && $basearray['wref'] != $_SESSION['wid']) {
 
         $html .= '<div class=\"option\">';
@@ -237,7 +224,6 @@ if ($blockAll == 0) {
         $html .= $village->resarray['f39'] ? '<a href=\"a2b.php?z=' . $d . '\" class=\"a arrow\" >Send troops.</a>' : '<span class=\"a arrow disabled\" title=\"(Build Rally point)\">&#1604;&#1588;&#1705;&#1585; &#1705;&#1588;&#1740;</span>';
 
         $html .= '  </div>';
-
     }
 
     $html .= '</div></div><div id=\"map_details\">';
@@ -276,7 +262,6 @@ if ($blockAll == 0) {
             case 5:
                 $html .= TRIBE5;
                 break;
-
         }
 
         $html .= '</td></tr><tr>
@@ -286,7 +271,6 @@ if ($blockAll == 0) {
         if ($uinfo['alliance'] == 0) {
 
             $html .= '<td>-</td>';
-
         } else $html .= '
 
 <td><a href=\"allianz.php?aid=' . $uinfo['alliance'] . '\">' . $database->getUserAlliance($basearray['owner']) . '</a></td>';
@@ -310,7 +294,6 @@ if ($blockAll == 0) {
 </tr>
 
 </tbody></table><Br />.';
-
     }
 
     $html .= '<h4>';
@@ -624,13 +607,10 @@ if ($blockAll == 0) {
 	<td class=\"val\">50%</td><td class=\"desc\">' . CROP . '</td>';
 
                         break;
-
                 }
 
                 break;
-
         }
-
     } else {
 
         switch ($basearray['fieldtype']) {
@@ -930,13 +910,10 @@ if ($blockAll == 0) {
 	<td class=\"val\">50%</td><td class=\"desc\">&#1711;&#1606;&#1583;&#1605;</td></tr>';
 
                         break;
-
                 }
 
                 break;
-
         }
-
     }
 
     $html .= $tt;
@@ -966,23 +943,18 @@ if ($blockAll == 0) {
                 $html .= '<td class=\"desc\">' . $unarray[$i] . '</td>';
 
                 $html .= '</tr>';
-
             } else {
 
                 $a = $a + 1;
-
             }
-
         }
 
         if ($a == 10) {
 
             $html .= '<tr><td>None.</td></tr>';
-
         }
 
         $html .= '</tbody></table>';
-
     } else if ($basearray['occupied'] && !$basearray['oasistype']) {
 
         $html .= '<br />
@@ -1014,7 +986,6 @@ if ($blockAll == 0) {
             case 5:
                 $html .= 'Nature';
                 break;
-
         }
 
         $html .= '</td></tr><tr>
@@ -1024,7 +995,6 @@ if ($blockAll == 0) {
         if ($uinfo['alliance'] == 0) {
 
             $html .= '<td>-</td>';
-
         } else {
 
             $html .= '
@@ -1053,7 +1023,6 @@ if ($blockAll == 0) {
 <td>' . $basearray["pop"] . '</td>
 
 </tr></tbody></table><br />';
-
     }
 
     if ($basearray['fieldtype'] && $basearray['owner']) {
@@ -1071,14 +1040,12 @@ if ($blockAll == 0) {
         if ($session->uid == $database->getVillage($d)) {
 
             $limit = 'ntype=0 and ntype=4 and ntype=5 and ntype=6 and ntype=7';
-
         } else {
 
             $limit = 'ntype!=8 and ntype!=9 and ntype!=10 and ntype!=11 and ntype!=12 and ntype!=13 and ntype!=14';
-
         }
 
-        $result = mysql_query("SELECT `data`,`ntype`,`time`,`id` FROM " . TB_PREFIX . "ndata WHERE $limit AND uid = " . $session->uid . " AND toWref = " . $d . " ORDER BY time DESC Limit 5");
+        $result = mysql_query("SELECT `data`,`ntype`,`time`,`id` FROM ndata WHERE $limit AND uid = " . $session->uid . " AND toWref = " . $d . " ORDER BY time DESC Limit 5");
 
         while ($row = mysql_fetch_assoc($result)) {
 
@@ -1095,9 +1062,7 @@ if ($blockAll == 0) {
             $html .= '<a href=\"berichte.php?id=' . $row['id'] . '\">' . $date[0] . ' ' . date('H:i', $row['time']) . '</a>';
 
             $html .= '</td></tr>';
-
         }
-
     }
 }
 

@@ -2,8 +2,8 @@
 for ($i = 1; $i <= 0; $i++) {
     echo "Row " . $i;
 }
-$result = mysql_query("SELECT `id`,`tag`,`ap` FROM " . TB_PREFIX . "alidata ORDER BY ap DESC, id ASC Limit 10");
-$result2 = mysql_query("SELECT `id`,`tag`,`ap` FROM " . TB_PREFIX . "alidata WHERE id = '" . $session->alliance . "' ORDER BY ap DESC, id ASC Limit 1");
+$result = mysql_query("SELECT `id`,`tag`,`ap` FROM alidata ORDER BY ap DESC, id ASC Limit 10");
+$result2 = mysql_query("SELECT `id`,`tag`,`ap` FROM alidata WHERE id = '" . $session->alliance . "' ORDER BY ap DESC, id ASC Limit 1");
 $attRank = $ranking->getATop10AttRank($session->alliance);
 $defRank = $ranking->getATop10DefRank($session->alliance);
 //$clpRank = $ranking->getATop10ClpRank($session->alliance);
@@ -89,8 +89,8 @@ $rrRank = $ranking->getATop10RobbersRank($session->alliance);
     for ($i = 1; $i <= 0; $i++) {
         echo "Row " . $i;
     }
-    $result = mysql_query("SELECT `id`,`tag`,`dp` FROM " . TB_PREFIX . "alidata ORDER BY dp DESC, id ASC Limit 10");
-    $result2 = mysql_query("SELECT `id`,`tag`,`dp` FROM " . TB_PREFIX . "alidata WHERE id = '" . $session->alliance . "' ORDER BY dp DESC, id ASC Limit 1");
+    $result = mysql_query("SELECT `id`,`tag`,`dp` FROM alidata ORDER BY dp DESC, id ASC Limit 10");
+    $result2 = mysql_query("SELECT `id`,`tag`,`dp` FROM alidata WHERE id = '" . $session->alliance . "' ORDER BY dp DESC, id ASC Limit 1");
     ?>
     <h4 class="round small spacer top10_defs"><?php echo PF_TOPDEFENDERS; ?></h4>
     <table cellpadding="1" cellspacing="1" id="top10_defs" class="top10 row_table_data">
@@ -203,8 +203,8 @@ $rrRank = $ranking->getATop10RobbersRank($session->alliance);
     for ($i = 1; $i <= 0; $i++) {
         echo "Row " . $i;
     }
-    $result = mysql_query("SELECT `id`,`tag`,`RR` FROM " . TB_PREFIX . "alidata ORDER BY RR DESC, id ASC Limit 10");
-    $result2 = mysql_query("SELECT `id`,`tag`,`RR` FROM " . TB_PREFIX . "alidata WHERE id = '" . $session->alliance . "' ORDER BY RR DESC, id ASC Limit 1");
+    $result = mysql_query("SELECT `id`,`tag`,`RR` FROM alidata ORDER BY RR DESC, id ASC Limit 10");
+    $result2 = mysql_query("SELECT `id`,`tag`,`RR` FROM alidata WHERE id = '" . $session->alliance . "' ORDER BY RR DESC, id ASC Limit 1");
     ?>
     <h4 class="round small spacer top10_raiders"><?php echo PF_TOPRAIDERS; ?></h4>
 

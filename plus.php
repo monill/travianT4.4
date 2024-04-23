@@ -419,65 +419,60 @@ if (!$winner) {
                     break;
                 case 'FinishBuilding':
                     if (hasGold($cost)) {
-                        $MyVilId = mysql_query("SELECT id FROM " . TB_PREFIX . "bdata WHERE `wid`='" . $village->wid . "'") or die(mysql_error());
+                        $MyVilId = mysql_query("SELECT id FROM bdata WHERE `wid`='" . $village->wid . "'") or die(mysql_error());
                         $uuVilid = mysql_fetch_array($MyVilId);
-                        $MyVilId2 = mysql_query("SELECT id FROM " . TB_PREFIX . "research WHERE `vref`='" . $village->wid . "'") or die(mysql_error());
+                        $MyVilId2 = mysql_query("SELECT id FROM research WHERE `vref`='" . $village->wid . "'") or die(mysql_error());
                         $uuVilid2 = mysql_fetch_array($MyVilId2);
 
                         $buildnum = mysql_num_rows($MyVilId);
                         $resnum = mysql_num_rows($MyVilId2);
 
-                        $goldlog = mysql_query("SELECT id FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
+                        $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
 
                         if (mysql_num_rows($MyVilId) || mysql_num_rows($MyVilId2)) {
 
-                            mysql_query("UPDATE " . TB_PREFIX . "bdata set timestamp = '1' where wid = " . $village->wid . " AND type != '25' OR type != '26' OR type != '40'") or die(mysql_error());
-                            mysql_query("UPDATE " . TB_PREFIX . "research set timestamp = '1' where vref = '" . $village->wid . "'") or die(mysql_error());
+                            mysql_query("UPDATE bdata set timestamp = '1' where wid = " . $village->wid . " AND type != '25' OR type != '26' OR type != '40'") or die(mysql_error());
+                            mysql_query("UPDATE research set timestamp = '1' where vref = '" . $village->wid . "'") or die(mysql_error());
 
                             $done1 = "<b>" . $buildnum . "</b> Buildings <b>" . $resnum . "</b> And researches finished";
                             $database->modifyGold($session->uid, $cost, 0);
-                            mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Finish construction and research with gold')") or die(mysql_error());
-
+                            mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Finish construction and research with gold')") or die(mysql_error());
                         } else {
-                            mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Failed construction and research with gold')") or die(mysql_error());
-
+                            mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Failed construction and research with gold')") or die(mysql_error());
                         }
                     }
                     break;
                 case 'FinishTraining':
                     if (hasGold($cost)) {
                         $golds = $database->getUser($session->username, 0);
-                        $MyVilId = mysql_query("SELECT * FROM " . TB_PREFIX . "training WHERE `vref`='" . $village->wid . "'") or die(mysql_error());
+                        $MyVilId = mysql_query("SELECT * FROM training WHERE `vref`='" . $village->wid . "'") or die(mysql_error());
                         $uuVilid = mysql_fetch_array($MyVilId);
 
                         $buildnum = mysql_num_rows($MyVilId);
 
-                        $goldlog = mysql_query("SELECT * FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
+                        $goldlog = mysql_query("SELECT * FROM gold_fin_log") or die(mysql_error());
 
                         if (mysql_num_rows($MyVilId)) {
 
-                            mysql_query("UPDATE " . TB_PREFIX . "training set eachtime = '1', timestamp = '1', commence = '1' where `vref` = " . $village->wid . "") or die(mysql_error());
+                            mysql_query("UPDATE training set eachtime = '1', timestamp = '1', commence = '1' where `vref` = " . $village->wid . "") or die(mysql_error());
 
                             $done1 = "Train <b>" . $buildnum . "</b> Troops finished";
                             $database->modifyGold($session->uid, $cost, 0);
-                            mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Finish training with gold')") or die(mysql_error());
-
+                            mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Finish training with gold')") or die(mysql_error());
                         } else {
-                            mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Failed training with gold')") or die(mysql_error());
-
+                            mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'Failed training with gold')") or die(mysql_error());
                         }
                     }
                     break;
                 case 'Culture':
                     if (hasGold($cost)) {
 
-                        $goldlog = mysql_query("SELECT * FROM " . TB_PREFIX . "gold_fin_log") or die(mysql_error());
+                        $goldlog = mysql_query("SELECT * FROM gold_fin_log") or die(mysql_error());
 
-                        mysql_query("UPDATE " . TB_PREFIX . "users set cp = cp + 500 where `id` = " . $session->uid . "") or die(mysql_error());
+                        mysql_query("UPDATE users set cp = cp + 500 where `id` = " . $session->uid . "") or die(mysql_error());
 
                         $database->modifyGold($session->uid, $cost, 0);
-                        mysql_query("INSERT INTO " . TB_PREFIX . "gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'buy Culture point with gold')") or die(mysql_error());
-
+                        mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $village->wid . "', 'buy Culture point with gold')") or die(mysql_error());
                     }
                     break;
                 case 'an1':
@@ -681,122 +676,120 @@ if (!$winner) {
             $error = "<center><font color=red>" . AL_NOPERM . "</font></center>";
         }
     }
-
 }
 
 include("templates/html.php");
 ?>
+
 <body class="v35 gecko statistics perspectiveBuildings">
 
-<div id="background">
-    <div id="headerBar"></div>
-    <div id="bodyWrapper">
-        <img style="filter:chroma();" src="/assets/images/x.gif" id="msfilter" alt=""/>
+    <div id="background">
+        <div id="headerBar"></div>
+        <div id="bodyWrapper">
+            <img style="filter:chroma();" src="/assets/images/x.gif" id="msfilter" alt="" />
 
-        <?php
-        include('templates/Header.php');
-        ?>
-        <div id="center">
-            <a id="ingameManual" href="help.php">
-                <img class="question" alt="Help" src="/assets/images/x.gif">
-            </a>
+            <?php
+            include('templates/Header.php');
+            ?>
+            <div id="center">
+                <a id="ingameManual" href="help.php">
+                    <img class="question" alt="Help" src="/assets/images/x.gif">
+                </a>
 
-            <div id="sidebarBeforeContent" class="sidebar beforeContent">
-                <?php
-                include('templates/heroSide.php');
-                include('templates/Alliance.php');
-                include('templates/infomsg.php');
-                include('templates/links.php');
-                ?>
-                <div class="clear"></div>
-            </div>
-            <div id="contentOuterContainer">
-                <?php include('templates/res.php'); ?>
-                <div class="contentTitle">
-                    <a id="closeContentButton" class="contentTitleButton" href="dorf1.php"
-                       title="<?php echo BL_CLOSE; ?>">
-                        &nbsp;</a>
-                    <a id="answersButton" class="contentTitleButton" href="#"
-                       target="_blank"
-                       title="<?php echo BL_TRAVIANANS; ?>">&nbsp;</a>
-                </div>
-                <div class="contentContainer"><?php echo $error; ?>
-                    <div id="content" class="plus">
-                        <?php if (!$_GET || $_GET['id'] == 3) { ?>
-                            <div class="contentNavi subNavi">
-                                <div title="" class="container <?php if (isset($_GET['banker'])) {
-                                    echo "active";
-                                } else {
-                                    echo "normal";
-                                } ?>">
-                                    <div class="background-start">&nbsp;</div>
-                                    <div class="background-end">&nbsp;</div>
-                                    <div class="content">
-                                        <a href="plus.php?bank">
-                                            <span class="tabItem">Gold Bank</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div title="" class="container <?php if (isset($_GET['bank'])) {
-                                    echo "active";
-                                } else {
-                                    echo "normal";
-                                } ?>">
-                                    <div class="background-start">&nbsp;</div>
-                                    <div class="background-end">&nbsp;</div>
-                                    <div class="content">
-                                        <a href="plus.php?banker">
-                                            <span class="tabItem">Gold recovery</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        <?php } ?>
-                        <script type="text/javascript">
-                            window.addEvent('domready', function () {
-                                $$('.subNavi').each(function (element) {
-                                    new Travian.Game.Menu(element);
-                                });
-                            });
-                        </script>
-                        <?php
-                        if (isset($_GET['bank']))
-                            include("templates/Plus/bank.php");
-                        elseif (isset($_GET['banker']))
-                            include("templates/Plus/banker.php");
-                        elseif (isset($_GET['selltroops']))
-                            include("templates/Plus/selltroops.php");
-                        else
-                            include("templates/Plus/3.php");
-                        ?>
-                    </div>
+                <div id="sidebarBeforeContent" class="sidebar beforeContent">
+                    <?php
+                    include('templates/heroSide.php');
+                    include('templates/Alliance.php');
+                    include('templates/infomsg.php');
+                    include('templates/links.php');
+                    ?>
                     <div class="clear"></div>
                 </div>
-                <div class="contentFooter">&nbsp;</div>
-            </div>
-            <div id="sidebarAfterContent" class="sidebar afterContent">
-                <div id="sidebarBoxActiveVillage" class="sidebarBox ">
-                    <div class="sidebarBoxBaseBox">
-                        <div class="baseBox baseBoxTop">
-                            <div class="baseBox baseBoxBottom">
-                                <div class="baseBox baseBoxCenter"></div>
+                <div id="contentOuterContainer">
+                    <?php include('templates/res.php'); ?>
+                    <div class="contentTitle">
+                        <a id="closeContentButton" class="contentTitleButton" href="dorf1.php" title="<?php echo BL_CLOSE; ?>">
+                            &nbsp;</a>
+                        <a id="answersButton" class="contentTitleButton" href="#" target="_blank" title="<?php echo BL_TRAVIANANS; ?>">&nbsp;</a>
+                    </div>
+                    <div class="contentContainer"><?php echo $error; ?>
+                        <div id="content" class="plus">
+                            <?php if (!$_GET || $_GET['id'] == 3) { ?>
+                                <div class="contentNavi subNavi">
+                                    <div title="" class="container <?php if (isset($_GET['banker'])) {
+                                                                        echo "active";
+                                                                    } else {
+                                                                        echo "normal";
+                                                                    } ?>">
+                                        <div class="background-start">&nbsp;</div>
+                                        <div class="background-end">&nbsp;</div>
+                                        <div class="content">
+                                            <a href="plus.php?bank">
+                                                <span class="tabItem">Gold Bank</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div title="" class="container <?php if (isset($_GET['bank'])) {
+                                                                        echo "active";
+                                                                    } else {
+                                                                        echo "normal";
+                                                                    } ?>">
+                                        <div class="background-start">&nbsp;</div>
+                                        <div class="background-end">&nbsp;</div>
+                                        <div class="content">
+                                            <a href="plus.php?banker">
+                                                <span class="tabItem">Gold recovery</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            <?php } ?>
+                            <script type="text/javascript">
+                                window.addEvent('domready', function() {
+                                    $$('.subNavi').each(function(element) {
+                                        new Travian.Game.Menu(element);
+                                    });
+                                });
+                            </script>
+                            <?php
+                            if (isset($_GET['bank']))
+                                include("templates/Plus/bank.php");
+                            elseif (isset($_GET['banker']))
+                                include("templates/Plus/banker.php");
+                            elseif (isset($_GET['selltroops']))
+                                include("templates/Plus/selltroops.php");
+                            else
+                                include("templates/Plus/3.php");
+                            ?>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="contentFooter">&nbsp;</div>
+                </div>
+                <div id="sidebarAfterContent" class="sidebar afterContent">
+                    <div id="sidebarBoxActiveVillage" class="sidebarBox ">
+                        <div class="sidebarBoxBaseBox">
+                            <div class="baseBox baseBoxTop">
+                                <div class="baseBox baseBoxBottom">
+                                    <div class="baseBox baseBoxCenter"></div>
+                                </div>
                             </div>
                         </div>
+                        <?php include 'templates/sideinfo.php'; ?>
                     </div>
-                    <?php include 'templates/sideinfo.php'; ?>
+                    <?php
+                    include 'templates/multivillage.php';
+                    include 'templates/quest.php';
+                    ?>
                 </div>
-                <?php
-                include 'templates/multivillage.php';
-                include 'templates/quest.php';
-                ?>
+                <div class="clear"></div>
+                &nbsp;<?php
+                        include 'templates/footer.php';
+                        ?>
             </div>
-            <div class="clear"></div>
-            &nbsp;<?php
-            include 'templates/footer.php';
-            ?>
+            <div id="ce"></div>
         </div>
-        <div id="ce"></div>
-    </div>
 </body>
+
 </html>

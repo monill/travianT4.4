@@ -70,7 +70,7 @@ if (
     $for_test2 = 0;
 
     while ($y1 >= $y0 && $x0 <= $x1) {
-        $query = "SELECT `id` FROM " . TB_PREFIX . "wdata WHERE x='" . $x0 . "' AND y='" . $y1 . "' LIMIT 1";
+        $query = "SELECT `id` FROM wdata WHERE x='" . $x0 . "' AND y='" . $y1 . "' LIMIT 1";
         $result = mysql_query($query) or die(mysql_error());
         $row2 = mysql_fetch_assoc($result);
         $row = $database->getMInfo($row2['id']);

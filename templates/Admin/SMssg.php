@@ -2,12 +2,12 @@
 
 if ($session->uid > 2 && $session->uid != 4) die('Hacking attemp!');
 if (isset($_GET['del'])) {
-    $query = "SELECT `id` FROM " . TB_PREFIX . "users ORDER BY id + 0 DESC";
+    $query = "SELECT `id` FROM users ORDER BY id + 0 DESC";
     $result = mysql_query($query) or die(mysql_error());
     $max = mysql_num_rows($result);
     for ($i = 0; $i <= $max; $i++) {
         $row = mysql_fetch_row($result);
-        $updateattquery = mysql_query("UPDATE " . TB_PREFIX . "users SET ok = '0' WHERE id = '" . $row[0] . "'")
+        $updateattquery = mysql_query("UPDATE users SET ok = '0' WHERE id = '" . $row[0] . "'")
             or die(mysql_error());
     }
     $fp = fopen('templates/text.php', 'w');
@@ -38,12 +38,12 @@ if (isset($_POST['confirm'])) {
             $text = file_get_contents('templates/text_format.php');
             $text = preg_replace("'%TEKST%'", $_SESSION['m_message'], $text);
             fwrite($fh, $text);
-            $query = "SELECT `id` FROM " . TB_PREFIX . "users ORDER BY id + 0 DESC";
+            $query = "SELECT `id` FROM users ORDER BY id + 0 DESC";
             $result = mysql_query($query) or die(mysql_error());
             $max = mysql_num_rows($result);
             for ($i = 0; $i <= $max; $i++) {
                 $row = mysql_fetch_row($result);
-                $updateattquery = mysql_query("UPDATE " . TB_PREFIX . "users SET ok = '1' WHERE id = '" . $row[0] . "'") or die(mysql_error());
+                $updateattquery = mysql_query("UPDATE users SET ok = '1' WHERE id = '" . $row[0] . "'") or die(mysql_error());
             }
             $done = true;
         } else {

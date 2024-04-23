@@ -5,13 +5,13 @@ if ($session->access != BANNED) {
     $forumcat = $database->ForumCat(htmlspecialchars($displayarray['alliance']));
     $forum_cat = $database->ForumCat;
     $ally = $session->alliance;
-    $public = mysql_query("SELECT `id` FROM " . TB_PREFIX . "forum_cat WHERE alliance = $ally AND forum_area = 1");
+    $public = mysql_query("SELECT `id` FROM forum_cat WHERE alliance = $ally AND forum_area = 1");
     $public1 = mysql_num_rows($public);
-    $cofederation = mysql_query("SELECT `id` FROM " . TB_PREFIX . "forum_cat WHERE alliance = $ally AND forum_area = 2");
+    $cofederation = mysql_query("SELECT `id` FROM forum_cat WHERE alliance = $ally AND forum_area = 2");
     $cofederation1 = mysql_num_rows($cofederation);
-    $alliance = mysql_query("SELECT `id` FROM " . TB_PREFIX . "forum_cat WHERE alliance = $ally AND forum_area = 0");
+    $alliance = mysql_query("SELECT `id` FROM forum_cat WHERE alliance = $ally AND forum_area = 0");
     $alliance1 = mysql_num_rows($alliance);
-    $closed = mysql_query("SELECT `id` FROM " . TB_PREFIX . "forum_cat WHERE alliance = $ally AND forum_area = 3");
+    $closed = mysql_query("SELECT `id` FROM forum_cat WHERE alliance = $ally AND forum_area = 3");
     $closed1 = mysql_num_rows($closed);
     if ($public1 != 0) {
 ?>

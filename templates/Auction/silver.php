@@ -28,7 +28,7 @@
     </thead>
     <tbody>
         <?php
-        $q = "SELECT * FROM " . TB_PREFIX . "silver_accounting where wref = " . $_SESSION['wid'] . "";
+        $q = "SELECT * FROM silver_accounting where wref = " . $_SESSION['wid'] . "";
         $bid = 0;
         //$dataarray = $database->query_return($q);
         //foreach($dataarray as $dbarray){

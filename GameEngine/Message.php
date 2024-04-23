@@ -112,7 +112,7 @@ class Message
                             if (isset($_SESSION['last_msg'])) {
                                 if (time() < $_SESSION['last_msg']) {
                                     $form->addError("message", MS_SPAMMSG);
-                                } elseif (isset($_POST['ses']) AND trim(md5(md5($_POST['ses']))) != $_COOKIE['USERC']) {
+                                } elseif (isset($_POST['ses']) and trim(md5(md5($_POST['ses']))) != $_COOKIE['USERC']) {
                                     $form->addError("message", MS_WRONGECAPTCHA);
                                 } elseif ($_POST['robots'] != '') {
                                     $form->addError("message", MS_SPAMMSG2);
@@ -201,9 +201,9 @@ class Message
     private function sendAMessage($topic, $text)
     {
         global $session, $database;
-        $allmembersQ = mysql_query("SELECT id,`username` FROM " . TB_PREFIX . "users WHERE alliance='" . $session->alliance . "'");
+        $allmembersQ = mysql_query("SELECT id,`username` FROM users WHERE alliance='" . $session->alliance . "'");
         $userally = $database->getUserField($session->uid, "alliance", 0);
-        $permission = mysql_fetch_array(mysql_query("SELECT opt7 FROM " . TB_PREFIX . "ali_permission WHERE uid='" . $session->uid . "'"));
+        $permission = mysql_fetch_array(mysql_query("SELECT opt7 FROM ali_permission WHERE uid='" . $session->uid . "'"));
 
         if (WORD_CENSOR) {
             $topic = $this->wordCensor($topic);
@@ -243,7 +243,7 @@ class Message
         }
         // $user = $database->getUserField($recieve, 'id', 1);
         $usern = $database->getUserField($recieve, 'username', 1);
-        $z = mysql_query("SELECT `ignore_msg` FROM " . TB_PREFIX . "users WHERE id = '" . $user . "'") or die(mysql_error());
+        $z = mysql_query("SELECT `ignore_msg` FROM users WHERE id = '" . $user . "'") or die(mysql_error());
         $z = mysql_fetch_assoc($z);
         $dataarray = explode(',', $z['ignore_msg']);
         foreach ($dataarray as $param) {
@@ -329,7 +329,7 @@ class Message
 
         for ($i = 1; $i <= 10; $i++) {
             if (isset($post['n' . $i])) {
-                $message1 = mysql_query("SELECT `target`,`owner` FROM " . TB_PREFIX . "mdata where id = " . $post['n' . $i] . " LIMIT 1");
+                $message1 = mysql_query("SELECT `target`,`owner` FROM mdata where id = " . $post['n' . $i] . " LIMIT 1");
                 $message = mysql_fetch_array($message1);
 
 
@@ -400,7 +400,7 @@ class Message
         if ($session->uid > 2) {
             for ($i = 1; $i <= 10; $i++) {
                 if (isset($post['n' . $i])) {
-                    $message1 = mysql_query("SELECT `target`,`owner` FROM " . TB_PREFIX . "msg_report where id = " . $post['n' . $i] . " LIMIT 1");
+                    $message1 = mysql_query("SELECT `target`,`owner` FROM msg_report where id = " . $post['n' . $i] . " LIMIT 1");
                     $message = mysql_fetch_array($message1);
                     $database->removeMReport($post['n' . $i]);
                 }
@@ -641,9 +641,5 @@ class Message
 
     private function sendNotice($from, $vid, $fowner, $owner, $type, $extra)
     {
-
     }
-
 }
-
-?>

@@ -13,14 +13,14 @@ function marketComplete()
     }
     //Sent merchants
     $time = time();
-    $q = "SELECT `id`,`to`,`from`,`wood`,`clay`,`iron`,`crop`,`endtime`,`data`,`moveid` FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "send where " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "send.id and " . TB_PREFIX . "movement.proc = 0 and sort_type = 0 and endtime <= $time LIMIT 50";
+    $q = "SELECT `id`,`to`,`from`,`wood`,`clay`,`iron`,`crop`,`endtime`,`data`,`moveid` FROM movement, send where movement.ref = send.id and movement.proc = 0 and sort_type = 0 and endtime <= $time LIMIT 50";
     $dataarray = $database->query_return($q);
     foreach ($dataarray as $data) {
         $toMInfo = $database->getMInfo($data['to']);
         if (!isset($toMInfo['owner']) || $toMInfo['owner'] == 0 || $toMInfo['pop'] <= 0) $toMInfo['owner'] = 3;
         $fromMInfo = $database->getMInfo($data['from']);
         if (!isset($fromMInfo['owner']) || $fromMInfo['owner'] == 0 || $fromMInfo['pop'] <= 0) {
-            //nothing to do
+            // nothing to do
         } else {
             $toAlly = $database->getUserField($toMInfo['owner'], 'alliance', 0);
             $fromAlly = $database->getUserField($fromMInfo['owner'], 'alliance', 0);
@@ -49,9 +49,9 @@ function marketComplete()
         // $database->removeSend($data['id']);
     }
 
-    //Returned merchants
+    // returned merchants
     $time = time();
-    $q = "SELECT `from`,`to`,`wood`,`clay`,`iron`,`crop`,`moveid`,`id`,`send` FROM " . TB_PREFIX . "movement, " . TB_PREFIX . "send where " . TB_PREFIX . "movement.ref = " . TB_PREFIX . "send.id and " . TB_PREFIX . "movement.proc = 0 and sort_type = 1 and endtime <= $time LIMIT 50";
+    $q = "SELECT `from`,`to`,`wood`,`clay`,`iron`,`crop`,`moveid`,`id`,`send` FROM movement, send where movement.ref = send.id and movement.proc = 0 and sort_type = 1 and endtime <= $time LIMIT 50";
 
     $dataarray = $database->query_return($q);
 
@@ -64,5 +64,3 @@ function marketComplete()
         // $database->removeSend($data['id']);
     }
 }
-
-?>

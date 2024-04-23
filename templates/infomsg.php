@@ -60,7 +60,7 @@ if ($golds['b1']) {
 			</script>";
         $timer++;
         if ($golds['b1'] <= time()) {
-            mysql_query("UPDATE " . TB_PREFIX . "users set b1 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+            mysql_query("UPDATE users set b1 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
         }
     }
 }
@@ -92,7 +92,7 @@ if ($golds['b2']) {
 			</script>";
         $timer++;
         if ($golds['b2'] <= time()) {
-            mysql_query("UPDATE " . TB_PREFIX . "users set b2 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+            mysql_query("UPDATE users set b2 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
         }
     }
 }
@@ -127,7 +127,7 @@ if ($golds['b3']) {
 			</script>";
         $timer++;
         if ($golds['b3'] <= time()) {
-            mysql_query("UPDATE " . TB_PREFIX . "users set b3 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+            mysql_query("UPDATE users set b3 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
         }
     }
 }
@@ -162,7 +162,7 @@ if ($golds['b4']) {
 			</script>";
         $timer++;
         if ($golds['b4'] <= time()) {
-            mysql_query("UPDATE " . TB_PREFIX . "users set b4 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
+            mysql_query("UPDATE users set b4 = '0' where `username`='" . $session->username . "'") or die(mysql_error());
         }
     }
 }

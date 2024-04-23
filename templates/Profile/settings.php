@@ -8,7 +8,7 @@
                 <td class="sel">
                     <input class="check" <?php
 
-                                            $query = mysql_query("SELECT `nopicn` FROM " . TB_PREFIX . "users_setting WHERE id = " . $session->uid . " LIMIT 1");
+                                            $query = mysql_query("SELECT `nopicn` FROM users_setting WHERE id = " . $session->uid . " LIMIT 1");
                                             $res = mysql_fetch_assoc($query);
 
                                             if ($res['nopicn'] == 1) {
@@ -36,7 +36,7 @@
                     <?php echo PF_TIMZEZONE; ?>:
                 </th>
                 <td>
-                    <?php $q = mysql_query("SELECT `timezone` FROM " . TB_PREFIX . "users WHERE id = $session->uid");
+                    <?php $q = mysql_query("SELECT `timezone` FROM users WHERE id = $session->uid");
                     $q = mysql_fetch_array($q);
                     ?>
                     <select name="timezone">

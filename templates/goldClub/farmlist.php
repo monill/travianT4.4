@@ -12,7 +12,7 @@ if (isset($_GET['t']) == 99 && isset($_GET['action']) == 0) {
         $database->createFarmList($_POST['did'], $session->uid, $_POST['name']);
     }
 
-    $sql = mysql_query("SELECT * FROM " . TB_PREFIX . "farmlist WHERE owner = $session->uid ORDER BY wref = $village->wid DESC");
+    $sql = mysql_query("SELECT * FROM farmlist WHERE owner = $session->uid ORDER BY wref = $village->wid DESC");
     $query = mysql_num_rows($sql);
     while ($row = mysql_fetch_array($sql)) {
         $lid = $row["id"];
@@ -67,7 +67,7 @@ if (isset($_GET['t']) == 99 && isset($_GET['action']) == 0) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql2 = mysql_query("SELECT * FROM " . TB_PREFIX . "raidlist WHERE lid = $lid ORDER BY distance ASC");
+                                    $sql2 = mysql_query("SELECT * FROM raidlist WHERE lid = $lid ORDER BY distance ASC");
                                     $query2 = mysql_num_rows($sql2);
                                     if ($query2 == 0) {
                                         echo '<td class="noData" colspan="7">' . PL_NOFARMLIST . '</td>';
@@ -149,7 +149,7 @@ if (isset($_GET['t']) == 99 && isset($_GET['action']) == 0) {
                                                         NOTICE12, NOTICE13, NOTICE14, NOTICE15, NOTICE16, NOTICE17, NOTICE18, NOTICE19, NOTICE20, NOTICE21, NOTICE22, NOTICE23
                                                     );
                                                     $limits = "ntype!=4 and ntype!=5 and ntype!=6 and ntype!=7";
-                                                    $getnotice = mysql_query("SELECT * FROM " . TB_PREFIX . "ndata WHERE $limits AND toWref = "
+                                                    $getnotice = mysql_query("SELECT * FROM ndata WHERE $limits AND toWref = "
                                                         . $towref . " ORDER BY time DESC Limit 1");
 
                                                     while ($row2 = mysql_fetch_array($getnotice)) {
@@ -321,7 +321,7 @@ if (!$database->getVilFarmlist($village->wid)) {
         window.addEvent('domready', function() {
                     Travian.Game.RaidList.setData({
                         <?php
-                        $result = mysql_query('SELECT * FROM ' . TB_PREFIX . 'farmlist WHERE wref = ' . $village->wid . '');
+                        $result = mysql_query('SELECT * FROM farmlist WHERE wref = ' . $village->wid . '');
                         $query1 = mysql_num_rows($result);
                         $NUM1 = 1;
                         while ($row = mysql_fetch_array($result)) {
@@ -349,7 +349,7 @@ if (!$database->getVilFarmlist($village->wid)) {
                                 },
                                 "slots": {
                                 <?php
-                                $result3 = mysql_query('SELECT * FROM ' . TB_PREFIX . 'raidlist WHERE lid = ' . $lid . '');
+                                $result3 = mysql_query('SELECT * FROM raidlist WHERE lid = ' . $lid . '');
                                 $query2 = mysql_num_rows($result3);
                                 $NUM2 = 1;
                                 while ($row3 = mysql_fetch_array($result3)) {
