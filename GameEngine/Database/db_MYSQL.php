@@ -312,9 +312,9 @@ class MYSQL_DB
     function modifyGold($userid, $amt, $mode)
     {
         if (!$mode) {
-            // $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
-            // mysql_query("INSERT INTO gold_fin_log VALUES ('".(mysql_num_rows($goldlog)+1)."', '".$userid."', '".$amt." GOLD ADDED FROM ".$_SERVER['HTTP_REFERER']."')");
-            // die;
+            $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+            mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '" . $amt . " GOLD ADDED FROM " . $_SERVER['HTTP_REFERER'] . "')");
+            die;
             $q = "UPDATE users set gold = gold - $amt where id = $userid";
             //add used gold
             $q2 = "UPDATE users set usedgold = usedgold+" . $amt . " where id = $userid";
@@ -325,8 +325,8 @@ class MYSQL_DB
             $q2 = "UPDATE users set Addgold = Addgold+" . $amt . " where id = $userid";
             mysql_query($q2, $this->connection);
 
-            // $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
-            // mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '" . $amt . " GOLD ADDED FROM " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
+            $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
+            mysql_query("INSERT INTO gold_fin_log VALUES ('" . (mysql_num_rows($goldlog) + 1) . "', '" . $userid . "', '" . $amt . " GOLD ADDED FROM " . $_SERVER['HTTP_REFERER'] . "')") or die(mysql_error());
         }
         return mysql_query($q, $this->connection);
     }
@@ -350,15 +350,15 @@ class MYSQL_DB
         $q = "UPDATE research set timestamp = '1' where vref = " . $wid;
         $research = mysql_query($q, $this->connection);
         if ($bdata || $research) {
-            //$goldlog = $this->getGoldFinLog();
+            $goldlog = $this->getGoldFinLog();
             $q = "UPDATE users set gold = gold-2,usedgold = usedgold+2 where username='" . $username . "'";
             mysql_query($q, $this->connection);
-            //$q = "INSERT INTO gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Finish construction and research with gold')";
-            // mysql_query($q, $this->connection);
+            $q = "INSERT INTO gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Finish construction and research with gold')";
+            mysql_query($q, $this->connection);
             return true;
         } else {
-            //$q = "INSERT INTO gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Failed construction and research with gold')";
-            //mysql_query($q, $this->connection);
+            $q = "INSERT INTO gold_fin_log VALUES ('" . (count($goldlog) + 1) . "', '" . $wid . "', 'Failed construction and research with gold')";
+            mysql_query($q, $this->connection);
             return false;
         }
     }
@@ -755,11 +755,10 @@ class MYSQL_DB
     {
         $wref = $this->getVilWref($order['x'], $order['y']);
         $where = ' WHERE TRUE and conqured = ' . $wref;
-        /*foreach($list as $k=>$v){
-					if ($k != 'extra') $where .= " AND $k = $v ";
-				}
-				$where .= ' AND '.$list['extra'].' ';
-				*/
+        foreach ($list as $k => $v) {
+            if ($k != 'extra') $where .= " AND $k = $v ";
+        }
+        $where .= ' AND ' . $list['extra'] . ' ';
         if (isset($limit)) $limit = " LIMIT $limit ";
         if (isset($order) && $order['by'] != '') $orderby = " ORDER BY " . $order['by'] . ' ';
         $q = 'SELECT ';
@@ -770,7 +769,7 @@ class MYSQL_DB
         }
         $q .= "odata LEFT JOIN wdata ON wdata.id=odata.wref " . $where . $orderby . $limit;
 
-        return $this->query_return($q);
+        return $this->mysql_query($q);
     }
 
     function getVilWref($x, $y)
