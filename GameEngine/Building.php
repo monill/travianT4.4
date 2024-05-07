@@ -342,10 +342,10 @@ class Building
         $name = "bid" . $id;
         global $$name, $village;
         $dataarray = $$name;
-        //if($village->resarray['f'.$field] > 20){
-        //mysql_query("UPDATE fdata set `f".$field."` = 20 WHERE vref = '".$village->wid."'")or die(mysql_error());
-        //return 1;
-        //}
+        if ($village->resarray['f'.$field] > 20) {
+			mysql_query("UPDATE fdata set `f".$field."` = 20 WHERE vref = '".$village->wid."'")or die(mysql_error());
+			return 1;
+        }
         if ($id <= 4) {
             if ($village->capital == 1) {
                 return ($village->resarray['f' . $field] == (count($dataarray) - 1 - $loop));
@@ -481,16 +481,16 @@ class Building
                 $build = "GrainField";
                 break;
             case 5:
-                $build = "Sawmill factory‌";
+                $build = "Sawmill Factory";
                 break;
             case 6:
-                $build = "Brick making";
+                $build = "Brick Making";
                 break;
             case 7:
                 $build = "Forging";
                 break;
             case 8:
-                $build = "water mill";
+                $build = "Water Mill";
                 break;
             case 9:
                 $build = "Bakery";
@@ -1033,4 +1033,4 @@ class Building
 
         return $generator->procMtime($reqtime);
     }
-};
+}
