@@ -12,7 +12,7 @@ if (isset($_GET['activated'])) {
 
 echo '
 <body class="v35 gecko login perspectiveBuildings" ' . $onload . '>
-	
+
 	<link rel="stylesheet" href="/assets/css/jquery.countdown.css">
 	<style type="text/css">
         #defaultCountdown { width: 240px; height: 45px; }
@@ -57,11 +57,11 @@ echo '
 		<li>
 			<a href="#" title="' . FORUM . '">' . FORUM . '</a>
 		</li>
-		
+
 		<li class="support">
 			<a href="#" title="' . SUPPORT . '">' . SUPPORT . '</a>
 		</li>
-		
+
 	</ul>
 </div>
 
@@ -116,8 +116,7 @@ echo '
                 <br><br>
                 <input class="check" type="checkbox" id="agb" name="agb" value="1" <?php echo $form->getRadio('agb', 1); ?> />
                 <label for="agb">
-                    <a href="agb.php" title="Click to show rules" target="_blank">I accept</a>
-                    Membership Conditions.
+                    <a href="agb.php" title="Click to show rules" target="_blank">I accept</a>Membership Conditions.
                 </label>
             </p>
         </div>
