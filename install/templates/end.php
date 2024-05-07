@@ -13,17 +13,13 @@ fclose(fopen(dirname(dirname(dirname(__FILE__))) . "/GameEngine/Prevention/Autom
     <br>
     <br>
     &nbsp;&nbsp; Starting the Automation process<br>
-    <?php
-    $time = time();
-    rename("../install/", "../installed_" . $time);
-    ?>
+    <?php rename("../install/", "../installed_" . time()); ?>
     <br><br>
     &nbsp;&nbsp;The installation was completed
     &nbsp;&nbsp;For security installation folder name is automatically changed.<br /><br />
     &nbsp;&nbsp;The file config.php was replaced.
-
-    <br /><br />
-
+    <br>
+    <br>
     <div align="center">
         <font size="4"><a href="<?php echo HOMEPAGE; ?>"> My TravianT4 homepage</font></a>
     </div>
