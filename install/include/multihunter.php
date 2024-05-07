@@ -1,7 +1,7 @@
 <?php
 
 define('_ADMINEXEC_', 1);
-@include("../../Admin/admin.model.php");
+@include("../../admin/admin.model.php");
 
 @include("../../GameEngine/config.php");
 @include("../../GameEngine/lang/en.php");
