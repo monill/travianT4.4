@@ -15,7 +15,7 @@ function do_process($name, $interval = 0)
     if (!$gameFinished && $mutex->ControlLock($interval)) {
         try {
             $name();
-        } catch (AutomationException $e) {
+        } catch (\Exception $e) {
             saveLog($name . ' --> ' . eEE($e));
         }
         $mutex->releaseLock();
