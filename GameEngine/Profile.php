@@ -4,7 +4,6 @@ class Profile
 {
     public function procProfile($post)
     {
-        //var_dump($post);die;
         if (isset($post['ft'])) {
             switch ($post['ft']) {
                 case "p1":
@@ -62,7 +61,6 @@ class Profile
     private function updateAccount($post)
     {
         global $database, $session, $form;
-        // print_r($post);die;
         if ($post['pw2'] != '' && $post['pw3'] != '' && $post['pw1'] != '') {
             if ($post['pw2'] == $post['pw3']) {
                 if ($database->login($session->username, $post['pw1'])) {
