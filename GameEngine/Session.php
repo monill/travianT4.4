@@ -227,7 +227,6 @@ class Session
         $aday = min(86400 / SPEED, 100);
         $tenday = min(86400 / SPEED, 600);
 
-
         $endat = time() + 900;
 
         if ($herodetail['lastadv'] <= ($time - $aday)) {
@@ -311,9 +310,7 @@ class Session
         $ua = $_SERVER['HTTP_USER_AGENT'];
         $ip = $_SERVER['REMOTE_ADDR'];
         $id = session_id();
-        $all = "$ua $ip $id";
-        $all = sha1($all);
-        $_SESSION['hash'] = htmlspecialchars($all);
+        $_SESSION['hash'] = htmlspecialchars(sha1("$ua $ip $id"));
 
         header("Location: dorf1.php");
         exit;
