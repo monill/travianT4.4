@@ -138,7 +138,13 @@ class Account
 
     private function Signup()
     {
-        global $database, $form, $mailer, $generator, $session;
+        global $database, $form, $mailer, $generator;
+
+        function strRegister($TextVar) {
+            $bug = array('', '!', '\'', '/', '"', '!', '%', '*', '(', '$', '#', '^', '&', ')', '<', '>', '?', '{', '}', '[', ']');
+            return @str_replace($bug, '', $TextVar);
+        }
+
         if (!isset($_POST['name']) || trim($_POST['name']) == "") {
             $form->addError("name", USRNM_EMPTY);
         } else {
@@ -183,51 +189,31 @@ class Account
         if ($form->returnErrors() > 0) {
             $_SESSION['errorarray'] = $form->getErrors();
             $_SESSION['valuearray'] = $_POST;
-
             header("Location: anmelden.php");
-        } else
-
-            if (isset($_POST['name']) && isset($_POST['pw']) && isset($_POST['email'])) {
-            function StrRegister2($TextVar)
-            {
-                $bug = array('', '!', '\'', '/', '"', '!', '%', '*', '(', '$', '#', '^', '&', ')', '<', '>', '?', '{', '}', '[', ']');
-
-                return @str_replace($bug, '', $TextVar);
-            }
-
+        } else if (isset($_POST['name']) && isset($_POST['pw']) && isset($_POST['email'])) {
             $act = $generator->generateRandStr(10);
             if (AUTH_EMAIL) {
-
-                $uid = $database->activate(StrRegister2($_POST['name']), $_POST['pw'], $_POST['email'], $act, $_POST['server'], '');
+                $uid = $database->myactivate(strRegister($_POST['name']), $_POST['pw'], $_POST['email'], $act, $_POST['server'], '');
                 if (isset($_POST['ref']) && is_numeric($_POST['ref'])) {
                     $name1 = $database->checkname($_POST['ref']);
-                    $name = $name1['username'];
-                    $database->setref($uid, $name);
+                    $database->setref($uid, $name1['username']);
                 }
                 if ($uid) {
-                    $mailer->sendActivate($_POST['email'], StrRegister2($_POST['name']), $_POST['pw'], $act, $_POST['server']);
+                    $mailer->sendActivate($_POST['email'], strRegister($_POST['name']), $_POST['pw'], $act, $_POST['server']);
                     header('Location: ' . HOMEPAGE . '/?worldid=' . $_POST['server'] . '#activation');
                     exit;
                 }
             } else if (!AUTH_EMAIL) {
-                function StrRegister3($TextVar)
-                {
-                    $bug = array('', '!', '\'', '/', '"', '!', '%', '*', '(', '$', '#', '^', '&', ')', '<', '>', '?', '{', '}', '[', ']');
-
-                    return @str_replace($bug, '', $TextVar);
-                }
-
-                $uid = $database->register2(StrRegister3($_POST['name']), md5($_POST['pw']), $_POST['email'], $act, time());
+                $uid = $database->register2(strRegister($_POST['name']), md5($_POST['pw']), $_POST['email'], $act, time());
                 if (isset($_POST['ref']) && is_numeric($_POST['ref'])) {
                     $name1 = $database->checkname($_POST['ref']);
-                    $name = $name1['username'];
-                    $database->setref($uid, $name);
+                    $database->setref($uid, $name1['username']);
                 }
-                $reg2 = $database->checkreg2(StrRegister3($_POST['name']));
-                $mailer->sendActivate2($_POST['email'], StrRegister2($_POST['name']), $_POST['pw'], $_POST['server']);
-                $reg = $reg2['reg2'];
 
-                if ($reg == 1) {
+                $reg2 = $database->checkreg2(strRegister($_POST['name']));
+                $mailer->sendActivate2($_POST['email'], strRegister($_POST['name']), $_POST['pw'], $_POST['server']);
+
+                if ($$reg2['reg2'] == 1) {
                     setcookie("COOKUSR", $_POST['name'], time() + 3600); /* expire in 1 hour */
                     header("Location: login.php");
                     exit;
@@ -312,7 +298,7 @@ class Account
 
     private function Login()
     {
-        global $database, $session, $form;
+        global $database, $session, $form, $session;
         if (!isset($_POST['user']) || $_POST['user'] == "") {
             $form->addError("user", US_USRNM_EMPTY);
         } else if (!$database->checkExist($_POST['user'], 0)) {
@@ -365,18 +351,15 @@ class Account
                 $database->UpdateOnline("login", $_POST['user'], 1);
             } else {
                 $reg2 = $database->checkreg2($_POST['user']);
-                $reg = $reg2['reg2'];
                 $u = $database->checkid($_POST['user']);
                 $ui = $u['id'];
-                if ($reg == 1) {
-                    function generateRandomString($length = 40)
-                    {
+                if ($reg2['reg2'] == 1) {
+                    function generateRandomString($length = 40) {
                         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                         $randomString = '';
                         for ($i = 0; $i < $length; $i++) {
                             $randomString .= $characters[rand(0, strlen($characters) - 1)];
                         }
-
                         return $randomString;
                     }
 
