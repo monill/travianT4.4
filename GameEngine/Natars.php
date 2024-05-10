@@ -8,10 +8,6 @@ define("NATARS_POPUP_INT", 18000); //IN SEC
 
 class Natars
 {
-    function Natars()
-    {
-    }
-
     public function doJobs()
     {
         global $database;
@@ -21,28 +17,28 @@ class Natars
         $np['wwbpreleasedat'] = max(isset($np['wwbpreleasedat']) ? $np['wwbpreleasedat'] : 0, COMMENCE);
         $np['artefactreleasedat'] = max(isset($np['artefactreleasedat']) ? $np['artefactreleasedat'] : 0, COMMENCE);
         /*
-                $expint = max(1800,NATARS_EXPANTION_INT/SPEED);
-                while(($np['lastexpandat']+$expint)<time()){
-                    $np['lastexpandat']+=$expint;
-                    $this->expand();
-                }
-                $database->setNatarsProgress('lastexpandat',$np['lastexpandat']);
+            $expint = max(1800,NATARS_EXPANTION_INT/SPEED);
+            while(($np['lastexpandat']+$expint)<time()){
+                $np['lastexpandat']+=$expint;
+                $this->expand();
+            }
+            $database->setNatarsProgress('lastexpandat',$np['lastexpandat']);
 
-                $nvs = $database->getNatarsExpansions();
-                $count = count($nvs);
-                $popupint = max(600,NATARS_POPUP_INT/SPEED);
-                if((($np['lastpopupat']+$popupint)<time())&&($count>0)){
-                    while (($np['lastpopupat']+$popupint)<time()){
-                        if ($np['lastpopupedvillage']>=$count) $np['lastpopupedvillage'] = 0;
-                        $toPopup = $nvs[$np['lastpopupedvillage']];
-                        $wref = $toPopup['wref'];
-                        if ($wref) $this->upgradeVillage($wref);
-                        $np['lastpopupat']+=$popupint;
-                        $np['lastpopupedvillage']++;
-                    }
-                    $database->setNatarsProgress('lastpopupat',$np['lastpopupat']);
-                    $database->setNatarsProgress('lastpopupedvillage',$np['lastpopupedvillage']);
+            $nvs = $database->getNatarsExpansions();
+            $count = count($nvs);
+            $popupint = max(600,NATARS_POPUP_INT/SPEED);
+            if((($np['lastpopupat']+$popupint)<time())&&($count>0)){
+                while (($np['lastpopupat']+$popupint)<time()){
+                    if ($np['lastpopupedvillage']>=$count) $np['lastpopupedvillage'] = 0;
+                    $toPopup = $nvs[$np['lastpopupedvillage']];
+                    $wref = $toPopup['wref'];
+                    if ($wref) $this->upgradeVillage($wref);
+                    $np['lastpopupat']+=$popupint;
+                    $np['lastpopupedvillage']++;
                 }
+                $database->setNatarsProgress('lastpopupat',$np['lastpopupat']);
+                $database->setNatarsProgress('lastpopupedvillage',$np['lastpopupedvillage']);
+            }
         */
         if ($np['artefactreleased'] == 0 && (time() > (COMMENCE + (ROUNDLENGHT * 86400 / 3)))) {
             $this->releaseArtefacts();
