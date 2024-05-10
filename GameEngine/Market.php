@@ -70,7 +70,58 @@ class Market
                 array_push($holderarray, $value);
             }
         }
-        $this->onsale = $multisort->sorte($holderarray, "'duration'", true, 2);
+        $this->onsale = $this->sorte($holderarray, "'duration'", true, 2);
+    }
+
+    public function sorte($array)
+    {
+        for ($i = 1; $i < func_num_args(); $i += 3) {
+            $key = func_get_arg($i);
+
+            $order = true;
+            if ($i + 1 < func_num_args()) {
+                $order = func_get_arg($i + 1);
+            }
+
+            $type = 0;
+            if ($i + 2 < func_num_args()) {
+                $type = func_get_arg($i + 2);
+            }
+
+            switch ($type) {
+                case 1: // Case insensitive natural.
+                    $comparisonFunction = function ($a, $b) use ($key) {
+                        return strnatcasecmp($a[$key], $b[$key]);
+                    };
+                    break;
+                case 2: // Numeric.
+                    $comparisonFunction = function ($a, $b) use ($key) {
+                        return $a[$key] - $b[$key];
+                    };
+                    break;
+                case 3: // Case sensitive string.
+                    $comparisonFunction = function ($a, $b) use ($key) {
+                        return strcmp($a[$key], $b[$key]);
+                    };
+                    break;
+                case 4: // Case insensitive string.
+                    $comparisonFunction = function ($a, $b) use ($key) {
+                        return strcasecmp($a[$key], $b[$key]);
+                    };
+                    break;
+                default: // Case sensitive natural.
+                    $comparisonFunction = function ($a, $b) use ($key) {
+                        return strnatcmp($a[$key], $b[$key]);
+                    };
+                    break;
+            }
+
+            usort($array, function ($a, $b) use ($comparisonFunction, $order) {
+                return $order ? $comparisonFunction($a, $b) : -$comparisonFunction($a, $b);
+            });
+        }
+
+        return $array;
     }
 
     private function sendResource($post)
