@@ -12,7 +12,7 @@ class MYSQL_DB
         $this->lastPing = time();
     }
 
-    function checkConnection()
+    public function checkConnection()
     {
         $ping = true;
         if (($this->lastPing - time()) > 300) {
@@ -26,7 +26,7 @@ class MYSQL_DB
         return $ping;
     }
 
-    function myregister($username, $password, $email, $act, $tribe, $locate)
+    public function myregister($username, $password, $email, $act, $tribe, $locate)
     {
         $time = time();
         $calcdPTime = sqrt($time - COMMENCE);
@@ -42,20 +42,20 @@ class MYSQL_DB
         }
     }
 
-    function modifyPoints($aid, $points, $amt)
+    public function modifyPoints($aid, $points, $amt)
     {
         $q = "UPDATE users set $points = $points + $amt where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyPointsAlly($aid, $points, $amt)
+    public function modifyPointsAlly($aid, $points, $amt)
     {
         if (!$aid) return;
         $q = "UPDATE alidata set $points = $points + $amt where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
-    function myactivate($username, $password, $email, $act, $act2)
+    public function myactivate($username, $password, $email, $act, $act2)
     {
         $time = time();
         $q = "INSERT INTO activate (username,password,access,email,timestamp,act,act2) VALUES ('$username', '$password', " . USER . ", '$email', $time, '$act', '$act2')";
@@ -66,37 +66,37 @@ class MYSQL_DB
         }
     }
 
-    function unreg($username)
+    public function unreg($username)
     {
         $q = "DELETE from activate where username = '$username'";
         return mysql_query($q, $this->connection);
     }
 
-    function deleteReinf($id)
+    public function deleteReinf($id)
     {
         $q = "DELETE from enforcement where id = '$id'";
         mysql_query($q, $this->connection);
     }
 
-    function deleteReinfFrom($vref)
+    public function deleteReinfFrom($vref)
     {
         $q = "DELETE from enforcement where from = '$vref'";
         mysql_query($q, $this->connection);
     }
 
-    function deleteMovementsFrom($vref)
+    public function deleteMovementsFrom($vref)
     {
         $q = "DELETE from movement where from = '$vref'";
         mysql_query($q, $this->connection);
     }
 
-    function deleteAttacksFrom($vref)
+    public function deleteAttacksFrom($vref)
     {
         $q = "DELETE from attacks where vref = '$vref'";
         mysql_query($q, $this->connection);
     }
 
-    function checkExist($ref, $mode)
+    public function checkExist($ref, $mode)
     {
 
         if (!$mode) {
@@ -112,7 +112,7 @@ class MYSQL_DB
         }
     }
 
-    function checkExist_activate($ref, $mode)
+    public function checkExist_activate($ref, $mode)
     {
 
         if (!$mode) {
@@ -128,7 +128,7 @@ class MYSQL_DB
         }
     }
 
-    function updateUserField($ref, $field, $value, $mode)
+    public function updateUserField($ref, $field, $value, $mode)
     {
         if (!$mode) {
             $q = "UPDATE users set $field = '$value' where username = '$ref'";
@@ -140,7 +140,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getSit($uid)
+    public function getSit($uid)
     {
         $q = "SELECT * from users_setting where id = $uid LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -148,10 +148,10 @@ class MYSQL_DB
     }
 
     /**
-     * Function to process MYSQLi->fetch_all (Only exist in MYSQL)
+     * process MYSQLi->fetch_all (Only exist in MYSQL)
      * References: Result
      */
-    function mysql_fetch_all($result)
+    public function mysql_fetch_all($result)
     {
         $all = array();
         if ($result) {
@@ -162,7 +162,7 @@ class MYSQL_DB
         }
     }
 
-    function getSitee1($uid)
+    public function getSitee1($uid)
     {
         $q = "SELECT `id`,`username`,`sit1` from users where sit1 = $uid";
         $result = mysql_query($q, $this->connection);
@@ -170,7 +170,7 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function getSitee2($uid)
+    public function getSitee2($uid)
     {
         $q = "SELECT `id`,`username`,`sit2` from users where sit2 = $uid";
         $result = mysql_query($q, $this->connection);
@@ -178,7 +178,7 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function removeMeSit($uid, $uid2)
+    public function removeMeSit($uid, $uid2)
     {
         $q = "UPDATE users set sit1 = 0 where id = $uid and sit1 = $uid2";
         mysql_query($q, $this->connection);
@@ -186,7 +186,7 @@ class MYSQL_DB
         mysql_query($q2, $this->connection);
     }
 
-    function getUsersetting($uid)
+    public function getUsersetting($uid)
     {
         global $session;
         $q = "SELECT `id` FROM users_setting WHERE id = $uid LIMIT 1";
@@ -201,25 +201,25 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function SetSitter($ref, $field, $value, $mode)
+    public function SetSitter($ref, $field, $value, $mode)
     {
         $q = "UPDATE users set $field = '$value' where id = '$ref'";
         mysql_query($q);
     }
 
-    function sitsetting($sitset, $set, $val, $uid)
+    public function sitsetting($sitset, $set, $val, $uid)
     {
         $q = "UPDATE users_setting set sitter" . $sitset . "_set_" . $set . " = " . $val . " WHERE id=$uid";
         mysql_query($q, $this->connection) or die(mysql_error());
     }
 
-    function whoissitter($uid)
+    public function whoissitter($uid)
     {
         $return['whosit_sit'] = $_SESSION['whois_sit'];
         return $return;
     }
 
-    function getActivateField($ref, $field, $mode)
+    public function getActivateField($ref, $field, $mode)
     {
         if (!$mode) {
             $q = "SELECT $field FROM activate where id = '$ref'";
@@ -231,7 +231,7 @@ class MYSQL_DB
         return $dbarray[$field];
     }
 
-    function login($username, $password)
+    public function login($username, $password)
     {
         $q = "SELECT `password` FROM users where username = '$username'";
         $result = mysql_query($q, $this->connection);
@@ -254,7 +254,7 @@ class MYSQL_DB
         }
     }
 
-    function sitterLogin($username, $password)
+    public function sitterLogin($username, $password)
     {
         $q = "SELECT sit1,sit2 FROM users where username = '$username' and access != " . BANNED;
         $result = mysql_query($q, $this->connection);
@@ -284,13 +284,13 @@ class MYSQL_DB
         }
     }
 
-    function generateHash($plainText, $salt = 1)
+    public function generateHash($plainText, $salt = 1)
     {
         $salt = substr($salt, 0, 9);
         return $salt . md5($salt . $plainText);
     }
 
-    function setDeleting($uid, $mode)
+    public function setDeleting($uid, $mode)
     {
         $time = time() + max(round(259200 / sqrt(SPEED)), 3600);
         if (!$mode) {
@@ -301,7 +301,7 @@ class MYSQL_DB
         mysql_query($q, $this->connection);
     }
 
-    function isDeleting($uid)
+    public function isDeleting($uid)
     {
         $q = "SELECT timestamp from deleting where uid = $uid";
         $result = mysql_query($q, $this->connection);
@@ -309,7 +309,7 @@ class MYSQL_DB
         return $dbarray['timestamp'];
     }
 
-    function modifyGold($userid, $amt, $mode)
+    public function modifyGold($userid, $amt, $mode)
     {
         if (!$mode) {
             $goldlog = mysql_query("SELECT id FROM gold_fin_log") or die(mysql_error());
@@ -331,19 +331,19 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getGoldFinLog()
+    public function getGoldFinLog()
     {
         $q = "SELECT * FROM gold_fin_log";
         return $this->query_return($q);
     }
 
-    function query_return($q)
+    public function query_return($q)
     {
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function instantCompleteBdataResearch($wid, $username)
+    public function instantCompleteBdataResearch($wid, $username)
     {
         $q = "UPDATE bdata set timestamp = '1' where wid = " . $wid . " AND type != 25 AND type != 26";
         $bdata = mysql_query($q, $this->connection);
@@ -363,7 +363,7 @@ class MYSQL_DB
         }
     }
 
-    function getUsersList($list)
+    public function getUsersList($list)
     {
         $where = ' WHERE TRUE ';
         foreach ($list as $k => $v) {
@@ -374,7 +374,7 @@ class MYSQL_DB
         return $this->query_return($q);
     }
 
-    function modifyUser($ref, $column, $value, $mod = 0)
+    public function modifyUser($ref, $column, $value, $mod = 0)
     {
         if (!$mod) {
             $q = "UPDATE users SET `$column` = '$value' WHERE id = $ref";
@@ -384,14 +384,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getUserWithEmail($email)
+    public function getUserWithEmail($email)
     {
         $q = "SELECT `id`,`username` FROM users where email = '$email' LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function activeModify($username, $mode)
+    public function activeModify($username, $mode)
     {
         $time = time();
         if (!$mode) {
@@ -402,7 +402,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function addActiveUser($username, $time)
+    public function addActiveUser($username, $time)
     {
         $q = "REPLACE into active values ('$username',$time)";
         if (mysql_query($q, $this->connection)) {
@@ -412,13 +412,13 @@ class MYSQL_DB
         }
     }
 
-    function getActiveUsersList()
+    public function getActiveUsersList()
     {
         $q = "SELECT * FROM active";
         return $this->query_return($q);
     }
 
-    function updateActiveUser($username, $time)
+    public function updateActiveUser($username, $time)
     {
         $q = "REPLACE into active (`username`, `timestamp`) values ('$username',$time)";
         $q2 = "UPDATE users set timestamp = $time where username = '$username'";
@@ -431,7 +431,7 @@ class MYSQL_DB
         }
     }
 
-    function checkSitter($username)
+    public function checkSitter($username)
     {
         $q = "SELECT `sitter` FROM online WHERE name = '" . $username . "'";
         $result = mysql_query($q, $this->connection);
@@ -466,7 +466,7 @@ class MYSQL_DB
         }
     }
 
-    function getResourceLevel($vid)
+    public function getResourceLevel($vid)
     {
         $q = "SELECT * from fdata where vref = $vid";
         $result = $this->query_return($q);
@@ -485,14 +485,14 @@ class MYSQL_DB
         return $row[0];
     }
 
-    function getOasisInfo($wid)
+    public function getOasisInfo($wid)
     {
         $q = "SELECT `conqured`,`loyalty` FROM odata where wref = $wid LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
-    function getCoor($wref)
+    public function getCoor($wref)
     {
         $q = "SELECT x,y FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -509,7 +509,7 @@ class MYSQL_DB
         mysql_query($q, $this->connection);
     }
 
-    function getVillage($vid)
+    public function getVillage($vid)
     {
         $q = "SELECT `wref`,`capital`,`name`,`celebration`,`owner`,`wood`,`woodp`,`clay`,`clayp`,`iron`,`ironp`,`crop`,`cropp`,`pop`,`upkeep`,`maxstore`,`maxcrop`,`loyalty`,`natar` FROM vdata where wref = $vid LIMIT 1";
         $result = $this->query_return($q);
@@ -535,7 +535,7 @@ class MYSQL_DB
         return false;
     }
 
-    function isVillageOases($wref)
+    public function isVillageOases($wref)
     {
         $q = "SELECT oasistype FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -543,19 +543,19 @@ class MYSQL_DB
         return $dbarray['oasistype'];
     }
 
-    function oasesUpdateLastFarm($wref)
+    public function oasesUpdateLastFarm($wref)
     {
         $q = "UPDATE odata SET lastfarmed=" . time() . " WHERE wref=$wref";
         mysql_query($q, $this->connection);
     }
 
-    function oasesUpdateLastTrain($wref)
+    public function oasesUpdateLastTrain($wref)
     {
         $q = "UPDATE odata SET lasttrain=" . time() . " WHERE wref=$wref";
         mysql_query($q, $this->connection);
     }
 
-    function checkactiveSession($username, $sessid)
+    public function checkactiveSession($username, $sessid)
     {
         $user = $this->getUser($username, 0);
         $sessidarray = explode("+", $user['sessid']);
@@ -566,7 +566,7 @@ class MYSQL_DB
         }
     }
 
-    function getUser($ref, $mode = 0)
+    public function getUser($ref, $mode = 0)
     {
         if (!$mode) {
             $q = "SELECT * FROM users where username = '$ref' LIMIT 1";
@@ -581,13 +581,13 @@ class MYSQL_DB
         }
     }
 
-    function submitProfile($uid, $gender, $location, $birthday, $des1, $des2)
+    public function submitProfile($uid, $gender, $location, $birthday, $des1, $des2)
     {
         $q = "UPDATE users set gender = $gender, location = '$location', birthday = '$birthday', desc1 = '$des1', desc2 = '$des2' where id = $uid";
         return mysql_query($q, $this->connection);
     }
 
-    function UpdateOnline($mode, $name = "", $sit = 0)
+    public function UpdateOnline($mode, $name = "", $sit = 0)
     {
         global $session;
         if ($mode == "login") {
@@ -599,7 +599,7 @@ class MYSQL_DB
         }
     }
 
-    function generateBase($sector)
+    public function generateBase($sector)
     {
         $sector = ($sector == 0) ? rand(1, 4) : $sector;
         // (-/-) SW
@@ -656,13 +656,13 @@ class MYSQL_DB
         return $dbarray['id'];
     }
 
-    function setFieldTaken($id)
+    public function setFieldTaken($id)
     {
         $q = "UPDATE wdata set occupied = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function addVillage($wid, $uid, $username, $capital)
+    public function addVillage($wid, $uid, $username, $capital)
     {
         $total = count($this->getVillagesID($uid));
         if ($total >= 1) {
@@ -677,7 +677,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getVillagesID($uid)
+    public function getVillagesID($uid)
     {
         $q = "SELECT wref from vdata where owner = $uid order by capital DESC";
         $result = mysql_query($q, $this->connection);
@@ -689,7 +689,7 @@ class MYSQL_DB
         return $newarray;
     }
 
-    function addResourceFields($vid, $type)
+    public function addResourceFields($vid, $type)
     {
         switch ($type) {
             case 1:
@@ -732,7 +732,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function populateOasis()
+    public function populateOasis()
     {
         $q = "SELECT id FROM wdata where oasistype != 0";
         $result = mysql_query($q, $this->connection);
@@ -741,17 +741,17 @@ class MYSQL_DB
         }
     }
 
-    function addUnits($vid)
+    public function addUnits($vid)
     {
         $q = "INSERT into units (vref) values ($vid)";
         return mysql_query($q, $this->connection);
     }
 
     /**
-     * Function to retrieve type of village via ID
+     * retrieve type of village via ID
      * References: Village ID
      */
-    function getVillageOasis($list, $limit, $order)
+    public function getVillageOasis($list, $limit, $order)
     {
         $wref = $this->getVilWref($order['x'], $order['y']);
         $where = ' WHERE TRUE and conqured = ' . $wref;
@@ -772,7 +772,7 @@ class MYSQL_DB
         return $this->mysql_query($q);
     }
 
-    function getVilWref($x, $y)
+    public function getVilWref($x, $y)
     {
         $q = "SELECT id FROM wdata where x = $x AND y = $y LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -780,7 +780,7 @@ class MYSQL_DB
         return $dbarray['id'];
     }
 
-    function getVillageType($wref)
+    public function getVillageType($wref)
     {
         $q = "SELECT fieldtype FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -792,7 +792,7 @@ class MYSQL_DB
         }
     }
 
-    function checkVilExist($wref)
+    public function checkVilExist($wref)
     {
         $q = "SELECT wref FROM vdata where wref = '$wref' LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -803,7 +803,7 @@ class MYSQL_DB
         }
     }
 
-    function getVillageState($wref)
+    public function getVillageState($wref)
     {
         $q = "SELECT oasistype,occupied FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -815,7 +815,7 @@ class MYSQL_DB
         }
     }
 
-    function getVillageStateForSettle($wref)
+    public function getVillageStateForSettle($wref)
     {
         $q = "SELECT `oasistype`,`occupied`,`fieldtype` FROM wdata where id = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -827,28 +827,28 @@ class MYSQL_DB
         }
     }
 
-    function getProfileVillages($uid)
+    public function getProfileVillages($uid)
     {
         $q = "SELECT `wref`,`maxstore`,`maxcrop`,`pop`,`name`,`capital` from vdata where owner = $uid order by pop desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getProfileMedal($uid)
+    public function getProfileMedal($uid)
     {
         $q = "SELECT id,categorie,plaats,week,img,points from medal where userid = $uid order by id desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getProfileMedalAlly($uid)
+    public function getProfileMedalAlly($uid)
     {
         $q = "SELECT id,categorie,plaats,week,img,points from allimedal where allyid = $uid order by id desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getVillageID($uid)
+    public function getVillageID($uid)
     {
         $q = "SELECT wref FROM vdata WHERE owner = $uid";
         $result = mysql_query($q, $this->connection);
@@ -856,7 +856,7 @@ class MYSQL_DB
         return $dbarray['wref'];
     }
 
-    function getVillagesList($list, $limit, $order)
+    public function getVillagesList($list, $limit, $order)
     {
         $where = ' WHERE TRUE ';
         foreach ($list as $k => $v) {
@@ -875,7 +875,7 @@ class MYSQL_DB
         return $this->query_return($q);
     }
 
-    function getVillagesListCount($list)
+    public function getVillagesListCount($list)
     {
         $where = ' WHERE TRUE ';
         foreach ($list as $k => $v) {
@@ -887,21 +887,21 @@ class MYSQL_DB
         return mysql_num_rows($result);
     }
 
-    function getOasisV($vid)
+    public function getOasisV($vid)
     {
         $q = "SELECT `wref` FROM odata where wref = $vid LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getAInfo($id)
+    public function getAInfo($id)
     {
         $q = "SELECT `x`,`y` FROM wdata where id = $id LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getOasisField($ref, $field)
+    public function getOasisField($ref, $field)
     {
         $q = "SELECT $field FROM odata where wref = $ref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -909,20 +909,20 @@ class MYSQL_DB
         return $dbarray[$field];
     }
 
-    function setVillageField($ref, $field, $value)
+    public function setVillageField($ref, $field, $value)
     {
         if ((stripos($field, 'name') !== false) && ($value == '')) return false;
         $q = "UPDATE vdata set $field = '$value' where wref = $ref";
         return mysql_query($q, $this->connection);
     }
 
-    function setVillageLevel($ref, $field, $value)
+    public function setVillageLevel($ref, $field, $value)
     {
         $q = "UPDATE fdata set " . $field . " = '" . $value . "' where vref = " . $ref . "";
         return mysql_query($q, $this->connection);
     }
 
-    function removeTribeSpecificFields($vref)
+    public function removeTribeSpecificFields($vref)
     {
         $fields = $this->getResourceLevel($vref);
         $tribeSpecificArray = array(31, 32, 33, 35, 36, 41);
@@ -940,19 +940,19 @@ class MYSQL_DB
         mysql_query($q, $this->connection);
     }
 
-    function getAdminLog($limit = 5)
+    public function getAdminLog($limit = 5)
     {
         $q = "SELECT * FROM admin_log ORDER BY id DESC LIMIT $limit";
         return $this->query_return($q);
     }
 
-    function delAdminLog($id)
+    public function delAdminLog($id)
     {
         $q = "DELETE FROM admin_log where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function CheckForum($id)
+    public function CheckForum($id)
     {
         $q = "SELECT id from forum_cat where alliance = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -963,7 +963,7 @@ class MYSQL_DB
         }
     }
 
-    function CountCat($id)
+    public function CountCat($id)
     {
         $q = "SELECT count(id) FROM forum_topic where cat = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -971,14 +971,14 @@ class MYSQL_DB
         return $row[0];
     }
 
-    function LastTopic($id)
+    public function LastTopic($id)
     {
         $q = "SELECT `id` from forum_topic where cat = '$id' order by post_date";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function check_forumRules($id)
+    public function check_forumRules($id)
     {
         global $session;
         $q = "SELECT * FROM fpost_rules WHERE forum_id = $id";
@@ -1011,7 +1011,7 @@ class MYSQL_DB
         return true;
     }
 
-    function CheckLastTopic($id)
+    public function CheckLastTopic($id)
     {
         $q = "SELECT id from forum_topic where cat = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -1022,7 +1022,7 @@ class MYSQL_DB
         }
     }
 
-    function CheckLastPost($id)
+    public function CheckLastPost($id)
     {
         $q = "SELECT id from forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -1033,14 +1033,14 @@ class MYSQL_DB
         }
     }
 
-    function LastPost($id)
+    public function LastPost($id)
     {
         $q = "SELECT `date`,`owner` from forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function CountTopic($id)
+    public function CountTopic($id)
     {
         $q = "SELECT count(id) FROM forum_post where owner = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -1052,7 +1052,7 @@ class MYSQL_DB
         return $row[0] + $rows[0];
     }
 
-    function CountPost($id)
+    public function CountPost($id)
     {
         $q = "SELECT count(id) FROM forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -1060,21 +1060,21 @@ class MYSQL_DB
         return $row[0];
     }
 
-    function ForumCat($id)
+    public function ForumCat($id)
     {
         $q = "SELECT * from forum_cat where alliance = '$id' ORDER BY id";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function ForumCatEdit($id)
+    public function ForumCatEdit($id)
     {
         $q = "SELECT * from forum_cat where id = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function ForumCatName($id)
+    public function ForumCatName($id)
     {
         $q = "SELECT forum_name from forum_cat where id = $id";
         $result = mysql_query($q, $this->connection);
@@ -1082,7 +1082,7 @@ class MYSQL_DB
         return $dbarray['forum_name'];
     }
 
-    function CheckCatTopic($id)
+    public function CheckCatTopic($id)
     {
         $q = "SELECT id from forum_topic where cat = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -1093,7 +1093,7 @@ class MYSQL_DB
         }
     }
 
-    function CheckResultEdit($alli)
+    public function CheckResultEdit($alli)
     {
         $q = "SELECT id from forum_edit where alliance = '$alli'";
         $result = mysql_query($q, $this->connection);
@@ -1104,7 +1104,7 @@ class MYSQL_DB
         }
     }
 
-    function CheckCloseTopic($id)
+    public function CheckCloseTopic($id)
     {
         $q = "SELECT close from forum_topic where id = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -1112,7 +1112,7 @@ class MYSQL_DB
         return $dbarray['close'];
     }
 
-    function CheckEditRes($alli)
+    public function CheckEditRes($alli)
     {
         $q = "SELECT result from forum_edit where alliance = '$alli'";
         $result = mysql_query($q, $this->connection);
@@ -1120,81 +1120,81 @@ class MYSQL_DB
         return $dbarray['result'];
     }
 
-    function CreatResultEdit($alli, $result)
+    public function CreatResultEdit($alli, $result)
     {
         $q = "INSERT into forum_edit values (0,'$alli','$result')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function UpdateResultEdit($alli, $result)
+    public function UpdateResultEdit($alli, $result)
     {
         $date = time();
         $q = "UPDATE forum_edit set result = '$result' where alliance = '$alli'";
         return mysql_query($q, $this->connection);
     }
 
-    function UpdateEditTopic($id, $title, $cat)
+    public function UpdateEditTopic($id, $title, $cat)
     {
         $q = "UPDATE forum_topic set title = '$title', cat = '$cat' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function UpdateEditForum($id, $name, $des)
+    public function UpdateEditForum($id, $name, $des)
     {
         $q = "UPDATE forum_cat set forum_name = '$name', forum_des = '$des' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function StickTopic($id, $mode)
+    public function StickTopic($id, $mode)
     {
         $q = "UPDATE forum_topic set stick = '$mode' where id = '$id'";
         return mysql_query($q, $this->connection);
     }
 
-    function ForumCatTopic($id)
+    public function ForumCatTopic($id)
     {
         $q = "SELECT * from forum_topic where cat = '$id' AND stick = '' ORDER BY post_date desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function ForumCatTopicStick($id)
+    public function ForumCatTopicStick($id)
     {
         $q = "SELECT * from forum_topic where cat = '$id' AND stick = '1' ORDER BY post_date desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function ShowTopic($id)
+    public function ShowTopic($id)
     {
         $q = "SELECT * from forum_topic where id = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function ShowPost($id)
+    public function ShowPost($id)
     {
         $q = "SELECT * from forum_post where topic = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function ShowPostEdit($id)
+    public function ShowPostEdit($id)
     {
         $q = "SELECT * from forum_post where id = '$id'";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function CreatForum($owner, $alli, $name, $des, $area)
+    public function CreatForum($owner, $alli, $name, $des, $area)
     {
         $q = "INSERT into forum_cat values (0,'$owner','$alli','$name','$des','$area')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function CreatTopic($title, $post, $cat, $owner, $alli, $ends)
+    public function CreatTopic($title, $post, $cat, $owner, $alli, $ends)
     {
         $date = time();
         $q = "INSERT into forum_topic values (0,'$title','$post','$date','$date','$cat','$owner','$alli','$ends','','')";
@@ -1202,7 +1202,7 @@ class MYSQL_DB
         return mysql_insert_id($this->connection);
     }
 
-    function CreatPost($post, $tids, $owner)
+    public function CreatPost($post, $tids, $owner)
     {
         $date = time();
         $q = "INSERT into forum_post values (0,'$post','$tids','$owner','$date')";
@@ -1210,32 +1210,32 @@ class MYSQL_DB
         return mysql_insert_id($this->connection);
     }
 
-    function UpdatePostDate($id)
+    public function UpdatePostDate($id)
     {
         $date = time();
         $q = "UPDATE forum_topic set post_date = '$date' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function EditUpdateTopic($id, $post)
+    public function EditUpdateTopic($id, $post)
     {
         $q = "UPDATE forum_topic set post = '$post' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function EditUpdatePost($id, $post)
+    public function EditUpdatePost($id, $post)
     {
         $q = "UPDATE forum_post set post = '$post' where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function LockTopic($id, $mode)
+    public function LockTopic($id, $mode)
     {
         $q = "UPDATE forum_topic set close = '$mode' where id = '$id'";
         return mysql_query($q, $this->connection);
     }
 
-    function DeleteCat($id)
+    public function DeleteCat($id)
     {
         $qs = "DELETE from forum_cat where id = '$id'";
         $q = "DELETE from forum_topic where cat = '$id'";
@@ -1243,7 +1243,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function DeleteTopic($id)
+    public function DeleteTopic($id)
     {
         $qs = "DELETE from forum_topic where id = '$id'";
         //  $q = "DELETE from forum_post where topic = '$id'";//
@@ -1251,13 +1251,13 @@ class MYSQL_DB
         // mysql_query($q,$this->connection);
     }
 
-    function DeletePost($id)
+    public function DeletePost($id)
     {
         $q = "DELETE from forum_post where id = '$id'";
         return mysql_query($q, $this->connection);
     }
 
-    function getAllianceName($id)
+    public function getAllianceName($id)
     {
         if (!$id) return false;
         $q = "SELECT tag from alidata where id = $id";
@@ -1266,7 +1266,7 @@ class MYSQL_DB
         return $dbarray['tag'];
     }
 
-    function getAlliancePermission($ref, $field, $mode)
+    public function getAlliancePermission($ref, $field, $mode)
     {
         if (!$mode) {
             $q = "SELECT $field FROM ali_permission where uid = '$ref'";
@@ -1278,7 +1278,7 @@ class MYSQL_DB
         return $dbarray[$field];
     }
 
-    function ChangePos($id, $mode)
+    public function ChangePos($id, $mode)
     { //??S-H=a-d=o-W??//
         $q = "SELECT `forum_area` from forum_cat where id = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -1314,7 +1314,7 @@ class MYSQL_DB
         }
     }
 
-    function ForumCatAlliance($id)
+    public function ForumCatAlliance($id)
     {
         $q = "SELECT `alliance` from forum_cat where id = $id";
         $result = mysql_query($q, $this->connection);
@@ -1322,28 +1322,28 @@ class MYSQL_DB
         return $dbarray['alliance'];
     }
 
-    function CreatPoll($id, $name, $p1_name, $p2_name, $p3_name, $p4_name)
+    public function CreatPoll($id, $name, $p1_name, $p2_name, $p3_name, $p4_name)
     {
         $q = "INSERT into forum_poll values ('$id','$name','0','0','0','0','$p1_name','$p2_name','$p3_name','$p4_name','')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function CreatForum_rules($aid, $id, $users_id, $users_name, $alli_id, $alli_name)
+    public function CreatForum_rules($aid, $id, $users_id, $users_name, $alli_id, $alli_name)
     {
         $q = "INSERT into fpost_rules values ('$aid','$id','$users_id','$users_name', '$alli_id','$alli_name')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function setAlliName($aid, $name, $tag)
+    public function setAlliName($aid, $name, $tag)
     {
         if (!$aid) return false;
         $q = "UPDATE alidata set name = '$name', tag = '$tag' where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
-    function isAllianceOwner($id)
+    public function isAllianceOwner($id)
     {
         if (!$id) return false;
         $q = "SELECT id from alidata where leader = '$id'";
@@ -1355,7 +1355,7 @@ class MYSQL_DB
         }
     }
 
-    function aExist($ref, $type)
+    public function aExist($ref, $type)
     {
         $q = "SELECT $type FROM alidata where $type = '$ref'";
         $result = mysql_query($q, $this->connection);
@@ -1366,7 +1366,7 @@ class MYSQL_DB
         }
     }
 
-    function createAlliance($tag, $name, $uid, $max)
+    public function createAlliance($tag, $name, $uid, $max)
     {
         $q = "INSERT into alidata values (0,'$name','$tag',$uid,0,0,0,'','',$max,'','','','','','','','')";
         mysql_query($q, $this->connection);
@@ -1374,9 +1374,9 @@ class MYSQL_DB
     }
 
     /**
-     * Function to insert an alliance new
+     * insert an alliance new
      */
-    function insertAlliNotice($aid, $notice)
+    public function insertAlliNotice($aid, $notice)
     {
         $time = time();
         $q = "INSERT into ali_log values (0,'$aid','$notice',$time)";
@@ -1385,9 +1385,9 @@ class MYSQL_DB
     }
 
     /**
-     * Function to delete alliance if empty
+     * delete alliance if empty
      */
-    function deleteAlliance($aid)
+    public function deleteAlliance($aid)
     {
         $result = mysql_query("SELECT id FROM users where alliance = $aid");
         $num_rows = mysql_num_rows($result);
@@ -1399,9 +1399,9 @@ class MYSQL_DB
     }
 
     /**
-     * Function to read all alliance news
+     * read all alliance news
      */
-    function readAlliNotice($aid)
+    public function readAlliNotice($aid)
     {
         $q = "SELECT * from ali_log where aid = $aid ORDER BY date DESC";
         $result = mysql_query($q, $this->connection);
@@ -1409,10 +1409,10 @@ class MYSQL_DB
     }
 
     /**
-     * Function to create alliance permissions
+     * create alliance permissions
      * References: ID, notice, description
      */
-    function createAlliPermissions($uid, $aid, $rank, $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8)
+    public function createAlliPermissions($uid, $aid, $rank, $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8)
     {
 
         $q = "INSERT into ali_permission values(0,'$uid','$aid','$rank','$opt1','$opt2','$opt3','$opt4','$opt5','$opt6','$opt7','$opt8')";
@@ -1421,28 +1421,28 @@ class MYSQL_DB
     }
 
     /**
-     * Function to update alliance permissions
+     * update alliance permissions
      */
-    function deleteAlliPermissions($uid)
+    public function deleteAlliPermissions($uid)
     {
         $q = "DELETE from ali_permission where uid = '$uid'";
         return mysql_query($q, $this->connection);
     }
 
     /**
-     * Function to update alliance permissions
+     * update alliance permissions
      */
-    function updateAlliPermissions($uid, $aid, $rank, $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8 = 0)
+    public function updateAlliPermissions($uid, $aid, $rank, $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8 = 0)
     {
         $q = "UPDATE ali_permission SET rank = '$rank', opt1 = '$opt1', opt2 = '$opt2', opt3 = '$opt3', opt4 = '$opt4', opt5 = '$opt5', opt6 = '$opt6', opt7 = '$opt7', opt8 = '$opt8' where uid = $uid && alliance =$aid";
         return mysql_query($q, $this->connection);
     }
 
     /**
-     * Function to read alliance permissions
+     * read alliance permissions
      * References: ID, notice, description
      */
-    function getAlliPermissions($uid, $aid)
+    public function getAlliPermissions($uid, $aid)
     {
         $q = "SELECT * FROM ali_permission where uid = $uid && alliance = $aid";
         $result = mysql_query($q, $this->connection);
@@ -1450,30 +1450,30 @@ class MYSQL_DB
     }
 
     /**
-     * Function to update an alliance description and notice
+     * update an alliance description and notice
      * References: ID, notice, description
      */
-    function submitAlliProfile($aid, $notice, $desc)
+    public function submitAlliProfile($aid, $notice, $desc)
     {
         if (!$aid) return false;
         $q = "UPDATE alidata SET `notice` = '$notice', `desc` = '$desc' where id = $aid";
         return mysql_query($q, $this->connection);
     }
 
-    function diplomacyInviteAdd($alli1, $alli2, $type)
+    public function diplomacyInviteAdd($alli1, $alli2, $type)
     {
         $q = "INSERT INTO diplomacy (alli1,alli2,type,accepted) VALUES ($alli1,$alli2," . (int)intval($type) . ",0)";
         return mysql_query($q, $this->connection);
     }
 
-    function diplomacyOwnOffers($session_alliance)
+    public function diplomacyOwnOffers($session_alliance)
     {
         $q = "SELECT * FROM diplomacy WHERE alli1 = $session_alliance AND accepted = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getAllianceID($name)
+    public function getAllianceID($name)
     {
         $q = "SELECT id FROM alidata WHERE tag ='" . $this->RemoveXSS($name) . "'";
         $result = mysql_query($q, $this->connection);
@@ -1481,57 +1481,57 @@ class MYSQL_DB
         return $dbarray['id'];
     }
 
-    function RemoveXSS($val)
+    public function RemoveXSS($val)
     {
         return htmlspecialchars($val, ENT_QUOTES);
     }
 
-    function diplomacyCancelOffer($id)
+    public function diplomacyCancelOffer($id)
     {
         $q = "DELETE FROM diplomacy WHERE id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function diplomacyInviteAccept($id, $session_alliance)
+    public function diplomacyInviteAccept($id, $session_alliance)
     {
         $q = "UPDATE diplomacy SET accepted = 1 WHERE id = $id AND alli2 = $session_alliance";
         return mysql_query($q, $this->connection);
     }
 
-    function diplomacyInviteDenied($id, $session_alliance)
+    public function diplomacyInviteDenied($id, $session_alliance)
     {
         $q = "DELETE FROM diplomacy WHERE id = $id AND alli2 = $session_alliance";
         return mysql_query($q, $this->connection);
     }
 
-    function diplomacyInviteCheck($session_alliance)
+    public function diplomacyInviteCheck($session_alliance)
     {
         $q = "SELECT * FROM diplomacy WHERE alli2 = $session_alliance AND accepted = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function diplomacyExistingRelationships($session_alliance)
+    public function diplomacyExistingRelationships($session_alliance)
     {
         $q = "SELECT * FROM diplomacy WHERE alli2 = $session_alliance AND accepted = 1";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function diplomacyExistingRelationships2($session_alliance)
+    public function diplomacyExistingRelationships2($session_alliance)
     {
         $q = "SELECT * FROM diplomacy WHERE alli1 = $session_alliance AND accepted = 1";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function diplomacyCancelExistingRelationship($id, $session_alliance)
+    public function diplomacyCancelExistingRelationship($id, $session_alliance)
     {
         $q = "DELETE FROM diplomacy WHERE id = $id AND alli2 = $session_alliance";
         return mysql_query($q, $this->connection);
     }
 
-    function getUserAlliance($id)
+    public function getUserAlliance($id)
     {
         if (!$id) return false;
         $q = "SELECT alidata.tag from users join alidata where users.alliance = alidata.id and users.id = $id";
@@ -1544,7 +1544,7 @@ class MYSQL_DB
         }
     }
 
-    function modifyResource($vid, $wood, $clay, $iron, $crop, $mode)
+    public function modifyResource($vid, $wood, $clay, $iron, $crop, $mode)
     {
         if (!$mode) {
             $q = "UPDATE vdata set wood = wood - $wood, clay = clay - $clay, iron = iron - $iron, crop = crop - $crop where wref = $vid";
@@ -1554,13 +1554,13 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function modifyProduction($vid, $woodp, $clayp, $ironp, $cropp, $upkeep)
+    public function modifyProduction($vid, $woodp, $clayp, $ironp, $cropp, $upkeep)
     {
         $q = "UPDATE vdata set woodp = $woodp, clayp = $clayp, ironp = $ironp, cropp = $cropp, upkeep = $upkeep where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyOasisResource($vid, $wood, $clay, $iron, $crop, $mode)
+    public function modifyOasisResource($vid, $wood, $clay, $iron, $crop, $mode)
     {
         if (!$mode) {
             $q = "UPDATE odata set wood = wood - $wood, clay = clay - $clay, iron = iron - $iron, crop = crop - $crop where wref = $vid";
@@ -1570,14 +1570,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getFieldType($vid, $field)
+    public function getFieldType($vid, $field)
     {
         $q = "SELECT f" . $field . "t from fdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_result($result, 0);
     }
 
-    function getVSumField($uid, $field)
+    public function getVSumField($uid, $field)
     {
         $q = "SELECT sum(" . $field . ") FROM vdata where owner = $uid";
         $result = mysql_query($q, $this->connection);
@@ -1585,28 +1585,28 @@ class MYSQL_DB
         return $row[0];
     }
 
-    function updateVillage($vid)
+    public function updateVillage($vid)
     {
         $time = time();
         $q = "UPDATE vdata set lastupdate = $time where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
-    function updateOasis($vid)
+    public function updateOasis($vid)
     {
         $time = time();
         $q = "UPDATE odata set lastupdated = $time where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
-    function setVillageName($vid, $name)
+    public function setVillageName($vid, $name)
     {
         if ($name == '') return false;
         $q = "UPDATE vdata set name = '$name' where wref = $vid";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyPop($vid, $pop, $mode)
+    public function modifyPop($vid, $pop, $mode)
     {
         if (!$mode) {
             $q = "UPDATE vdata set pop = pop + $pop where wref = $vid";
@@ -1616,19 +1616,19 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function addCP($ref, $cp)
+    public function addCP($ref, $cp)
     {
         $q = "UPDATE vdata set cp = cp + '$cp' where wref = '$ref'";
         return mysql_query($q, $this->connection);
     }
 
-    function addCel($ref, $cel, $type)
+    public function addCel($ref, $cel, $type)
     {
         $q = "UPDATE vdata set celebration = $cel, type= $type where wref = $ref";
         return mysql_query($q, $this->connection);
     }
 
-    function getCel()
+    public function getCel()
     {
         $time = time();
         $q = "SELECT `wref`,`type`,`owner` FROM vdata where celebration < $time AND celebration != 0";
@@ -1636,7 +1636,7 @@ class MYSQL_DB
         return $this->mysql_fetch_all($result);
     }
 
-    function getActiveGCel($vref)
+    public function getActiveGCel($vref)
     {
         $time = time();
         $q = "SELECT * FROM vdata WHERE vref = $vref AND celebration > $time AND type=2";
@@ -1644,84 +1644,84 @@ class MYSQL_DB
         return $this->mysql_fetch_all($result);
     }
 
-    function clearCel($ref)
+    public function clearCel($ref)
     {
         $q = "UPDATE vdata set celebration = 0, type = 0 where wref = $ref";
         return mysql_query($q, $this->connection);
     }
 
-    function setCelCp($user, $cp)
+    public function setCelCp($user, $cp)
     {
         $q = "UPDATE users set cp = cp + $cp where id = $user";
         return mysql_query($q, $this->connection);
     }
 
-    function getInvitation($uid, $ally)
+    public function getInvitation($uid, $ally)
     {
         $q = "SELECT * FROM ali_invite where uid = $uid AND alliance = $ally";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getInvitation2($uid)
+    public function getInvitation2($uid)
     {
         $q = "SELECT * FROM ali_invite where uid = $uid";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getAliInvitations($aid)
+    public function getAliInvitations($aid)
     {
         $q = "SELECT * FROM ali_invite where alliance = $aid && accept = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function sendInvitation($uid, $alli, $sender)
+    public function sendInvitation($uid, $alli, $sender)
     {
         $time = time();
         $q = "INSERT INTO ali_invite values (0,$uid,$alli,$sender,$time,0)";
         return mysql_query($q, $this->connection);
     }
 
-    function removeInvitation($id)
+    public function removeInvitation($id)
     {
         $q = "DELETE FROM ali_invite where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function delMessage($id)
+    public function delMessage($id)
     {
         $q = "DELETE FROM mdata WHERE id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function delNotice($id, $uid)
+    public function delNotice($id, $uid)
     {
         $q = "DELETE FROM ndata WHERE id = $id AND uid = $uid";
         return mysql_query($q, $this->connection);
     }
 
-    function sendMessage($client, $owner, $topic, $message, $send, $alliance, $player, $coor, $report)
+    public function sendMessage($client, $owner, $topic, $message, $send, $alliance, $player, $coor, $report)
     {
-        $time = $_SERVER['REQUEST_TIME'];
+        $time = time();
         $q = "INSERT INTO mdata values (0,$client,$owner,'$topic',\"$message\",0,0,$send,$time,0,0,$alliance,$player,$coor,$report)";
         return mysql_query($q, $this->connection);
     }
 
-    function setArchived($id)
+    public function setArchived($id)
     {
         $q = "UPDATE mdata set archived = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function setNorm($id)
+    public function setNorm($id)
     {
         $q = "UPDATE mdata set archived = 0 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function getMessage($id, $mode)
+    public function getMessage($id, $mode)
     {
         global $session;
         switch ($mode) {
@@ -1770,31 +1770,31 @@ class MYSQL_DB
         }
     }
 
-    function unarchiveNotice($id)
+    public function unarchiveNotice($id)
     {
         $q = "UPDATE ndata set `archive` = 0 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function archiveNotice($id)
+    public function archiveNotice($id)
     {
         $q = "update ndata set `archive` = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function removeNotice($id)
+    public function removeNotice($id)
     {
         $q = "DELETE FROM ndata where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function noticeViewed($id)
+    public function noticeViewed($id)
     {
         $q = "UPDATE ndata set viewed = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function addNotice($uid, $toWref, $ally, $type, $topic, $data, $time = 0)
+    public function addNotice($uid, $toWref, $ally, $type, $topic, $data, $time = 0)
     {
         if ($time == 0) {
             $time = time();
@@ -1803,14 +1803,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getNotice($uid)
+    public function getNotice($uid)
     {
         $q = "SELECT * FROM ndata where uid = $uid ORDER BY time DESC LIMIT 99";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getNoticeReportBox($uid)
+    public function getNoticeReportBox($uid)
     {
         $q = "SELECT COUNT(`id`) as maxreport FROM ndata where uid = $uid ORDER BY time DESC LIMIT 200";
         $result = mysql_query($q, $this->connection);
@@ -1818,7 +1818,7 @@ class MYSQL_DB
         return $result['maxreport'];
     }
 
-    function addBuilding($wid, $field, $type, $loop, $time, $master, $level)
+    public function addBuilding($wid, $field, $type, $loop, $time, $master, $level)
     {
         $x = "UPDATE fdata SET f" . $field . "t=" . $type . " WHERE vref=" . $wid;
         mysql_query($x, $this->connection);
@@ -1826,7 +1826,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function removeBuilding($d)
+    public function removeBuilding($d)
     {
         global $building;
         $jobLoopconID = -1;
@@ -1939,7 +1939,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function addDemolition($wid, $field)
+    public function addDemolition($wid, $field)
     {
         global $building, $village;
         $q = "DELETE FROM bdata WHERE field=$field AND wid=$wid";
@@ -1949,14 +1949,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getFieldLevel($vid, $field)
+    public function getFieldLevel($vid, $field)
     {
         $q = "SELECT f" . $field . " from fdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_result($result, 0);
     }
 
-    function getDemolition($wid = 0)
+    public function getDemolition($wid = 0)
     {
         if ($wid) {
             $q = "SELECT `vref`,`buildnumber`,`timetofinish` FROM demolition WHERE vref=" . $wid;
@@ -1971,26 +1971,26 @@ class MYSQL_DB
         }
     }
 
-    function finishDemolition($wid)
+    public function finishDemolition($wid)
     {
         $q = "UPDATE demolition SET timetofinish=0 WHERE vref=" . $wid;
         return mysql_query($q, $this->connection);
     }
 
-    function delDemolition($wid)
+    public function delDemolition($wid)
     {
         $q = "DELETE FROM demolition WHERE vref=" . $wid;
         return mysql_query($q, $this->connection);
     }
 
-    function getJobs($wid)
+    public function getJobs($wid)
     {
         $q = "SELECT * FROM bdata where wid = $wid order by ID ASC";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function FinishWoodcutter($wid)
+    public function FinishWoodcutter($wid)
     {
         $time = time() - 1;
         $q = "SELECT id FROM bdata where wid = $wid and type = 1 order by master,timestamp ASC";
@@ -2001,17 +2001,17 @@ class MYSQL_DB
     }
 
     /**
-     * Function to do free query
+     * do free query
      * References: Query
      */
-    function query($query)
+    public function query($query)
     {
         return mysql_query($query, $this->connection);
     }
 
-    function FinishCropLand($wid)
+    public function FinishCropLand($wid)
     {
-        $time = $_SERVER['REQUEST_TIME'] - 1;
+        $time = time() - 1;
         $q = "SELECT `id`,`timestamp` FROM bdata where wid = $wid and type = 4 order by master,timestamp ASC";
         $result = mysql_query($q);
         $dbarray = mysql_fetch_assoc($result);
@@ -2027,7 +2027,7 @@ class MYSQL_DB
         }
     }
 
-    function finishBuildings($wid)
+    public function finishBuildings($wid)
     {
         $time = time() - 1;
         $q = "SELECT id FROM bdata where wid = $wid order by master,timestamp ASC";
@@ -2038,48 +2038,48 @@ class MYSQL_DB
         }
     }
 
-    function getMasterJobs($wid)
+    public function getMasterJobs($wid)
     {
         $q = "SELECT `id` FROM bdata where wid = $wid and master = 1 order by master,timestamp ASC";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getBuildingByField($wid, $field)
+    public function getBuildingByField($wid, $field)
     {
         $q = "SELECT `id` FROM bdata where wid = $wid and field = $field and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getBuildingByType($wid, $type)
+    public function getBuildingByType($wid, $type)
     {
         $q = "SELECT `id` FROM bdata where wid = $wid and type = $type and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getDorf1Building($wid)
+    public function getDorf1Building($wid)
     {
         $q = "SELECT `timestamp` FROM bdata where wid = $wid and field < 19 and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getDorf2Building($wid)
+    public function getDorf2Building($wid)
     {
         $q = "SELECT `timestamp` FROM bdata where wid = $wid and field > 18 and master = 0";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function updateBuildingWithMaster($id, $time, $loop)
+    public function updateBuildingWithMaster($id, $time, $loop)
     {
         $q = "UPDATE bdata SET master = 0, timestamp = " . $time . ",loopcon = " . $loop . " WHERE id = " . $id . "";
         return mysql_query($q, $this->connection);
     }
 
-    function getVillageByName($name)
+    public function getVillageByName($name)
     {
         $name = mysql_real_escape_string($name, $this->connection);
         $q = "SELECT wref FROM vdata where name = '$name' limit 1";
@@ -2089,47 +2089,47 @@ class MYSQL_DB
     }
 
     /**
-     * Function to set accept flag on market
+     * set accept flag on market
      * References: id
      */
-    function setMarketAcc($id)
+    public function setMarketAcc($id)
     {
         $q = "UPDATE market set accept = 1 where id = $id";
         return mysql_query($q, $this->connection);
     }
 
     /**
-     * Function to send resource to other village
+     * send resource to other village
      * Mode 0: Send
      * Mode 1: Cancel
      * References: Wood/ID, Clay, Iron, Crop, Mode
      */
-    function sendResource($wood, $clay, $iron, $crop, $merchant)
+    public function sendResource($wood, $clay, $iron, $crop, $merchant)
     {
         $q = "INSERT INTO send (`wood`, `clay`, `iron`, `crop`, `merchant`) values ($wood,$clay,$iron,$crop,$merchant)";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function sendResourceMORE($wood, $clay, $iron, $crop, $send)
+    public function sendResourceMORE($wood, $clay, $iron, $crop, $send)
     {
         $q = "INSERT INTO send (`wood`, `clay`, `iron`, `crop`, `send`) values ($wood,$clay,$iron,$crop,$send)";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function removeSend($ref)
+    public function removeSend($ref)
     {
         $q = "DELETE FROM send WHERE id = " . $ref;
         mysql_query($q, $this->connection);
     }
 
     /**
-     * Function to get resources back if you delete offer
+     * get resources back if you delete offer
      * References: VillageRef (vref)
      * Made by: Dzoki
      */
-    function getResourcesBack($vref, $gtype, $gamt)
+    public function getResourcesBack($vref, $gtype, $gamt)
     {
         //Xtype (1) = wood, (2) = clay, (3) = iron, (4) = crop
         if ($gtype == 1) {
@@ -2151,11 +2151,11 @@ class MYSQL_DB
     }
 
     /**
-     * Function to get info about offered resources
+     * get info about offered resources
      * References: VillageRef (vref)
      * Made by: Dzoki
      */
-    function getMarketField($vref, $field)
+    public function getMarketField($vref, $field)
     {
         $q = "SELECT $field FROM market where vref = '$vref'";
         $result = mysql_query($q, $this->connection);
@@ -2163,7 +2163,7 @@ class MYSQL_DB
         return $dbarray[$field];
     }
 
-    function removeAcceptedOffer($id)
+    public function removeAcceptedOffer($id)
     {
         $q = "DELETE FROM market where id = $id";
         $result = mysql_query($q, $this->connection);
@@ -2171,12 +2171,12 @@ class MYSQL_DB
     }
 
     /**
-     * Function to add market offer
+     * add market offer
      * Mode 0: Add
      * Mode 1: Cancel
      * References: Village, Give, Amt, Want, Amt, Time, Alliance, Mode
      */
-    function addMarket($vid, $gtype, $gamt, $wtype, $wamt, $time, $alliance, $merchant, $mode)
+    public function addMarket($vid, $gtype, $gamt, $wtype, $wamt, $time, $alliance, $merchant, $mode)
     {
         if (!$mode) {
             $q = "INSERT INTO market values (0,$vid,$gtype,$gamt,$wtype,$wamt,0,$time,$alliance,$merchant)";
@@ -2189,10 +2189,10 @@ class MYSQL_DB
     }
 
     /**
-     * Function to get market offer
+     * get market offer
      * References: Village, Mode
      */
-    function getMarket($vid, $mode)
+    public function getMarket($vid, $mode)
     {
         $alliance = $this->getUserField($this->getVillageField($vid, "owner"), "alliance", 0);
         if (!$mode) {
@@ -2204,7 +2204,7 @@ class MYSQL_DB
         return $this->mysql_fetch_all($result);
     }
 
-    function getUserField($ref, $field, $mode)
+    public function getUserField($ref, $field, $mode)
     {
         if (!$mode) {
             $q = "SELECT $field FROM users where id = '$ref' LIMIT 1";
@@ -2216,7 +2216,7 @@ class MYSQL_DB
         return $dbarray[$field];
     }
 
-    function getVillageField($ref, $field)
+    public function getVillageField($ref, $field)
     {
         $q = "SELECT $field FROM vdata where wref = $ref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -2225,27 +2225,27 @@ class MYSQL_DB
     }
 
     /**
-     * Function to get market offer
+     * get market offer
      * References: ID
      */
-    function getMarketInfo($id)
+    public function getMarketInfo($id)
     {
         $q = "SELECT `vref`,`gtype`,`wtype`,`merchant`,`wamt` FROM market where id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
-    function setMovementProc($moveid)
+    public function setMovementProc($moveid)
     {
         $q = "UPDATE movement set proc = 1 where moveid = $moveid";
         return mysql_query($q, $this->connection);
     }
 
     /**
-     * Function to retrieve used merchant
+     * retrieve used merchant
      * References: Village
      */
-    function totalMerchantUsed($vid)
+    public function totalMerchantUsed($vid)
     {
         //$time = time();
         $q = "SELECT sum(send.merchant) from send, movement where movement.from = $vid and send.id = movement.ref and movement.proc = 0 and sort_type = 0";
@@ -2260,7 +2260,7 @@ class MYSQL_DB
         return $row[0] + $row2[0] + $row3[0];
     }
 
-    function getMovementById($id)
+    public function getMovementById($id)
     {
         $q = "SELECT `starttime`,`to`,`from` FROM movement where moveid = " . $id;
         $result = mysql_query($q, $this->connection);
@@ -2272,7 +2272,7 @@ class MYSQL_DB
         }
     }
 
-    function cancelMovement($id, $newfrom, $newto)
+    public function cancelMovement($id, $newfrom, $newto)
     {
         $refstr = '';
         $q = "SELECT ref FROM movement WHERE moveid=$id";
@@ -2286,14 +2286,14 @@ class MYSQL_DB
         $this->query($q);
     }
 
-    function addAttack($vid, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $type, $ctar1, $ctar2, $spy)
+    public function addAttack($vid, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $type, $ctar1, $ctar2, $spy)
     {
         $q = "INSERT INTO attacks values (0,$vid,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9,$t10,$t11,$type,$ctar1,$ctar2,$spy)";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function getAdvMovement($village)
+    public function getAdvMovement($village)
     {
         $where = "from";
         $q = "SELECT `moveid` FROM movement where movement." . $where . " = $village and sort_type = 9";
@@ -2302,7 +2302,7 @@ class MYSQL_DB
         return $array;
     }
 
-    function getCompletedAdvMovement($village)
+    public function getCompletedAdvMovement($village)
     {
         $where = "from";
         $q = "SELECT `moveid` FROM movement where movement." . $where . " = $village and sort_type = 9 and proc = 1";
@@ -2311,14 +2311,14 @@ class MYSQL_DB
         return $array;
     }
 
-    function addA2b($ckey, $timestamp, $to, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $type)
+    public function addA2b($ckey, $timestamp, $to, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $type)
     {
         $q = "INSERT INTO a2b (ckey,time_check,to_vid,u1,u2,u3,u4,u5,u6,u7,u8,u9,u10,u11,type) VALUES ('$ckey', '$timestamp', '$to', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9', '$t10', '$t11', '$type')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function getA2b($ckey, $check)
+    public function getA2b($ckey, $check)
     {
         $q = "SELECT * from a2b where ckey = '" . $ckey . "' AND time_check = '" . $check . "'";
         $result = mysql_query($q, $this->connection);
@@ -2329,7 +2329,7 @@ class MYSQL_DB
         }
     }
 
-    function removeA2b($ckey, $check)
+    public function removeA2b($ckey, $check)
     {
         $q = "DELETE FROM a2b where ckey = '" . $ckey . "' AND time_check = '" . $check . "'";
         $result = mysql_query($q, $this->connection);
@@ -2340,13 +2340,13 @@ class MYSQL_DB
         }
     }
 
-    function addMovement($type, $from, $to, $ref, $data, $endtime)
+    public function addMovement($type, $from, $to, $ref, $data, $endtime)
     {
         $q = "INSERT INTO movement values (0,$type,$from,$to,$ref,'$data'," . time() . ",$endtime,0)";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyAttack($aid, $unit, $amt)
+    public function modifyAttack($aid, $unit, $amt)
     {
         $unit = 't' . $unit;
         $q = "SELECT $unit FROM attacks WHERE id = " . $aid;
@@ -2358,14 +2358,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getRanking()
+    public function getRanking()
     {
         $q = "SELECT id,username,alliance,ap,apall,dp,dpall,access FROM users WHERE tribe<=3 AND access<" . (INCLUDE_ADMIN ? "10" : "8");
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getBuildList($type, $wid = 0)
+    public function getBuildList($type, $wid = 0)
     {
         $q = "SELECT `id` FROM bdata WHERE TRUE "
             . ($type ? " AND type = $type " : '')
@@ -2374,35 +2374,35 @@ class MYSQL_DB
         return $this->mysql_fetch_all($result);
     }
 
-    function getVRanking()
+    public function getVRanking()
     {
         $q = "SELECT v.wref,v.name,v.owner,v.pop FROM vdata AS v,users AS u WHERE v.owner=u.id AND u.tribe<=3 AND v.wref != '' AND u.access<" . (INCLUDE_ADMIN ? "10" : "8");
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getARanking()
+    public function getARanking()
     {
         $q = "SELECT id,name,tag FROM alidata where id != ''";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getHeroRanking($limit = '')
+    public function getHeroRanking($limit = '')
     {
         $q = "SELECT `uid`,`level`,`experience` FROM hero ORDER BY `experience` DESC $limit";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getAllMember($aid)
+    public function getAllMember($aid)
     {
         $q = "SELECT `id`,`username`,`timestamp` FROM users where alliance = $aid order  by (SELECT sum(pop) FROM vdata WHERE owner =  users.id) desc";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getUnit($vid)
+    public function getUnit($vid)
     {
         $q = "SELECT * FROM units where vref = " . $vid . "";
         $result = mysql_query($q, $this->connection);
@@ -2413,7 +2413,7 @@ class MYSQL_DB
         }
     }
 
-    function getHUnit($vid)
+    public function getHUnit($vid)
     {
         $q = "SELECT hero FROM units where vref = " . $vid . "";
         $result = mysql_query($q, $this->connection);
@@ -2425,7 +2425,7 @@ class MYSQL_DB
         }
     }
 
-    function getHero($uid = 0, $id = 0, $dead = 2)
+    public function getHero($uid = 0, $id = 0, $dead = 2)
     {
         $q = "SELECT * FROM hero WHERE TRUE "
             . ($uid ? " AND uid=$uid " : "")
@@ -2436,7 +2436,7 @@ class MYSQL_DB
         return mysql_fetch_array($result);
     }
 
-    function modifyHero($uid = 0, $id = 0, $column, $value, $mode = 0)
+    public function modifyHero($uid = 0, $id = 0, $column, $value, $mode = 0)
     {
         $cmd = '';
         switch ($mode) {
@@ -2472,53 +2472,53 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function clearTech($vref)
+    public function clearTech($vref)
     {
         $q = "DELETE from tdata WHERE vref = $vref";
         mysql_query($q, $this->connection);
         return $this->addTech($vref);
     }
 
-    function addTech($vid)
+    public function addTech($vid)
     {
         $q = "INSERT into tdata (vref) values ($vid)";
         return mysql_query($q, $this->connection);
     }
 
-    function clearABTech($vref)
+    public function clearABTech($vref)
     {
         $q = "DELETE FROM abdata WHERE vref = $vref";
         mysql_query($q, $this->connection);
         return $this->addABTech($vref);
     }
 
-    function addABTech($vid)
+    public function addABTech($vid)
     {
         $q = "INSERT into abdata (vref) values ($vid)";
         return mysql_query($q, $this->connection);
     }
 
-    function getABTech($vid)
+    public function getABTech($vid)
     {
         $q = "SELECT `vref`,`a1`,`a2`,`a3`,`a4`,`a5`,`a6`,`a7`,`a8`,`a9`,`a10`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10` FROM abdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
-    function addResearch($vid, $tech, $time)
+    public function addResearch($vid, $tech, $time)
     {
         $q = "INSERT into research values (0,$vid,'$tech',$time)";
         return mysql_query($q, $this->connection);
     }
 
-    function getResearching($vid)
+    public function getResearching($vid)
     {
         $q = "SELECT * FROM research where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function checkIfResearched($vref, $unit)
+    public function checkIfResearched($vref, $unit)
     {
         $q = "SELECT $unit FROM tdata WHERE vref = $vref";
         $result = mysql_query($q, $this->connection);
@@ -2526,21 +2526,21 @@ class MYSQL_DB
         return $dbarray[$unit];
     }
 
-    function getTech($vid)
+    public function getTech($vid)
     {
         $q = "SELECT * from tdata where vref = $vid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
-    function getTraining($vid)
+    public function getTraining($vid)
     {
         $q = "SELECT `amt`,`unit`,`endat`,`commence`,`id`,`vref`,`pop`,`timestamp`,`eachtime` FROM training where vref = $vid ORDER BY id";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function trainUnit($vid, $unit, $amt, $pop, $each, $commence, $mode)
+    public function trainUnit($vid, $unit, $amt, $pop, $each, $commence, $mode)
     {
         global $technology;
 
@@ -2586,13 +2586,13 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function removeZeroTrain()
+    public function removeZeroTrain()
     {
         $q = "DELETE FROM training where `unit` <> 0 AND amt <= 0";
         return mysql_query($q, $this->connection);
     }
 
-    function getHeroTrain($vid)
+    public function getHeroTrain($vid)
     {
         $q = "SELECT `id`,`eachtime` from training where vref = $vid and unit = 0";
         $result = mysql_query($q, $this->connection);
@@ -2604,7 +2604,7 @@ class MYSQL_DB
         }
     }
 
-    function trainHero($vid, $each, $endat, $mode)
+    public function trainHero($vid, $each, $endat, $mode)
     {
         if (!$mode) {
             $time = time();
@@ -2615,14 +2615,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function updateTraining($id, $trained)
+    public function updateTraining($id, $trained)
     {
         $time = time();
         $q = "UPDATE training set amt = GREATEST(amt - $trained, 0), timestamp = $time where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyUnit($vref, $unit, $amt, $mode)
+    public function modifyUnit($vref, $unit, $amt, $mode)
     {
         if ($unit == 230) {
             $unit = 30;
@@ -2659,7 +2659,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getFilledTrapCount($vref)
+    public function getFilledTrapCount($vref)
     {
         $result = 0;
         $q = "SELECT * FROM trapped WHERE `vref` = $vref";
@@ -2675,26 +2675,26 @@ class MYSQL_DB
         return $result;
     }
 
-    function getTrapped($id)
+    public function getTrapped($id)
     {
         $q = "SELECT * FROM trapped WHERE `id` = $id";
         $result = mysql_query($q);
         return mysql_fetch_assoc($result);
     }
 
-    function getTrappedIn($vref)
+    public function getTrappedIn($vref)
     {
         $q = "SELECT * from trapped where `vref` = '$vref'";
         return $this->query_return($q);
     }
 
-    function getTrappedFrom($from)
+    public function getTrappedFrom($from)
     {
         $q = "SELECT * from trapped where `from` = '$from'";
         return $this->query_return($q);
     }
 
-    function addTrapped($vref, $from)
+    public function addTrapped($vref, $from)
     {
         $id = $this->hasTrapped($vref, $from);
         if (!$id) {
@@ -2705,7 +2705,7 @@ class MYSQL_DB
         return $id;
     }
 
-    function hasTrapped($vref, $from)
+    public function hasTrapped($vref, $from)
     {
         $q = "SELECT id FROM trapped WHERE `vref` = $vref AND `from` = $from";
         $result = mysql_query($q, $this->connection);
@@ -2717,7 +2717,7 @@ class MYSQL_DB
         }
     }
 
-    function modifyTrapped($id, $unit, $amt, $mode)
+    public function modifyTrapped($id, $unit, $amt, $mode)
     {
         if (!$mode) {
             $q = "SELECT $unit FROM trapped WHERE id = $id";
@@ -2732,19 +2732,19 @@ class MYSQL_DB
         mysql_query($q, $this->connection);
     }
 
-    function removeTrapped($id)
+    public function removeTrapped($id)
     {
         $q = "DELETE FROM trapped WHERE `id`=$id";
         mysql_query($q, $this->connection);
     }
 
-    function removeAnimals($id)
+    public function removeAnimals($id)
     {
         $q = "DELETE FROM enforcement WHERE `id`=$id";
         mysql_query($q, $this->connection);
     }
 
-    function checkEnforce($vid, $from)
+    public function checkEnforce($vid, $from)
     {
         $q = "SELECT `id` from enforcement where `from` = $from and vref = $vid";
         $result = $this->query_return($q);
@@ -2755,7 +2755,7 @@ class MYSQL_DB
         }
     }
 
-    function addEnforce($data)
+    public function addEnforce($data)
     {
         $q = "INSERT into enforcement (vref,`from`) values (" . $data['to'] . "," . $data['from'] . ")";
         mysql_query($q, $this->connection);
@@ -2778,21 +2778,21 @@ class MYSQL_DB
         return mysql_insert_id($this->connection);
     }
 
-    function getOMInfo($id)
+    public function getOMInfo($id)
     {
         $q = "SELECT * FROM wdata left JOIN odata ON odata.wref = wdata.id where wdata.id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getMInfo($id)
+    public function getMInfo($id)
     {
         $q = "SELECT * FROM wdata left JOIN vdata ON vdata.wref = wdata.id where wdata.id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
-    function modifyEnforce($id, $unit, $amt, $mode)
+    public function modifyEnforce($id, $unit, $amt, $mode)
     {
         if ($unit == 'hero') {
             $unit = 'hero';
@@ -2814,13 +2814,13 @@ class MYSQL_DB
         }
     }
 
-    function addHeroEnforce($data)
+    public function addHeroEnforce($data)
     {
         $q = "INSERT into enforcement (`vref`,`from`,`hero`) values (" . $data['to'] . "," . $data['from'] . ",1)";
         mysql_query($q, $this->connection);
     }
 
-    function getEnforceArray($id, $mode)
+    public function getEnforceArray($id, $mode)
     {
         if (!$mode) {
             $q = "SELECT * from enforcement where id = $id";
@@ -2831,7 +2831,7 @@ class MYSQL_DB
         return mysql_fetch_assoc($result);
     }
 
-    function getEnforceVillage($id, $mode)
+    public function getEnforceVillage($id, $mode)
     {
         if (!$mode) {
             $q = "SELECT * from enforcement where `vref` = '$id'";
@@ -2842,7 +2842,7 @@ class MYSQL_DB
         return $this->mysql_fetch_all($result);
     }
 
-    function getOasesEnforce($id)
+    public function getOasesEnforce($id)
     {
         $oasisowned = $this->getOasis($id);
         if (!empty($oasisowned) && count($oasisowned) > 0) {
@@ -2858,14 +2858,14 @@ class MYSQL_DB
         }
     }
 
-    function getOasis($vid)
+    public function getOasis($vid)
     {
         $q = "SELECT `type`,`wref` FROM odata where conqured = $vid";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getVillageMovement($id)
+    public function getVillageMovement($id)
     {
         $vinfo = $this->getVillage($id);
         if (isset($vinfo['owner'])) {
@@ -2908,7 +2908,7 @@ class MYSQL_DB
     }
 
     /**
-     * Function to retrieve movement of village
+     * retrieve movement of village
      * Type 0: Send Resource
      * Type 1: Send Merchant
      * Type 2: Return Resource
@@ -2922,7 +2922,7 @@ class MYSQL_DB
      * Mode 1: Recieve/In
      * References: Type, Village, Mode
      */
-    function getMovement($type, $village, $mode)
+    public function getMovement($type, $village, $mode)
     {
         //$time = time();
         if (!$mode) {
@@ -2964,7 +2964,7 @@ class MYSQL_DB
         return $array;
     }
 
-    function getVillageMovementArray($id)
+    public function getVillageMovementArray($id)
     {
         $movingarray = array();
         $outgoingarray = $this->getMovement(3, $id, 0);
@@ -2974,7 +2974,7 @@ class MYSQL_DB
         return $movingarray;
     }
 
-    function getWW()
+    public function getWW()
     {
         $q = "SELECT vref FROM fdata WHERE f99t = 40";
         $result = mysql_query($q, $this->connection);
@@ -2986,10 +2986,10 @@ class MYSQL_DB
     }
 
     /**
-     * Function to get world wonder level!
+     * get world wonder level!
      * Made by: Dzoki
      */
-    function getWWLevel($vref)
+    public function getWWLevel($vref)
     {
         $q = "SELECT f99 FROM fdata WHERE vref = $vref";
         $result = mysql_query($q, $this->connection);
@@ -2998,10 +2998,10 @@ class MYSQL_DB
     }
 
     /**
-     * Function to get world wonder owner ID!
+     * get world wonder owner ID!
      * Made by: Dzoki
      */
-    function getWWOwnerID($vref)
+    public function getWWOwnerID($vref)
     {
         $q = "SELECT owner FROM vdata WHERE wref = $vref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -3010,10 +3010,10 @@ class MYSQL_DB
     }
 
     /**
-     * Function to get user alliance name!
+     * get user alliance name!
      * Made by: Dzoki
      */
-    function getUserAllianceID($id)
+    public function getUserAllianceID($id)
     {
         $q = "SELECT alliance FROM users where id = $id LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -3022,10 +3022,10 @@ class MYSQL_DB
     }
 
     /**
-     * Function to get WW name
+     * get WW name
      * Made by: Dzoki
      */
-    function getWWName($vref)
+    public function getWWName($vref)
     {
         $q = "SELECT wwname FROM fdata WHERE vref = $vref";
         $result = mysql_query($q, $this->connection);
@@ -3034,30 +3034,30 @@ class MYSQL_DB
     }
 
     /**
-     * Function to change WW name
+     * change WW name
      * Made by: Dzoki
      */
-    function submitWWname($vref, $name)
+    public function submitWWname($vref, $name)
     {
         $q = "UPDATE fdata SET `wwname` = '$name' WHERE fdata.`vref` = $vref";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyCommence($id, $commence = 0)
+    public function modifyCommence($id, $commence = 0)
     {
         if ($commence == 0) $commence = time();
         $q = "UPDATE training set commence = $commence WHERE id=$id";
         return mysql_query($q, $this->connection);
     }
 
-    function getTrainingList()
+    public function getTrainingList()
     {
         $q = "SELECT `id`,`vref`,`unit`,`eachtime`,`endat`,`commence`,`amt` FROM training where amt != 0 LIMIT 500";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getNeedDelete()
+    public function getNeedDelete()
     {
         $time = time();
         $q = "SELECT uid FROM deleting where timestamp <= $time";
@@ -3065,7 +3065,7 @@ class MYSQL_DB
         return $this->mysql_fetch_all($result);
     }
 
-    function countUser()
+    public function countUser()
     {
         $q = "SELECT count(id) FROM users where id != 0";
         $result = mysql_query($q, $this->connection);
@@ -3073,7 +3073,7 @@ class MYSQL_DB
         return $row[0];
     }
 
-    function countAlli()
+    public function countAlli()
     {
         $q = "SELECT count(id) FROM alidata where id != 0";
         $result = mysql_query($q, $this->connection);
@@ -3082,7 +3082,7 @@ class MYSQL_DB
     }
 
     //MARKET FIXES
-    function getWoodAvailable($wref)
+    public function getWoodAvailable($wref)
     {
         $q = "SELECT wood FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -3090,7 +3090,7 @@ class MYSQL_DB
         return $dbarray['wood'];
     }
 
-    function getClayAvailable($wref)
+    public function getClayAvailable($wref)
     {
         $q = "SELECT clay FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -3098,7 +3098,7 @@ class MYSQL_DB
         return $dbarray['clay'];
     }
 
-    function getIronAvailable($wref)
+    public function getIronAvailable($wref)
     {
         $q = "SELECT iron FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -3106,7 +3106,7 @@ class MYSQL_DB
         return $dbarray['iron'];
     }
 
-    function getCropAvailable($wref)
+    public function getCropAvailable($wref)
     {
         $q = "SELECT crop FROM vdata WHERE wref = $wref LIMIT 1";
         $result = mysql_query($q, $this->connection);
@@ -3114,7 +3114,7 @@ class MYSQL_DB
         return $dbarray['crop'];
     }
 
-    function poulateOasisdata()
+    public function poulateOasisdata()
     {
         $q2 = "SELECT id FROM wdata where oasistype != 0";
         $result2 = mysql_query($q2, $this->connection);
@@ -3246,19 +3246,19 @@ class MYSQL_DB
         return $slots;
     }
 
-    function addArtefact($vref, $owner, $type, $size, $name, $desc, $effecttype, $effect, $aoe, $img)
+    public function addArtefact($vref, $owner, $type, $size, $name, $desc, $effecttype, $effect, $aoe, $img)
     {
         $q = "INSERT INTO `artefacts` (`vref`, `owner`, `type`, `size`, `conquered`, `name`, `desc`, `effecttype`, `effect`, `aoe`, `img`) VALUES ('$vref', '$owner', '$type', '$size', '" . time() . "', '$name', '$desc', '$effecttype', '$effect', '$aoe', '$img')";
         return mysql_query($q, $this->connection);
     }
 
-    function getOwnArtefactInfo($vref)
+    public function getOwnArtefactInfo($vref)
     {
         $q = "SELECT * FROM artefacts WHERE vref = $vref";
         return $this->query_return($q);
     }
 
-    function getArtefactInfo($sizes)
+    public function getArtefactInfo($sizes)
     {
         if (count($sizes) != 0) {
             $sizestr = ' AND ( FALSE ';
@@ -3273,7 +3273,7 @@ class MYSQL_DB
         return $this->query_return($q);
     }
 
-    function getArtefactInfoByDistance($coor, $distance, $sizes)
+    public function getArtefactInfoByDistance($coor, $distance, $sizes)
     {
         if (count($sizes) != 0) {
             $sizestr = ' AND ( FALSE ';
@@ -3293,14 +3293,14 @@ class MYSQL_DB
         return $this->query_return($q);
     }
 
-    function arteIsMine($id, $newvref, $newowner)
+    public function arteIsMine($id, $newvref, $newowner)
     {
         $q = "UPDATE artefacts SET `owner` = " . $newowner . " WHERE id = " . $id;
         $this->query($q);
         $this->captureArtefact($id, $newvref, $newowner);
     }
 
-    function captureArtefact($id, $newvref, $newowner)
+    public function captureArtefact($id, $newvref, $newowner)
     {
         // get the artefact
         $currentArte = $this->getArtefactDetails($id);
@@ -3362,35 +3362,35 @@ class MYSQL_DB
         }
     }
 
-    function getArtefactDetails($id)
+    public function getArtefactDetails($id)
     {
         $q = "SELECT * FROM artefacts WHERE id = " . $id;
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getHeroFace($uid)
+    public function getHeroFace($uid)
     {
         $q = "SELECT * FROM heroface WHERE uid = " . $uid;
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function addHeroFace($uid, $bread, $ear, $eye, $eyebrow, $face, $hair, $mouth, $nose, $color)
+    public function addHeroFace($uid, $bread, $ear, $eye, $eyebrow, $face, $hair, $mouth, $nose, $color)
     {
 
         $q = "INSERT INTO `heroface` (`uid`, `beard`, `ear`, `eye`, `eyebrow`, `face`, `hair`, `mouth`, `nose`, `color`) VALUES ('$uid', '$bread', '$ear', '$eye', '$eyebrow', '$face', '$hair', '$mouth', '$nose', '$color')";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyHeroFace($uid, $column, $value)
+    public function modifyHeroFace($uid, $column, $value)
     {
         $hash = md5("$uid" . time());
         $q = "UPDATE heroface SET `$column`='$value',`hash`='$hash' WHERE `uid` = '$uid'";
         return mysql_query($q, $this->connection);
     }
 
-    function modifyWholeHeroFace($uid, $face, $color, $hair, $ear, $eyebrow, $eye, $nose, $mouth, $beard)
+    public function modifyWholeHeroFace($uid, $face, $color, $hair, $ear, $eyebrow, $eye, $nose, $mouth, $beard)
     {
         $hash = md5("$uid" . time());
         $q = "UPDATE heroface SET `face`=$face,`color`=$color,`hair`=$hair,`ear`=$ear,`eyebrow`=$eyebrow,`eye`=$eye,`nose`=$nose,`mouth`=$mouth,`beard`=$beard,`hash`='$hash' WHERE uid = $uid";
@@ -3398,7 +3398,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function populateOasisUnitsLow()
+    public function populateOasisUnitsLow()
     {
         $q2 = "SELECT * FROM wdata where oasistype != 0";
         $result2 = mysql_query($q2, $this->connection);
@@ -3532,33 +3532,33 @@ class MYSQL_DB
         }
     }
 
-    function addCLP($uid, $clp)
+    public function addCLP($uid, $clp)
     {
         $q = "UPDATE users set clp = clp + $clp where id = $uid";
         return mysql_query($q, $this->connection);
     }
 
-    function sendwlcMessage($client, $owner, $topic, $message, $send)
+    public function sendwlcMessage($client, $owner, $topic, $message, $send)
     {
         $time = time();
         $q = "INSERT INTO mdata values (0,$client,$owner,'$topic',\"$message\",1,0,$send,$time)";
         return mysql_query($q, $this->connection);
     }
 
-    function getLinks($id)
+    public function getLinks($id)
     {
         $q = 'SELECT `url`,`name` FROM links WHERE `userid` = ' . $id . ' ORDER BY `pos` ASC';
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function removeLinks($id, $uid)
+    public function removeLinks($id, $uid)
     {
         $q = "DELETE FROM links WHERE `id` = " . $id . " and `userid` = " . $uid . "";
         return mysql_query($q, $this->connection);
     }
 
-    function getFarmlist($uid)
+    public function getFarmlist($uid)
     {
         $q = 'SELECT id FROM farmlist WHERE owner = ' . $uid . ' ORDER BY name ASC';
         $result = mysql_query($q, $this->connection);
@@ -3571,21 +3571,21 @@ class MYSQL_DB
         }
     }
 
-    function getRaidList($id)
+    public function getRaidList($id)
     {
         $q = "SELECT * FROM raidlist WHERE id = " . $id . "";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getAllAuction()
+    public function getAllAuction()
     {
         $q = "SELECT * FROM auction WHERE finish = 0";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getVilFarmlist($wref)
+    public function getVilFarmlist($wref)
     {
         $q = 'SELECT id FROM farmlist WHERE wref = ' . $wref . ' ORDER BY wref ASC';
         $result = mysql_query($q, $this->connection);
@@ -3598,37 +3598,37 @@ class MYSQL_DB
         }
     }
 
-    function delFarmList($id, $owner)
+    public function delFarmList($id, $owner)
     {
         $q = "DELETE FROM farmlist where id = $id and owner = $owner";
         return mysql_query($q, $this->connection);
     }
 
-    function delSlotFarm($id)
+    public function delSlotFarm($id)
     {
         $q = "DELETE FROM raidlist where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function createFarmList($wref, $owner, $name)
+    public function createFarmList($wref, $owner, $name)
     {
         $q = "INSERT INTO farmlist (`wref`, `owner`, `name`) VALUES ('$wref', '$owner', '$name')";
         return mysql_query($q, $this->connection);
     }
 
-    function addSlotFarm($lid, $towref, $x, $y, $distance, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10)
+    public function addSlotFarm($lid, $towref, $x, $y, $distance, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10)
     {
         $q = "INSERT INTO raidlist (`lid`, `towref`, `x`, `y`, `distance`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `t8`, `t9`, `t10`) VALUES ('$lid', '$towref', '$x', '$y', '$distance', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9', '$t10')";
         return mysql_query($q, $this->connection);
     }
 
-    function editSlotFarm($eid, $lid, $wref, $x, $y, $dist, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10)
+    public function editSlotFarm($eid, $lid, $wref, $x, $y, $dist, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10)
     {
         $q = "UPDATE raidlist set lid = '$lid', towref = '$wref', x = '$x', y = '$y', t1 = '$t1', t2 = '$t2', t3 = '$t3', t4 = '$t4', t5 = '$t5', t6 = '$t6', t7 = '$t7', t8 = '$t8', t9 = '$t9', t10 = '$t10' WHERE id = $eid";
         return mysql_query($q, $this->connection);
     }
 
-    function removeOases($wref)
+    public function removeOases($wref)
     {
         $q = "UPDATE odata SET conqured = 0, owner = 3, name = '" . UNOCCUPIEDOASES . "' WHERE wref = $wref";
         $r = mysql_query($q, $this->connection);
@@ -3637,7 +3637,7 @@ class MYSQL_DB
         return ($r && $r2);
     }
 
-    function getArrayMemberVillage($uid)
+    public function getArrayMemberVillage($uid)
     {
         $q = 'SELECT a.wref, a.name, a.capital, b.x, b.y from vdata AS a left join wdata AS b ON b.id = a.wref where owner = ' . $uid . ' order by capital DESC,pop DESC';
         $result = mysql_query($q, $this->connection);
@@ -3645,7 +3645,7 @@ class MYSQL_DB
         return $array;
     }
 
-    function getNoticeData($nid)
+    public function getNoticeData($nid)
     {
         $q = "SELECT `data` FROM ndata where id = $nid";
         $result = mysql_query($q, $this->connection);
@@ -3653,7 +3653,7 @@ class MYSQL_DB
         return $dbarray['data'];
     }
 
-    function getUsersNotice($uid, $ntype = -1, $viewed = -1)
+    public function getUsersNotice($uid, $ntype = -1, $viewed = -1)
     {
         $q = "SELECT * FROM ndata where uid=$uid ";
         if ($ntype >= 0) {
@@ -3667,7 +3667,7 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function setSilver($uid, $silver, $mode)
+    public function setSilver($uid, $silver, $mode)
     {
         if (!$mode) {
             $q = "UPDATE users set silver = silver - $silver where id = $uid";
@@ -3683,14 +3683,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getAuctionSilver($uid)
+    public function getAuctionSilver($uid)
     {
         $q = "SELECT * FROM auction where uid = $uid and finish = 0";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function delAuction($id)
+    public function delAuction($id)
     {
         $aucData = $this->getAuctionData($id);
         $usedtime = AUCTIONTIME - ($aucData['time'] - time());
@@ -3704,14 +3704,14 @@ class MYSQL_DB
         }
     }
 
-    function getAuctionData($id)
+    public function getAuctionData($id)
     {
         $q = "SELECT * FROM auction where id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function modifyHeroItem($id, $column, $value, $mode)
+    public function modifyHeroItem($id, $column, $value, $mode)
     {
         // mode=0 set; 1 add; 2 sub; 3 mul; 4 div
         switch ($mode) {
@@ -3736,14 +3736,14 @@ class MYSQL_DB
         return ($result ? true : false);
     }
 
-    function getAuctionUser($uid)
+    public function getAuctionUser($uid)
     {
         $q = "SELECT * FROM auction where owner = $uid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function addAuction($owner, $itemid, $btype, $type, $amount)
+    public function addAuction($owner, $itemid, $btype, $type, $amount)
     {
         $time = time() + AUCTIONTIME;
         $itemData = $this->getHeroItem($itemid);
@@ -3770,7 +3770,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function getHeroItem($id = 0, $uid = 0, $btype = 0, $type = 0, $proc = 2)
+    public function getHeroItem($id = 0, $uid = 0, $btype = 0, $type = 0, $proc = 2)
     {
         $q = "SELECT * FROM heroitems WHERE TRUE "
             . ($id ? (" AND id = " . $id) : (""))
@@ -3783,25 +3783,25 @@ class MYSQL_DB
         return $result;
     }
 
-    function addBid($id, $uid, $silver, $maxsilver, $time)
+    public function addBid($id, $uid, $silver, $maxsilver, $time)
     {
         $q = "UPDATE auction set uid = $uid, silver = $silver, maxsilver = $maxsilver, bids = bids + 1, time = $time where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function removeBidNotice($id)
+    public function removeBidNotice($id)
     {
         $q = "DELETE FROM auction where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function addHeroItem($uid, $btype, $type, $num)
+    public function addHeroItem($uid, $btype, $type, $num)
     {
         $q = "INSERT INTO heroitems (`uid`, `btype`, `type`, `num`, `proc`) VALUES ('$uid', '$btype', '$type', '$num', 0)";
         return mysql_query($q, $this->connection);
     }
 
-    function checkHeroItem($uid, $btype, $type = 0, $proc = 2)
+    public function checkHeroItem($uid, $btype, $type = 0, $proc = 2)
     {
         $q = "SELECT id, btype FROM heroitems WHERE TRUE "
             . ($uid ? " AND uid = '$uid'" : '')
@@ -3817,27 +3817,27 @@ class MYSQL_DB
         }
     }
 
-    function editBid($id, $maxsilver, $minsilver)
+    public function editBid($id, $maxsilver, $minsilver)
     {
         $q = "UPDATE auction set maxsilver = $maxsilver, silver = $minsilver where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function getBidData($id)
+    public function getBidData($id)
     {
         $q = "SELECT * FROM auction WHERE id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getFLData($id)
+    public function getFLData($id)
     {
         $q = "SELECT * FROM farmlist where id = $id";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getHeroField($uid, $field)
+    public function getHeroField($uid, $field)
     {
         $q = "SELECT " . $field . " FROM hero WHERE uid = $uid";
         $result = mysql_query($q, $this->connection);
@@ -3845,7 +3845,7 @@ class MYSQL_DB
         return $dbarray[$field];
     }
 
-    function getCapBrewery($uid)
+    public function getCapBrewery($uid)
     {
         $capWref = $this->getVFH($uid);
         if ($capWref) {
@@ -3865,7 +3865,7 @@ class MYSQL_DB
         return 0;
     }
 
-    function getVFH($uid)
+    public function getVFH($uid)
     {
         $q = "SELECT wref FROM vdata WHERE owner = $uid and capital = 1";
         $result = mysql_query($q, $this->connection);
@@ -3873,7 +3873,7 @@ class MYSQL_DB
         return $dbarray['wref'];
     }
 
-    function getNotice2($id, $field)
+    public function getNotice2($id, $field)
     {
         $q = "SELECT " . $field . " FROM ndata where `id` = '$id'";
         $result = mysql_query($q, $this->connection);
@@ -3881,7 +3881,7 @@ class MYSQL_DB
         return $dbarray[$field];
     }
 
-    function addAdventure($wref, $uid, $time = 0, $dif = 0)
+    public function addAdventure($wref, $uid, $time = 0, $dif = 0)
     {
         if ($time == 0) $time = time();
         // $ddd = rand(0,3);
@@ -3901,7 +3901,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function addHero($uid)
+    public function addHero($uid)
     {
         $time = time();
         $hash = md5($time);
@@ -4012,7 +4012,7 @@ class MYSQL_DB
 
     // Add new password => mode:0
     // Add new email => mode: 1
-    function addNewProc($uid, $npw, $nemail, $act, $mode)
+    public function addNewProc($uid, $npw, $nemail, $act, $mode)
     {
         $time = time();
         if (!$mode) {
@@ -4024,7 +4024,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function checkProcExist($uid)
+    public function checkProcExist($uid)
     {
         $q = "SELECT uid FROM newproc where uid = '$uid' and proc = 0";
         $result = mysql_query($q, $this->connection);
@@ -4035,13 +4035,13 @@ class MYSQL_DB
         }
     }
 
-    function removeProc($uid)
+    public function removeProc($uid)
     {
         $q = "DELETE FROM newproc where uid = $uid";
         return mysql_query($q, $this->connection);
     }
 
-    function checkBan($uid)
+    public function checkBan($uid)
     {
         $q = "SELECT access FROM users WHERE id = $uid LIMIT 1";
         $result = $this->query_return($q);
@@ -4052,7 +4052,7 @@ class MYSQL_DB
         }
     }
 
-    function getNewProc($uid)
+    public function getNewProc($uid)
     {
         $q = "SELECT `npw`,`act` FROM newproc WHERE uid = $uid";
         $result = mysql_query($q, $this->connection);
@@ -4063,7 +4063,7 @@ class MYSQL_DB
         }
     }
 
-    function CheckAdventure($uid, $wref, $end)
+    public function CheckAdventure($uid, $wref, $end)
     {
         $q = "SELECT `id` FROM adventure WHERE uid = $uid AND wref = $wref AND end = $end";
         $result = mysql_query($q, $this->connection);
@@ -4074,7 +4074,7 @@ class MYSQL_DB
         }
     }
 
-    function getAdventure($uid, $wref = 0, $end = 2)
+    public function getAdventure($uid, $wref = 0, $end = 2)
     {
         $q = "SELECT `id`,`dif` FROM adventure WHERE uid = $uid "
             . ($wref != 0 ? " AND wref = '$wref'" : '')
@@ -4087,20 +4087,20 @@ class MYSQL_DB
         }
     }
 
-    function editTableField($table, $field, $value, $refField, $ref)
+    public function editTableField($table, $field, $value, $refField, $ref)
     {
         $q = "UPDATE " . $table . " set $field = '$value' where " . $refField . " = '$ref'";
         return mysql_query($q, $this->connection);
     }
 
-    function config()
+    public function config()
     {
         $q = "SELECT * FROM config";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_array($result);
     }
 
-    function getAllianceDipProfile($aid, $type)
+    public function getAllianceDipProfile($aid, $type)
     {
         $q = "SELECT `alli2` FROM diplomacy WHERE alli1 = '$aid' AND type = '$type' AND accepted = '1'";
         $result = mysql_query($q, $this->connection);
@@ -4125,7 +4125,7 @@ class MYSQL_DB
         return $text;
     }
 
-    function getAlliance($id, $mod = 0)
+    public function getAlliance($id, $mod = 0)
     {
         if (!$id) return 0;
         switch ($mod) {
@@ -4188,7 +4188,7 @@ class MYSQL_DB
         }
     }
 
-    function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
+    public function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
     {
         if (!isset($pct)) {
             return false;
@@ -4232,7 +4232,7 @@ class MYSQL_DB
         imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
     }
 
-    function getCropProdstarv($wref)
+    public function getCropProdstarv($wref)
     {
         global $bid4, $bid8, $bid9;
 
@@ -4318,7 +4318,7 @@ class MYSQL_DB
         return $result;
     }
 
-    function addNatarsVillage($wid, $uid, $username, $capital)
+    public function addNatarsVillage($wid, $uid, $username, $capital)
     {
         $total = count($this->getVillagesID($uid));
         $vname = sprintf("[%05d] Natars", $total + 1);
@@ -4329,7 +4329,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function instantTrain($vref)
+    public function instantTrain($vref)
     {
         $q = 'SELECT `id` FROM training WHERE `vref`=' . $vref;
         $count = count($this->query_return($q));
@@ -4342,26 +4342,26 @@ class MYSQL_DB
         }
     }
 
-    function hasWinner()
+    public function hasWinner()
     {
         $sql = mysql_query("SELECT vref FROM fdata WHERE f99 = '100' and f99t = '40'");
         $winner = mysql_num_rows($sql);
         return ($winner > 0 ? true : false);
     }
 
-    function getVillageActiveArte($vref)
+    public function getVillageActiveArte($vref)
     {
         $q = 'SELECT * FROM artefacts WHERE `vref`=' . $vref . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600));
         return $this->query_return($q);
     }
 
-    function getAccountActiveArte($owner)
+    public function getAccountActiveArte($owner)
     {
         $q = 'SELECT * FROM artefacts WHERE `owner`=' . $owner . ' AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600));
         return $this->query_return($q);
     }
 
-    function getArtEffMSpeed($wref)
+    public function getArtEffMSpeed($wref)
     {
         $artEff = 1;
         $res = $this->getArteEffectByType($wref, 4);
@@ -4369,7 +4369,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArteEffectByType($wref, $type)
+    public function getArteEffectByType($wref, $type)
     {
         $artEff = 0;
         $this->updateFoolArtes();
@@ -4396,7 +4396,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function updateFoolArtes()
+    public function updateFoolArtes()
     {
         $q = 'SELECT `id`,`size` FROM artefacts WHERE `type`=3 AND `status`=1 AND `conquered`<=' . (time() - max(86400 / SPEED, 600)) . ' AND lastupdate<=' . (time() - max(86400 / SPEED, 600));
         $result = $this->query_return($q);
@@ -4470,7 +4470,7 @@ class MYSQL_DB
         }
     }
 
-    function getArtEffDiet($wref)
+    public function getArtEffDiet($wref)
     {
         $artEff = 1;
         $res = $this->getArteEffectByType($wref, 6);
@@ -4478,7 +4478,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArtEffGrt($wref)
+    public function getArtEffGrt($wref)
     {
         $artEff = 0;
         $res = $this->getArteEffectByType($wref, 9);
@@ -4486,7 +4486,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArtEffArch($wref)
+    public function getArtEffArch($wref)
     {
         $artEff = 1;
         $res = $this->getArteEffectByType($wref, 2);
@@ -4494,7 +4494,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArtEffSpy($wref)
+    public function getArtEffSpy($wref)
     {
         $artEff = 0;
         $res = $this->getArteEffectByType($wref, 5);
@@ -4502,7 +4502,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArtEffTrain($wref)
+    public function getArtEffTrain($wref)
     {
         $artEff = 1;
         $res = $this->getArteEffectByType($wref, 8);
@@ -4510,7 +4510,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArtEffConf($wref)
+    public function getArtEffConf($wref)
     {
         $artEff = 1;
         $res = $this->getArteEffectByType($wref, 7);
@@ -4518,7 +4518,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArtEffBP($wref)
+    public function getArtEffBP($wref)
     {
         $artEff = 0;
         $vinfo = $this->getVillage($wref);
@@ -4531,7 +4531,7 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function getArtEffAllyBP($uid)
+    public function getArtEffAllyBP($uid)
     {
         $artEff = 0;
         $userAlli = $this->getUserField($uid, 'alliance', 0);
@@ -4564,12 +4564,12 @@ class MYSQL_DB
         return $artEff;
     }
 
-    function modifyExtraVillage($wid, $column, $value)
+    public function modifyExtraVillage($wid, $column, $value)
     {
         return $this->query("UPDATE vdata SET $column=$column+$value WHERE wref=$wid");
     }
 
-    function modifyFieldLevel($wid, $field, $level, $mode)
+    public function modifyFieldLevel($wid, $field, $level, $mode)
     {
         $b = 'f' . $field;
         if (!$mode) {
@@ -4578,13 +4578,13 @@ class MYSQL_DB
         return $this->query("UPDATE fdata SET $b=$b+$level WHERE vref=" . $wid);
     }
 
-    function modifyFieldType($wid, $field, $type)
+    public function modifyFieldType($wid, $field, $type)
     {
         $b = 'f' . $field . 't';
         return $this->query("UPDATE fdata SET $b=$type WHERE vref=" . $wid);
     }
 
-    function resendact($mail)
+    public function resendact($mail)
     {
         $q = "SELECT `email`, `username`, `password`, `id` from users WHERE email = " . $mail . " LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
@@ -4592,16 +4592,16 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function changemail($mail, $id)
+    public function changemail($mail, $id)
     {
         $q = "UPDATE users set email= '$mail' WHERE id ='$id'";
         mysql_query($q, $this->connection);
     }
 
-    function register2($username, $password, $email, $act, $activateat)
+    public function register2($username, $password, $email, $act, $activateat)
     {
-        $time = $_SERVER['REQUEST_TIME'];
-        if (strtotime(START_TIME) > $_SERVER['REQUEST_TIME']) {
+        $time = time();
+        if (strtotime(START_TIME) > time()) {
             $time = strtotime(START_TIME);
         }
         $timep = ($time + PROTECTION);
@@ -4614,7 +4614,7 @@ class MYSQL_DB
         }
     }
 
-    function checkname($id)
+    public function checkname($id)
     {
         $q = "SELECT `username`, `email` FROM users WHERE id = $id  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
@@ -4622,13 +4622,13 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function settribe($tribe, $id)
+    public function settribe($tribe, $id)
     {
         $q = "UPDATE users set tribe= '$tribe' WHERE id ='$id' && reg2 = 1";
         mysql_query($q, $this->connection);
     }
 
-    function checkreg($uid)
+    public function checkreg($uid)
     {
         $q = "SELECT `reg2` FROM users WHERE id = '" . $uid . "'  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
@@ -4636,7 +4636,7 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function checkreg2($name)
+    public function checkreg2($name)
     {
         $q = "SELECT `reg2` FROM users WHERE username = '" . $name . "'  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
@@ -4644,7 +4644,7 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function checkid($name)
+    public function checkid($name)
     {
         $q = "SELECT `id` FROM users WHERE username = '" . $name . "'  LIMIT 0,1";
         $result = mysql_query($q, $this->connection);
@@ -4652,27 +4652,27 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function setreg2($id)
+    public function setreg2($id)
     {
         $q = "UPDATE users set reg2= 0 WHERE id ='$id' && reg2 = 1";
         mysql_query($q, $this->connection);
     }
 
-    function getNotice5($uid)
+    public function getNotice5($uid)
     {
         $q = "SELECT `id` FROM ndata where uid = $uid and viewed = 0 ORDER BY time DESC LIMIT 1";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function setref($id, $name)
+    public function setref($id, $name)
     {
         $q = "INSERT into refrence values (0,'$id','$name')";
         mysql_query($q, $this->connection);
         return mysql_insert_id($this->connection);
     }
 
-    function getAttackCasualties($time)
+    public function getAttackCasualties($time)
     {
         $q = "SELECT `time` FROM general where shown = 1";
         $casualties = 0;
@@ -4685,7 +4685,7 @@ class MYSQL_DB
         return $casualties;
     }
 
-    function getAttackByDate($time)
+    public function getAttackByDate($time)
     {
         $q = "SELECT `time` FROM general where shown = 1";
         $attack = 0;
@@ -4698,7 +4698,7 @@ class MYSQL_DB
         return $attack * 100;
     }
 
-    function getStatsinfo($uid, $time, $inf)
+    public function getStatsinfo($uid, $time, $inf)
     {
         $q = "SELECT `$inf`,`time` FROM stats where owner = " . $uid;
         $t = 0;
@@ -4721,7 +4721,7 @@ class MYSQL_DB
         return $t;
     }
 
-    function modifyHero2($column, $value, $uid, $mode)
+    public function modifyHero2($column, $value, $uid, $mode)
     {
         switch ($mode) {
             case 1:
@@ -4736,7 +4736,7 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function createTradeRoute($uid, $wid, $from, $r1, $r2, $r3, $r4, $start, $deliveries, $merchant, $time)
+    public function createTradeRoute($uid, $wid, $from, $r1, $r2, $r3, $r4, $start, $deliveries, $merchant, $time)
     {
         $x = "UPDATE users SET gold = gold - 2 WHERE id = " . $uid . "";
         mysql_query($x, $this->connection) or die(mysql_error());
@@ -4744,14 +4744,14 @@ class MYSQL_DB
         return mysql_query($q, $this->connection) or die(mysql_error());
     }
 
-    function getTradeRoute($uid)
+    public function getTradeRoute($uid)
     {
         $q = "SELECT * FROM route where uid = $uid ORDER BY timestamp ASC";
         $result = mysql_query($q, $this->connection);
         return $this->mysql_fetch_all($result);
     }
 
-    function getTradeRoute2($id)
+    public function getTradeRoute2($id)
     {
         $q = "SELECT * FROM route where id = $id";
         $result = mysql_query($q, $this->connection);
@@ -4759,7 +4759,7 @@ class MYSQL_DB
         return $dbarray;
     }
 
-    function getTradeRouteUid($id)
+    public function getTradeRouteUid($id)
     {
         $q = "SELECT `uid` FROM route where id = $id";
         $result = mysql_query($q, $this->connection);
@@ -4767,7 +4767,7 @@ class MYSQL_DB
         return $dbarray['uid'];
     }
 
-    function editTradeRoute($id, $column, $value, $mode)
+    public function editTradeRoute($id, $column, $value, $mode)
     {
         if (!$mode) {
             $q = "UPDATE route set $column = $value where id = $id";
@@ -4777,27 +4777,27 @@ class MYSQL_DB
         return mysql_query($q, $this->connection);
     }
 
-    function deleteTradeRoute($id)
+    public function deleteTradeRoute($id)
     {
         $q = "DELETE FROM route where id = $id";
         return mysql_query($q, $this->connection);
     }
 
-    function getHeroData($uid)
+    public function getHeroData($uid)
     {
         $q = "SELECT * FROM hero WHERE uid = $uid";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
-    function getHeroData2($uid)
+    public function getHeroData2($uid)
     {
         $q = "SELECT `heroid` FROM hero WHERE dead = 0 and uid = $uid LIMIT 0, 1";
         $result = mysql_query($q, $this->connection);
         return mysql_fetch_assoc($result);
     }
 
-    function getHeroInVillid($uid, $mode)
+    public function getHeroInVillid($uid, $mode)
     {
         $q = "SELECT `wref`, `name` FROM vdata WHERE owner = " . $uid . " ORDER BY owner";
         $result = mysql_query($q);
