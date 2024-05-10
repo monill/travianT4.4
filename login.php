@@ -142,7 +142,6 @@ if (COMMENCE < time()) {
                                 <td>Password</td>
                                 <td>
                                     <input type="password" maxlength="20" name="pw" value="<?php echo $form->getValue("pw"); ?>" class="text"><br>
-
                                     <div class="error RTL"><?php echo $form->getError("pw"); ?></div>
                                 </td>
                                 <td>
