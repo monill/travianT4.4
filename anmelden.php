@@ -108,7 +108,6 @@ echo '
             </tbody>
         </table>
 
-
         <h4 class="round">What should be considered when registering.</h4>
         <div class="checks">
             <p>
