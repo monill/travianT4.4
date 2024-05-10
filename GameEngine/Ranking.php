@@ -78,9 +78,9 @@ class Ranking
     public function procAllianceRanking($limit = "")
     {
         $q = 'SELECT *,(SELECT COUNT(*) FROM users WHERE users.alliance=alidata.id) AS memcount
-,(SELECT SUM((SELECT SUM(vdata.pop) FROM vdata WHERE vdata.owner=users.id)) FROM users
-WHERE alidata.id=users.alliance) AS totalpop
-FROM alidata WHERE 1 ORDER BY totalpop DESC, id ASC ' . $limit;
+        ,(SELECT SUM((SELECT SUM(vdata.pop) FROM vdata WHERE vdata.owner=users.id)) FROM users
+        WHERE alidata.id=users.alliance) AS totalpop
+        FROM alidata WHERE 1 ORDER BY totalpop DESC, id ASC ' . $limit;
 
         return mysql_query($q);
     }
@@ -88,15 +88,13 @@ FROM alidata WHERE 1 ORDER BY totalpop DESC, id ASC ' . $limit;
     public function getAllianceAttRank($id)
     {
         $q = "SELECT users.id userid, users.username username, users.alliance alliance, (
-
-				SELECT SUM( alidata.Aap )
-				FROM alidata
-				WHERE alidata.id = alliance
-				)totalpoint
-
-				FROM users
-				WHERE users.alliance > 0
-				ORDER BY totalpoint DESC, alliance ASC";
+        SELECT SUM( alidata.Aap )
+        FROM alidata
+        WHERE alidata.id = alliance
+        )totalpoint
+        FROM users
+        WHERE users.alliance > 0
+        ORDER BY totalpoint DESC, alliance ASC";
 
         $result = mysql_query($q);
         $i = 1;
@@ -349,19 +347,19 @@ FROM alidata WHERE 1 ORDER BY Adp DESC, id ASC ' . $limit;
     public function getTop10DefRank($username)
     {
         $q = "SELECT users.id userid, users.username username, users.dp dp, (
-				SELECT SUM( vdata.pop )
-				FROM vdata
-				WHERE vdata.owner = userid
-				)totalpop, (
+        SELECT SUM( vdata.pop )
+        FROM vdata
+        WHERE vdata.owner = userid
+        )totalpop, (
 
-				SELECT COUNT( vdata.wref )
-				FROM vdata
-				WHERE vdata.owner = userid AND type != 99
-				)totalvillages
+        SELECT COUNT( vdata.wref )
+        FROM vdata
+        WHERE vdata.owner = userid AND type != 99
+        )totalvillages
 
-				FROM users
-				WHERE users.id > 3 AND reg2 != 1
-				ORDER BY dp DESC, userid ASC";
+        FROM users
+        WHERE users.id > 3 AND reg2 != 1
+        ORDER BY dp DESC, userid ASC";
 
         $result = mysql_query($q);
         $i = 1;
@@ -378,19 +376,19 @@ FROM alidata WHERE 1 ORDER BY Adp DESC, id ASC ' . $limit;
     public function getTop10ClpRank($username)
     {
         $q = "SELECT users.id userid, users.username username, users.clp clp, (
-				SELECT SUM( vdata.pop )
-				FROM vdata
-				WHERE vdata.owner = userid
-				)totalpop, (
+        SELECT SUM( vdata.pop )
+        FROM vdata
+        WHERE vdata.owner = userid
+        )totalpop, (
 
-				SELECT COUNT( vdata.wref )
-				FROM vdata
-				WHERE vdata.owner = userid AND type != 99
-				)totalvillages
+        SELECT COUNT( vdata.wref )
+        FROM vdata
+        WHERE vdata.owner = userid AND type != 99
+        )totalvillages
 
-				FROM users
-				WHERE users.id > 3 AND reg2 != 1
-				ORDER BY totalpop DESC, userid ASC";
+        FROM users
+        WHERE users.id > 3 AND reg2 != 1
+        ORDER BY totalpop DESC, userid ASC";
 
         $result = mysql_query($q);
         $i = 1;
@@ -407,14 +405,14 @@ FROM alidata WHERE 1 ORDER BY Adp DESC, id ASC ' . $limit;
     public function procUsersTop10PopRank($limit = '')
     {
         $q = "SELECT users.id userid, users.username username,
-				((SELECT SUM( vdata.pop )
-				FROM vdata
-				WHERE vdata.owner = userid
-				)-oldrank)top10popchange
+        ((SELECT SUM( vdata.pop )
+        FROM vdata
+        WHERE vdata.owner = userid
+        )-oldrank)top10popchange
 
-				FROM users
-				WHERE users.id > 3 AND reg2 != 1
-				ORDER BY top10popchange DESC, userid ASC " . $limit;
+        FROM users
+        WHERE users.id > 3 AND reg2 != 1
+        ORDER BY top10popchange DESC, userid ASC " . $limit;
 
         return mysql_query($q);
     }
@@ -422,19 +420,19 @@ FROM alidata WHERE 1 ORDER BY Adp DESC, id ASC ' . $limit;
     public function getTop10RobbersRank($username)
     {
         $q = "SELECT users.id userid, users.username username, users.RR RR, (
-				SELECT SUM( vdata.pop )
-				FROM vdata
-				WHERE vdata.owner = userid
-				)totalpop, (
+        SELECT SUM( vdata.pop )
+        FROM vdata
+        WHERE vdata.owner = userid
+        )totalpop, (
 
-				SELECT COUNT( vdata.wref )
-				FROM vdata
-				WHERE vdata.owner = userid AND type != 99
-				)totalvillages
+        SELECT COUNT( vdata.wref )
+        FROM vdata
+        WHERE vdata.owner = userid AND type != 99
+        )totalvillages
 
-				FROM users
-				WHERE users.id > 3 AND reg2 != 1
-				ORDER BY RR DESC, userid ASC";
+        FROM users
+        WHERE users.id > 3 AND reg2 != 1
+        ORDER BY RR DESC, userid ASC";
 
         $result = mysql_query($q);
         $i = 1;
