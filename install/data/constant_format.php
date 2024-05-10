@@ -144,8 +144,7 @@ $ww = $result['ww'] == 1 ? true : false;
 define("SHOWWW2", $ww);
 
 // Activation Mail
-// true = activation mail will be sent, users will have to finish registration
-//        by clicking on link recieved in mail.
+// true = activation mail will be sent, users will have to finish registration by clicking on link recieved in mail.
 // false =  users can register with any mail. Not needed to be real one.
 $auth_email = $result['auth_email'] == 1 ? true : false;
 define("AUTH_EMAIL", $auth_email);
