@@ -2,12 +2,6 @@
 
 class Generatorz
 {
-
-    public function generateRandID()
-    {
-        return md5($this->generateRandStr(16));
-    }
-
     public function generateRandStr($length)
     {
         $randstr = "";
@@ -222,15 +216,6 @@ class Generatorz
 
         //$starttime = $startarray[1] + $startarray[0];
         return $startarray[0];
-    }
-
-    public function pageLoadTimeEnd()
-    {
-        $endtime = microtime();
-        $endarray = explode(" ", $endtime);
-
-        //$endtime = $endarray[1] + $endarray[0];
-        return $endarray[0];
     }
 
 }
