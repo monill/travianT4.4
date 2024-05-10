@@ -13,9 +13,7 @@ class Units
                     if (isset($post['a']) && $post['a'] == 533374) {
                         $this->sendTroops($post);
                     } else {
-                        $post = $this->loadUnits($post);
-
-                        return $post;
+                        return $this->loadUnits($post);
                     }
                     break;
                 case 2:
@@ -36,7 +34,6 @@ class Units
                             $this->sendTroops($post);
                         } else {
                             $post = $this->loadUnits($post);
-
                             return $post;
                         }
                     }
@@ -62,7 +59,6 @@ class Units
                             $this->sendTroops($post);
                         } else {
                             $post = $this->loadUnits($post);
-
                             return $post;
                         }
                     }
@@ -85,7 +81,6 @@ class Units
                             $this->sendTroops($post);
                         } else {
                             $post = $this->loadUnits($post);
-
                             return $post;
                         }
                     }
@@ -95,7 +90,6 @@ class Units
                         $this->Settlers($post);
                     } else {
                         $post = $this->loadUnits($post);
-
                         return $post;
                     }
                     break;
@@ -585,7 +579,7 @@ class Units
         exit;
     }
 
-    function procTrapped($get)
+    public function procTrapped($get)
     {
         global $database, $village, $generator;
         $get['k'] = isset($get['k']) ? intval($get['k']) : 0;
@@ -719,7 +713,7 @@ class Units
         exit;
     }
 
-    function procanimals()
+    public function procanimals()
     {
         global $village, $database;
         if (count($village->enforcetome) > 0) {
