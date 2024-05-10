@@ -92,7 +92,7 @@ class paypal_class
     public function dump_fields()
     {
         echo "<h3>paypal_class->dump_fields() Output:</h3>";
-        echo "<table width=\"95%\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">\r\n            <tr>\r\n               <td bgcolor=\"black\"><b><font color=\"white\">Field Name</font></b></td>\r\n               <td bgcolor=\"black\"><b><font color=\"white\">Value</font></b></td>\r\n            </tr>";
+        echo "<table width=\"95%\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">\r\n<tr>\r\n<td bgcolor=\"black\"><b><font color=\"white\">Field Name</font></b></td>\r\n<td bgcolor=\"black\"><b><font color=\"white\">Value</font></b></td>\r\n</tr>";
         ksort($this->fields);
         foreach ($this->fields as $key => $value) {
             echo "<tr><td>{$key}</td><td>" . urldecode($value) . "&nbsp;</td></tr>";
@@ -100,5 +100,3 @@ class paypal_class
         echo "</table><br>";
     }
 }
-
-?>
