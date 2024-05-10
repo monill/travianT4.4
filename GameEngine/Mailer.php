@@ -38,7 +38,6 @@ class Mailer
 
     function sendPassword($email, $uid, $username, $npw, $cpw)
     {
-
         $subject = "Password forgotten";
 
         $message = "Hello " . $username . "
@@ -68,8 +67,6 @@ Best regards,TravianX
 
         mail($email, $subject, $message, $headers);
     }
-
 }
 
 $mailer = new Mailer;
-?>
