@@ -107,9 +107,7 @@ include("templates/html.php");
             include("templates/activate/activate.php");
         }
     } else {
-
         if (isset($_GET['token']) && isset($_GET['cv'])) {
-
             if ($_GET['token'] != $_SESSION['token']) {
                 unset($_SESSION['token']);
                 header("Location: login.php");
@@ -147,9 +145,8 @@ include("templates/html.php");
                 $_GET['cv'] = filter_var($_GET['cv'], FILTER_SANITIZE_MAGIC_QUOTES);
                 $result = mysql_query("SELECT `reg2` FROM users WHERE id='" . $_SESSION['MYUID'] . "' LIMIT 1");
                 $row = mysql_fetch_array($result);
-                $reg2 = $row['reg2'];
 
-                if ($reg2 != 1 and $_SESSION['MYUID'] == '') {
+                if ($row['reg2'] != 1 and $_SESSION['MYUID'] == '') {
                     header("Location: login.php");
                     exit;
                 }
@@ -180,10 +177,10 @@ include("templates/html.php");
                                         <input type="hidden" name="vid" value="3" />
                                         <input type="hidden" name="uid" value="<?php echo $_SESSION['MYUID']; ?>" />
                                         <div class="container">
-                                            <div class="vidDescription">Great empires begin with important decisions!
+                                            <div class="vidDescription">
+												Great empires begin with important decisions!
                                                 Are you an attacker who loves to fight? Otherwise, save your time relatively
-                                                Do you? A team player who likes to develop a thriving economy to fire the fuse
-                                                Do you?
+                                                do you? A team player who likes to develop a thriving economy to fire the fuse?
                                             </div>
                                             <div class="vidSelect">
                                                 <div class="kind">
@@ -314,7 +311,7 @@ include("templates/html.php");
                             <div class="greenbox boxVidInfo">
                                 <div class="greenbox-top"></div>
                                 <div class="greenbox-content">
-                                    <div> Choose start location</div>
+                                    <div>Choose start location</div>
 
                                     <div class="changeVid"><a href="activate.php?form=activator">Turn back</a>
                                     </div>
@@ -334,9 +331,10 @@ include("templates/html.php");
                                 <div class="boxes-bc"></div>
                                 <div class="boxes-contents cf">
                                     <div class="content">
-                                        <div class="sectorDescription">Where to start building your empire
-                                            you want? Use the "recommended" area for the most suitable region. Or
-                                            Choose the region where your friends are and create a team!<br>
+                                        <div class="sectorDescription">
+											Where to start building your empire you want?
+											Use the "recommended" area for the most suitable region.
+											Or Choose the region where your friends are and create a team!<br>
                                         </div>
                                         <div class="sectorSelect">
                                             <div class="map">
@@ -419,13 +417,14 @@ include("templates/html.php");
             <?php
             }
         }
-            ?>
+        ?>
             <div class="clear">&nbsp;</div>
 </div>
 <div class="clear"></div>
 </div>
 <div class="contentFooter">&nbsp;</div>
 </div>
+
 <div id="sidebarAfterContent" class="sidebar afterContent">
     <div id="sidebarBoxNews1" class="sidebarBox sidebarBoxNews">
         <div class="sidebarBoxBaseBox">
@@ -484,10 +483,8 @@ include("templates/html.php");
 </div>
 </div>
 
-<?php
-include('templates/footer.php');
-echo '</div>';
-?>
+<?php include('templates/footer.php'); ?>
+</div>
 <div id="ce"></div>
 </div>
 </div>
