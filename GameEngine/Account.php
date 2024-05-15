@@ -70,13 +70,11 @@ class Account
         }
 
         $reg2 = $database->checkreg($uid);
-        $reg = $reg2['reg2'];
 
-        if ($reg == 1) {
+        if ($reg2['reg2'] == 1) {
             $database->settribe($tb, $uid);
             $reg2 = $database->checkname($uid);
             $name = $reg2['username'];
-            //$email = $reg2['email'];
             setcookie('COOKUSR', $name, time() + COOKIE_EXPIRE, COOKIE_PATH);
             $frandom0 = rand(0, 3);
             $frandom1 = rand(0, 3);
@@ -96,13 +94,10 @@ class Account
             }
             $database->setreg2($uid);
             $database->modifyGold($uid, Activate_Plus, 1);
-            $time = time() + (MINPROTECTION * 2);
-            mysql_query("UPDATE users set protect = '" . $time . "' WHERE id = " . $uid) or die(mysql_error());
 
+            mysql_query("UPDATE users set protect = '" . time() + (MINPROTECTION * 2) . "' WHERE id = " . $uid) or die(mysql_error());
             mysql_query("INSERT INTO users_setting (`id`) values ('" . $uid . "')") or die(mysql_error());
-
-            $times = time() + EXTRAPLUS;
-            mysql_query("UPDATE users set plus = '" . $times . "' WHERE id = " . $uid) or die(mysql_error());
+            mysql_query("UPDATE users set plus = '" . time() + EXTRAPLUS . "' WHERE id = " . $uid) or die(mysql_error());
 
             $session->login($name);
         }
@@ -333,7 +328,9 @@ class Account
         if (COMMENCE > time()) {
             $form->addError("pw", US_CANTLOGIN);
         }
-        if (!isset($_SESSION['LOGIN_FAILED'])) $_SESSION['LOGIN_FAILED'] = 0;
+        if (!isset($_SESSION['LOGIN_FAILED'])) {
+            $_SESSION['LOGIN_FAILED'] = 0;
+        }
         if ($form->returnErrors() > 0) {
             $_SESSION['errorarray'] = $form->getErrors();
             $_SESSION['valuearray'] = $_POST;
