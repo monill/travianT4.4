@@ -288,6 +288,7 @@ class Session
                 $_SESSION['wid'] = $data['wref'];
             }
         }
+        
         $this->PopulateVar();
 
         $logging->addLoginLog($this->uid, $_SERVER['REMOTE_ADDR']);
