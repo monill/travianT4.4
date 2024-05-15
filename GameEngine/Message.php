@@ -639,7 +639,4 @@ class Message
         return $database->sendwlcMessage($uid, 0, WEL_TOPIC, $welcomemsg, 0);
     }
 
-    private function sendNotice($from, $vid, $fowner, $owner, $type, $extra)
-    {
-    }
 }
