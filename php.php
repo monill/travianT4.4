@@ -3,7 +3,7 @@
 interface iGraph
 {
     public function parse($data, $cfg = array());
-} //End class
+}
 
 class phpMyGraph
 {
