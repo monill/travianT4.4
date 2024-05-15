@@ -647,8 +647,6 @@ class MYSQL_DB
                 break;
         }
 
-        // echo $x_y;die;
-
         $q = "SELECT `id` FROM wdata where fieldtype = 3 and occupied = 0 $x_y and (x BETWEEN $x_a AND $x_b) and (y BETWEEN $y_a AND $y_b) AND (SQRT(POW(x,2)+POW(y,2))>" . ($nareadis) . ") $order LIMIT 20";
 
         $result = mysql_query($q, $this->connection);
@@ -3540,8 +3538,7 @@ class MYSQL_DB
 
     public function sendwlcMessage($client, $owner, $topic, $message, $send)
     {
-        $time = time();
-        $q = "INSERT INTO mdata values (0,$client,$owner,'$topic',\"$message\",1,0,$send,$time)";
+        $q = "INSERT INTO mdata values (0,$client,$owner,'$topic',\"$message\",1,0,$send,time())";
         return mysql_query($q, $this->connection);
     }
 
@@ -3883,12 +3880,12 @@ class MYSQL_DB
 
     public function addAdventure($wref, $uid, $time = 0, $dif = 0)
     {
-        if ($time == 0) $time = time();
-        // $ddd = rand(0,3);
-        // if($ddd == 1){ $dif = 1; }else{ $dif = 0; }
+        if ($time == 0) {
+            $time = time();
+        }
         $sql = mysql_query("SELECT id FROM wdata ORDER BY id DESC LIMIT 1");
         $myvar = mysql_fetch_assoc($sql);
-        // print_r($myvar);die;
+
         $lastw = $myvar['id'];
         if (($wref - 10000) <= 10) {
             $w1 = rand(10, ($wref + 10000));
