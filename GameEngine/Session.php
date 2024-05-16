@@ -324,7 +324,7 @@ class Session
         $this->mchecker = $_SESSION['mchecker'] = $generator->generateRandStr(5);
     }
 
-    public function setlang($lang = 'fa')
+    public function setlang($lang = 'en')
     {
         global $database;
         $_SESSION['lang'] = $lang;
