@@ -25,8 +25,7 @@
         window.ajaxToken = '<?php echo md5($_REQUEST['SERVER_TIME']); ?>';
     </script>
     <!--<script type="text/javascript" src="/assets/js/chat.js?v=1.15"></script>-->
-    <div id="main_container">
-    </div>
+    <div id="main_container"></div>
     <!--<script type="text/javascript">
     window.addEvent('domready', function () {
         Travian.Game.Chat.chatHeartbeatTime= 8000;
