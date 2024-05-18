@@ -138,9 +138,7 @@ include("templates/html.php");
         <div id="bodyWrapper">
             <img style="filter:chroma();" src="/assets/images/x.gif" id="msfilter" alt="" />
 
-            <?php
-            include('templates/Header.php');
-            ?>
+            <?php include('templates/Header.php'); ?>
             <div id="center">
                 <a id="ingameManual" href="help.php">
                     <img class="question" alt="Help" src="/assets/images/x.gif">
