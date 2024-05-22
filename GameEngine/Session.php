@@ -288,7 +288,7 @@ class Session
                 $_SESSION['wid'] = $data['wref'];
             }
         }
-        
+
         $this->PopulateVar();
 
         $logging->addLoginLog($this->uid, $_SERVER['REMOTE_ADDR']);
@@ -344,7 +344,6 @@ class Session
             $res = mysql_query("SELECT id FROM users");
 
             while ($row = mysql_fetch_assoc($res)) {
-
                 mysql_query("UPDATE users SET gold = gold + " . FREEGOLD_VALUE . " , giftgold = giftgold + " . FREEGOLD_VALUE . " WHERE id = " . $row['id'] . " AND access >= 2") or die(mysql_error());
             }
             mysql_query("UPDATE config SET freegold_lasttime = " . time()) or die(mysql_error());
