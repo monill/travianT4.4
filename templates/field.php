@@ -39,7 +39,7 @@
             });
         </script>
     <?php } ?>
-    <area href='dorf2.php' coords='250,191,32' shape='circle' title='Köy Merkezi'>
+    <area href='dorf2.php' coords='250,191,32' shape='circle' title='Village Center'>
 </map>
 <div id='village_map' class="f<?php echo $village->type; ?>">
     <div id='village_circles'></div>
