@@ -38,8 +38,7 @@
         Travian.Game.Chat.alliance = "0";
         Travian.Game.Chat.render("/assets/images/");
     });
-</script>
--->
+    </script>-->
     <script type="text/javascript">
         Travian.Translation.add({
             'tpw.prepare': 'prepare',
